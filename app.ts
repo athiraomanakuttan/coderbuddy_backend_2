@@ -17,5 +17,5 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-
-server.listen(process.env.PORT,()=>console.log("server connected"))
+console.log(process.env.PORT)
+server.listen(process.env.PORT,()=>console.log("server connected "))
