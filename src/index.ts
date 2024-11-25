@@ -1,10 +1,12 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
-const http = require('http');
-const bodyParser = require('body-parser');
-const path = require('path');
-
+import express from 'express';
+import dotenv from 'dotenv';
+// import cors from 'cors';
+import http from 'http';
+import bodyParser from 'body-parser';
+import path from 'path';
+import userRouter from './routes/users/userRoutes'
+import connectDb from './config/dbConfig';
+connectDb()
 const app = express();
 const server = http.createServer(app);
 
@@ -15,5 +17,6 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.get('/',(req,res)=> res.send("welcome"))
+app.use('/', userRouter);
+
 server.listen(process.env.PORT, () => console.log('server connected'));

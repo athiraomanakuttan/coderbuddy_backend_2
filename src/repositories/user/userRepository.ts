@@ -1,4 +1,4 @@
-import {UserType} from '../../model/user/userModel.ts'
+import { UserType } from "../../model/user/userModel";
 interface UserRepository {
     createUser(user:UserType):Promise<UserType>;
     // findById(id:String):Promise<UserType>;
