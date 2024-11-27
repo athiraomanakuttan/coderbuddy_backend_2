@@ -26,6 +26,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.1",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.9.3",
     "@types/nodemailer": "^6.4.17",
     "ts-node": "^10.9.2",

@@ -5,9 +5,8 @@ class PasswordUtils{
         const hashpassword = await bcrypt.hash(password,salt);
         return hashpassword;
     }
-    static async comparePassword(dbPassword:string,userPassword:string):Promise<boolean>{
-        return await bcrypt.compare(dbPassword,userPassword)
-       
+    static async comparePassword(userPassword:string,dbPassword:string):Promise<boolean>{
+        return await bcrypt.compare(userPassword,dbPassword)
     }
 }
 
