@@ -3,8 +3,8 @@ import { Schema, Types , Document , model} from 'mongoose'
 
 interface UserType  extends Document{
     
-    email : string;
-    password : string;
+    email ?: string;
+    password ?: string;
     qualification ?: [{qualification:string, college:string}];
     address ?: string;
     experiance ?: string;
@@ -14,7 +14,7 @@ interface UserType  extends Document{
     start_date ?: Date;
     first_name ?: string;
     last_name ?: string;
-    status:number;
+    status?:number;
 }
 
 const userSchema = new Schema<UserType>({

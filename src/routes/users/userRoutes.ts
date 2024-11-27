@@ -13,6 +13,8 @@ const userController = new UserController(userService)
 const router = Router()
 
 router.post('/signup',(req,res) => userController.signupPost(req,res));
+router.post('/verify-otp',(req,res)=> userController.verifyOtp(req,res))
+router.post('/login',(req,res)=>userController.loginPost(req,res))
 
 
 
