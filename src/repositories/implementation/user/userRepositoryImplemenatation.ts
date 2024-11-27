@@ -6,6 +6,10 @@ class UserRepositoryImplementation implements UserRepository{
         const newUser = await User.create(user)
         return newUser
     }
+    async findByEmail(email: String): Promise<UserType | null> {
+        const getUser = await User.findOne({email :  email});
+        return getUser;
+    }
     
 }
 

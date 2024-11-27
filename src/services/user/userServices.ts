@@ -13,6 +13,12 @@ class UserService{
         return newUser;
     }
     
+    async findByEmail(email:String):Promise<UserType | null>
+    {
+       
+        const getUser = await this.userRepository.findByEmail(email)
+        return getUser
+    }
 
 }
 

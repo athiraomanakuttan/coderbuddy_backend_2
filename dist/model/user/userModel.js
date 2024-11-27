@@ -45,6 +45,11 @@ const userSchema = new mongoose_1.Schema({
     },
     last_name: {
         type: String
+    },
+    status: {
+        type: Number,
+        enum: [0, 1, -1],
+        default: 0
     }
 });
 const User = (0, mongoose_1.model)('user', userSchema);

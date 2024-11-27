@@ -9,8 +9,6 @@ dotenv_1.default.config();
 const connectDb = async () => {
     const connection_string = process.env.DB_CONNECTION_STRING;
     try {
-        console.log("connection_string");
-        console.log(connection_string);
         const connection = await mongoose_1.default.connect(`${connection_string}`, {
             dbName: 'coderbuddy'
         });

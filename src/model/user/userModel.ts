@@ -14,6 +14,7 @@ interface UserType  extends Document{
     start_date ?: Date;
     first_name ?: string;
     last_name ?: string;
+    status:number;
 }
 
 const userSchema = new Schema<UserType>({
@@ -59,6 +60,12 @@ const userSchema = new Schema<UserType>({
     },
     last_name:{
         type: String
+    },
+    status:{
+        type:Number,
+        enum:[0,1,-1],
+        default:0
+
     }
 })
 

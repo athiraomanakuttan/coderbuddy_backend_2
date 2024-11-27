@@ -11,5 +11,5 @@ const userRepositoryImplementation = new userRepositoryImplemenatation_1.default
 const userService = new userServices_1.default(userRepositoryImplementation);
 const userController = new userController_1.default(userService);
 const router = (0, express_1.Router)();
-router.post('/');
+router.post('/signup', (req, res) => userController.signupPost(req, res));
 exports.default = router;

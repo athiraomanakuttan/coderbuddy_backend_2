@@ -9,5 +9,9 @@ class UserService {
         const newUser = await this.userRepository.createUser(user);
         return newUser;
     }
+    async findByEmail(email) {
+        const getUser = await this.userRepository.findByEmail(email);
+        return getUser;
+    }
 }
 exports.default = UserService;

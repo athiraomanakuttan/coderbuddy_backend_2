@@ -12,7 +12,7 @@ const userController = new UserController(userService)
 
 const router = Router()
 
-router.post('/', );
+router.post('/signup',(req,res) => userController.signupPost(req,res));
 
 
 
