@@ -13,12 +13,9 @@ const transporter = nodemailer.createTransport({
 class MailUtility{
     static async sendMail(email:string, otp:number, subject:string):Promise<{message:string}>
     {
-      console.log("inside")
-      console.log("process env" ,  process.env.MAILER_EMAIL)
-      console.log("process env" ,  process.env.MAILER_PASSWORD)
+      
       
       if (!process.env.MAILER_EMAIL || !process.env.MAILER_PASSWORD) {
-      console.log("env issue")
 
         throw new Error("Missing MAILER_EMAIL or MAILER_PASSWORD in environment variables");
     }
@@ -28,7 +25,7 @@ class MailUtility{
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Verbofly OTP</title>
+          <title>coder buddy OTP</title>
         </head>
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
           <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #ffffff border-radius: 5px; border: 1px solid #ffd700;">
@@ -41,12 +38,12 @@ class MailUtility{
               <td style="padding: 20px;">
                 <h2 style="color: #333; margin-bottom: 20px;">${subject}</h2>
                 <p style="margin-bottom: 15px;">Hello,</p>
-                <p style="margin-bottom: 15px;">You've requested to reset your password for your Verbofly account. Use the following OTP to complete the process:</p>
+                <p style="margin-bottom: 15px;">You've requested to signup for your coder buddy account. Use the following OTP to complete the process:</p>
                 <div style="background-color: #ffd700; border-radius: 5px; padding: 15px; text-align: center; margin-bottom: 20px;">
                   <span style="font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #333;">${otp}</span>
                 </div>
                 <p style="margin-bottom: 15px;">This OTP will expire in 10 minutes.</p>
-                <p style="margin-bottom: 20px;">Thank you for using Verbofly!</p>
+                <p style="margin-bottom: 20px;">Thank you for using coder buddy!</p>
                 <p style="color: #666; font-size: 12px;">This is an automated message, please do not reply to this email.</p>
               </td>
             </tr>

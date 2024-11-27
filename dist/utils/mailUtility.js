@@ -3,11 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const nodemailer = require("nodemailer");
+const nodemailer_1 = __importDefault(require("nodemailer"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
+const transporter = nodemailer_1.default.createTransport({
+    host: "smtp.gmail.com",
     port: 587,
     secure: false,
     auth: {
@@ -17,6 +17,13 @@ const transporter = nodemailer.createTransport({
 });
 class MailUtility {
     static async sendMail(email, otp, subject) {
+        console.log("inside");
+        console.log("process env", process.env.MAILER_EMAIL);
+        console.log("process env", process.env.MAILER_PASSWORD);
+        if (!process.env.MAILER_EMAIL || !process.env.MAILER_PASSWORD) {
+            console.log("env issue");
+            throw new Error("Missing MAILER_EMAIL or MAILER_PASSWORD in environment variables");
+        }
         const htmlContent = `
         <!DOCTYPE html>
         <html lang="en">
@@ -54,17 +61,18 @@ class MailUtility {
         </body>
         </html>
       `;
-        const mailOptions = await transporter.sendMail({
-            from: `coder buddy" <${process.env.MAILER_EMAIL}>`,
+        const mailOptions = {
+            from: `coder buddy <${process.env.MAILER_EMAIL}>`,
             to: email,
             subject: subject,
             html: htmlContent
-        });
+        };
         try {
             await transporter.sendMail(mailOptions);
-            return { message: "mail send successfully" };
+            return { message: "mail sent successfully" };
         }
         catch (error) {
+            console.log("error", error);
             throw new Error('Failed to send OTP email');
         }
     }

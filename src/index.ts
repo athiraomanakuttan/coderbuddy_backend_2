@@ -6,7 +6,9 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import userRouter from './routes/users/userRoutes'
 import connectDb from './config/dbConfig';
-import session from "express-session";
+const session = require('express-session');
+
+
 connectDb()
 const app = express();
 const server = http.createServer(app);

@@ -11,7 +11,8 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const path_1 = __importDefault(require("path"));
 const userRoutes_1 = __importDefault(require("./routes/users/userRoutes"));
 const dbConfig_1 = __importDefault(require("./config/dbConfig"));
-const express_session_1 = __importDefault(require("express-session"));
+const session = require('express-session');
+require("./session.d");
 (0, dbConfig_1.default)();
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
@@ -19,7 +20,7 @@ dotenv_1.default.config();
 app.use(express_1.default.json({ limit: '100mb' }));
 app.use(express_1.default.urlencoded({ limit: '100mb', extended: true }));
 app.use(body_parser_1.default.json());
-app.use((0, express_session_1.default)({
+app.use(session({
     secret: "your-secret-key",
     resave: false,
     saveUninitialized: true,

@@ -14,32 +14,41 @@ class UserController {
     async signupPost(req, res) {
         try {
             const user = req.body;
-            if (!user.email || !user.password)
+            if (!user.email || !user.password) {
                 res.status(400).json({ message: "Email and password are required." });
-            const existingUser = await this.userService.findByEmail(user.email);
-            console.log("'user data", existingUser);
-            if (existingUser)
-                res.status(200).json({ message: "user already exist" });
-            else {
-                user.password = await passwordUtils_1.default.passwordHash(user.password);
-                const newUser = await this.userService.createUser(user);
-                if (newUser) {
-                    const otp = await otpUtility_1.default.otpGenerator();
-                    if (!req.session) {
-                        res.status(500).json({ message: "Session not initialized." });
-                        return;
-                    }
-                    console.log("session");
-                    console.log(req.session);
-                    const mailsend = await mailUtility_1.default.sendMail(user.email, otp, "Verification OTP");
-                    console.log(mailsend);
-                    req.session.OTP = otp;
-                }
-                res.status(201).json({ message: "user created successfully", newUser });
+                return;
             }
+            const existingUser = await this.userService.findByEmail(user.email);
+            if (existingUser) {
+                res.status(409).json({ message: "User already exists." });
+                return;
+            }
+            user.password = await passwordUtils_1.default.passwordHash(user.password);
+            const newUser = await this.userService.createUser(user);
+            if (newUser) {
+                const otp = await otpUtility_1.default.otpGenerator();
+                if (!req.session) {
+                    res.status(500).json({ message: "Session not initialized." });
+                    return;
+                }
+                req.session.OTP = otp;
+                // req.session.email = user.email;
+                try {
+                    console.log("before");
+                    const mailSend = await mailUtility_1.default.sendMail(user.email, otp, "Verification OTP");
+                    console.log("after");
+                    console.log(mailSend);
+                }
+                catch (mailError) {
+                    res.status(500).json({ message: "Failed to send verification email." });
+                    return;
+                }
+            }
+            res.status(201).json({ message: "User created successfully", newUser });
         }
         catch (err) {
-            res.status(500).json({ message: `error while adding ${err}` });
+            console.error("Error during signup:", err);
+            res.status(500).json({ message: `Error while adding: ${err.message}` });
         }
     }
 }
