@@ -91,27 +91,25 @@ class UserController {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(400).json({ message: "email and password required" });
+      res.status(400).json({success:false, message: "email and password required" , data:null});
       return;
     }
     try {
       const existUser = await this.userService.getUserByEmail(email);
       if (!existUser) {
-        res.status(200).json({ message: "user not found. Please signup" });
+        res.status(200).json({ success:false,message: "user not found. Please signup" , data : null });
         return;
       } else if (!existUser.password) {
-        res.status(400).json({ message: "Password not set for this account" });
+        res.status(400).json({ success:false, message: "Password not set for this account", data : null  });
         return;
       }
       const comparePassword = await PasswordUtils.comparePassword(
         password,
         existUser.password
       );
-      console.log(" existUser.password", existUser.password)
-      console.log("password",password)
-      console.log("comparePassword",comparePassword)
+      
       if (!comparePassword) {
-        res.status(401).json({ message: "Invalid email or password" });
+        res.status(401).json({ success:false, message: "Invalid email or password" , data: null });
         return;
       }
       const accessToken = JwtUtility.generateAccessToken({ email: email });
@@ -122,12 +120,12 @@ class UserController {
         sameSite: "none",
         maxAge: 1 * 60 * 60 * 1000,
       });
-      res.status(200).json({message:"login successfull",accessToken})
+      res.status(200).json({ success:true, message:"login successfull",data:{accessToken, user:existUser}})
     } catch (error) {
-      res.status(500).json({ message: "failed to login. Try again", error });
+      res.status(500).json({success:false, message: "failed to login. Try again", data: {error} });
     }
   }
-
+ 
   
 }
 
