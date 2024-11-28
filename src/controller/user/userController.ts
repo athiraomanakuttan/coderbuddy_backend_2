@@ -8,7 +8,7 @@ import JwtUtility from "../../utils/jwtUtility";
 class UserController {
   private userService: UserService;
   constructor(userService: UserService) {
-    this.userService = userService;
+    this.userService = userService; 
   }
 
   async signupPost(req: Request, res: Response): Promise<void> {
@@ -39,7 +39,7 @@ class UserController {
             otp,
             "Verification OTP"
           );
-          res.status(200).json("otp send to the email");
+          res.status(200).json({message : "otp send to the email", otp : otp, email: user.email});
         } catch (mailError) {
           res
             .status(500)
@@ -54,31 +54,26 @@ class UserController {
   }
 
   async verifyOtp(req: Request, res: Response): Promise<void> {
-    const data = req.body;
-    const otp = Number(data.otp);
+    const {otp,storedOTP,storedEmail} = req.body;
     if (!otp) {
       res.status(400).json({ message: "OTP is required" });
       return;
     }
 
-    const sessionOTP = (req.session as any).OTP;
-    const userEmail = (req.session as any).email;
-
-    if (!sessionOTP || !userEmail) {
+    
+    if (!otp || !storedOTP || !storedEmail) {
       res.status(400).json({ message: "OTP Timeout. Try again" });
       return;
     }
-    if (sessionOTP === otp) {
-      // Fetch the current user data first
-      const currentUser = await this.userService.getUserByEmail(userEmail);
+    if (storedOTP === otp) {
+      const currentUser = await this.userService.getUserByEmail(storedEmail);
       if (!currentUser) {
         res.status(404).json({ message: "User not found" });
         return;
       }
 
-      // Update only the status field
       const userData: UserType = { ...currentUser.toObject(), status: 1 };
-      const updateUser = await this.userService.updateUser(userEmail, userData);
+      const updateUser = await this.userService.updateUser(storedEmail, userData);
 
       if (updateUser) {
         res
@@ -132,6 +127,8 @@ class UserController {
       res.status(500).json({ message: "failed to login. Try again", error });
     }
   }
+
+  
 }
 
 export default UserController;
