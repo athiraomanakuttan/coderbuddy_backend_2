@@ -9,11 +9,11 @@ import OtpUtility from "../../utils/otpUtility";
 
 class ExpertController{
      private expertServece : ExpertService
-     constructor(expertServece:ExpertService){
+    constructor(expertServece:ExpertService){
         this.expertServece = expertServece
      }
 
-     async signupPost(req: Request, res: Response):Promise<void>{
+    async signupPost(req: Request, res: Response):Promise<void>{
         const { email, password} =  req.body;
         if(!email.trim() || !password.trim())
         {
@@ -33,7 +33,7 @@ class ExpertController{
             {
                 const otp = await OtpUtility.otpGenerator()
                 const emailSend = await MailUtility.sendMail(email,otp,"Verifivation OTP")
-                res.status(200).json({status:true, message:"An otp has sent to your email", data : createExpert})
+                res.status(200).json({status:true, message:"An otp has sent to your email", data : {otp,email}})
             }
             else
             res.status(200).json({status:false, message:"an unexpected error occured try again", data :null})
@@ -43,8 +43,7 @@ class ExpertController{
         }
      }
 
-
-     async loginPost(req:Request , res:Response):Promise<void>{
+    async loginPost(req:Request , res:Response):Promise<void>{
         const {email,password} = req.body
         if(!email.trim() || !password.trim())
         {
@@ -77,7 +76,7 @@ class ExpertController{
         }
      }
 
-     async verifyOtp(req: Request, res: Response): Promise<void> {
+    async verifyOtp(req: Request, res: Response): Promise<void> {
         const {otp,storedOTP,storedEmail} = req.body;
         if (!otp) {
           res.status(400).json({ message: "OTP is required" });
@@ -109,7 +108,7 @@ class ExpertController{
         } else {
           res.status(400).json({ message: "Incorrect OTP. Please try again" });
         }
-    }
+     }
 }
 
 export default ExpertController
