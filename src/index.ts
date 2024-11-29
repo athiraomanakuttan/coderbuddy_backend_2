@@ -1,10 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
-// import cors from 'cors';
 import http from 'http';
 import bodyParser from 'body-parser';
 import path from 'path';
 import userRouter from './routes/users/userRoutes'
+import expertRouter from './routes/expert/expertRouter'
 import connectDb from './config/dbConfig';
 const session = require('express-session');
 import cors from 'cors'
@@ -33,5 +33,6 @@ app.use(
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/', userRouter);
+app.use('/api/expert/',expertRouter)
 
 server.listen(process.env.PORT, () => console.log('server connected'));
