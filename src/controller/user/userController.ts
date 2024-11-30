@@ -19,20 +19,16 @@ class UserController {
         return;
       }
       const existingUser = await this.userService.findByEmail(user.email);
-      if (existingUser) {
+      if (existingUser && existingUser.status===1) {
         res.status(409).json({ message: "User already exists." });
         return;
       }
-      user.password = await PasswordUtils.passwordHash(user.password);
-      const newUser = await this.userService.createUser(user);
-      if (newUser) {
+      if(!existingUser){
+        user.password = await PasswordUtils.passwordHash(user.password);
+       const newUser = await this.userService.createUser(user);
+      }
+      
         const otp = await OtpUtility.otpGenerator();
-        if (!req.session) {
-          res.status(500).json({ message: "Session not initialized." });
-          return;
-        }
-        (req.session as any).OTP = otp;
-        (req.session as any).email = user.email;
         try {
           const mailSend = await MailUtility.sendMail(
             user.email,
@@ -46,7 +42,7 @@ class UserController {
             .json({ message: "Failed to send verification email." });
           return;
         }
-      }
+      
     } catch (err: any) {
       console.error("Error during signup:", err);
       res.status(500).json({ message: `Error while adding: ${err.message}` });
@@ -112,8 +108,8 @@ class UserController {
         res.status(401).json({ success:false, message: "Invalid email or password" , data: null });
         return;
       }
-      const accessToken = JwtUtility.generateAccessToken({ email: email });
-      const refreshToken = JwtUtility.generateRefreshToken({ email: email });
+      const accessToken = JwtUtility.generateAccessToken({ email: email,id:existUser._id });
+      const refreshToken = JwtUtility.generateRefreshToken({ email: email,id:existUser._id  });
       res.cookie("userRefreshToken", refreshToken, {
         httpOnly: true,
         secure: false,

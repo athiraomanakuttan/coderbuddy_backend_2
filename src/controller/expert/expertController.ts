@@ -1,6 +1,5 @@
 import { Request,Response } from "express"
 import ExpertService from "../../services/expert/expertServices"
-import { stat } from "fs";
 import PasswordUtils from "../../utils/passwordUtils";
 import JwtUtility from "../../utils/jwtUtility";
 import { ExpertDocument } from "../../model/expert/expertModel";
@@ -21,23 +20,20 @@ class ExpertController{
             return;
         }
         const existExpert = await this.expertServece.getExpertByEmail(email)
-        if(existExpert)
+        if(existExpert && existExpert.status ===1)
         {
             res.status(400).json({status: false ,  message:"user already exist. please signIn", data: null})
             return;
         }
         try {
+          if(!existExpert){
             req.body.password =  await PasswordUtils.passwordHash(password)
             const createExpert= await this.expertServece.createExpert(req.body)
-            if(createExpert)
-            {
+          }
+            
                 const otp = await OtpUtility.otpGenerator()
                 const emailSend = await MailUtility.sendMail(email,otp,"Verifivation OTP")
                 res.status(200).json({status:true, message:"An otp has sent to your email", data : {otp,email}})
-            }
-            else
-            res.status(200).json({status:false, message:"an unexpected error occured try again", data :null})
-            
         } catch (error) {
             res.status(500).json({status: false, message:` some eroor occured:${error}`, data: null})
         }
@@ -64,14 +60,13 @@ class ExpertController{
         }
         else
         {
-            const accessToken = JwtUtility.generateAccessToken({email})
-            const refreshToken = JwtUtility.generateRefreshToken({email})
+            const accessToken = JwtUtility.generateAccessToken({email,id:existExpert._id})
+            const refreshToken = JwtUtility.generateRefreshToken({email,id:existExpert._id})
             res.cookie('refreshToken',refreshToken,{ 
                 httpOnly: true,
                 secure: false,
                 sameSite: "none",
                 maxAge: 1 * 60 * 60 * 1000,})
-
             res.status(200).json({status:true, message:"Login successfull",data:{accessToken,existExpert}});
         }
      }

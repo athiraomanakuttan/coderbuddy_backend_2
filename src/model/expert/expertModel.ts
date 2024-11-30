@@ -25,7 +25,7 @@ export interface ExpertDocument extends Document {
   experience?: experienceType;
   current_domain?: string;
   total_experience?: number;
-  status?: string;
+  status?: Number;
 }
 
 const ExpertSchema = new Schema<ExpertDocument>(
