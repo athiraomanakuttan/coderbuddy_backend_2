@@ -6,7 +6,8 @@ import path from 'path';
 import userRouter from './routes/users/userRoutes'
 import expertRouter from './routes/expert/expertRouter'
 import connectDb from './config/dbConfig';
-const session = require('express-session');
+import session from 'express-session';
+import cookieParser from "cookie-parser"
 import cors from 'cors'
 
 
@@ -15,13 +16,14 @@ const app = express();
 const server = http.createServer(app);
 
 dotenv.config();
-
+app.use(cookieParser());
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(bodyParser.json());
+
 app.use(cors({
     origin: "http://localhost:3000", 
-    methods: ["GET", "POST"],
+    credentials: true,
   }))
 app.use(
     session({

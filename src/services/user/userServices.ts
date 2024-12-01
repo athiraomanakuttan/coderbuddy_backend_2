@@ -27,6 +27,10 @@ class UserService{
     async getUserByEmail(email: string): Promise<UserType | null> {
         return await this.userRepository.getUserByEmail(email);
     }
+    async updateUserById(id: string ,  data: UserType): Promise<UserType |string | null >{
+        const updatedUser =  await this.userRepository.updateById(id,data)
+        return updatedUser
+    }
 
 }
 

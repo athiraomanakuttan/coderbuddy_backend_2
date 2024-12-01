@@ -17,7 +17,12 @@ class UserRepositoryImplementation implements UserRepository{
     async getUserByEmail(email: string): Promise<UserType | null> {
         return await User.findOne({ email });
     }
-    
+    async findById(id: string): Promise<UserType | null> {
+        return await User.findOne({_id:id})
+    }
+    async updateById(id: String, user: UserType): Promise<UserType | string | null> {
+        return await User.findOneAndUpdate({_id:id},user,{new : true})
+    }
     
 }
 

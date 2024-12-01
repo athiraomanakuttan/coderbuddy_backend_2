@@ -65,7 +65,6 @@ class ExpertController{
             res.cookie('refreshToken',refreshToken,{ 
                 httpOnly: true,
                 secure: false,
-                sameSite: "none",
                 maxAge: 1 * 60 * 60 * 1000,})
             res.status(200).json({status:true, message:"Login successfull",data:{accessToken,existExpert}});
         }

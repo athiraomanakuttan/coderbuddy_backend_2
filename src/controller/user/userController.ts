@@ -108,15 +108,18 @@ class UserController {
         res.status(401).json({ success:false, message: "Invalid email or password" , data: null });
         return;
       }
-      const accessToken = JwtUtility.generateAccessToken({ email: email,id:existUser._id });
-      const refreshToken = JwtUtility.generateRefreshToken({ email: email,id:existUser._id  });
+      const accessToken = JwtUtility.generateAccessToken({ email: email});
+      const refreshToken = JwtUtility.generateRefreshToken({ email: email});
       res.cookie("userRefreshToken", refreshToken, {
         httpOnly: true,
         secure: false,
-        sameSite: "none",
         maxAge: 1 * 60 * 60 * 1000,
       });
-      res.status(200).json({ success:true, message:"login successfull",data:{accessToken, user:existUser}})
+      const filteredData = {
+        id:existUser._id,
+        email:existUser.email,
+      }
+      res.status(200).json({ success:true, message:"login successfull",data:{accessToken, user:filteredData}})
     } catch (error) {
       res.status(500).json({success:false, message: "failed to login. Try again", data: {error} });
     }
