@@ -27,6 +27,7 @@ export interface ExpertDocument extends Document {
   total_experience?: number;
   skills:string[];
   address ?: string;
+  profilePicture ?:string;
   status?: Number;
 }
 
@@ -53,6 +54,7 @@ const ExpertSchema = new Schema<ExpertDocument>(
     current_domain: { type: String },
     total_experience: { type: Number },
     skills: { type: [String] },
+    profilePicture:{type: String},
     status: { type: Number, enum:[0,1,-1], default:0 },
   },
   {

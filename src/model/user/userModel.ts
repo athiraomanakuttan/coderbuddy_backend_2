@@ -15,6 +15,7 @@ interface UserType extends Document {
   last_name?: string;
   status?: number;
   skills?: string[]; 
+  profilePicture: string;
 }
 
 const userSchema = new Schema<UserType>({
@@ -75,6 +76,7 @@ const userSchema = new Schema<UserType>({
     type: [String], 
     default: [], 
   },
+  profilePicture:{ type :  String}
 });
 
 const User = model<UserType>('user', userSchema);

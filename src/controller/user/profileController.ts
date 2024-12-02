@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import UserService from "../../services/user/userServices";
 import { UserType } from "../../model/user/userModel";
+import { uploadImageToCloudinary } from "../../utils/uploadImageToCloudinary ";
 
 class ProfileController {
   private profileService: UserService;
@@ -45,7 +46,9 @@ class ProfileController {
 
   async updateProfile(req: Request | any, res: Response): Promise<void> {
     const { _id, ...data } = req.body;
-
+    const file  = req.file
+    console.log("row data", data)
+    console.log("file", file)
     if (!_id) {
       res
         .status(400)
@@ -58,14 +61,20 @@ class ProfileController {
     }
 
     try {
-      const formattedSkills = data.skills
-        ? data.skills
-            .split(" ")
-            .map((skill: string) =>
-              skill.startsWith("#") ? skill : `#${skill}`
-            ) // Add '#' if not present
-            .filter((skill: string) => skill.trim() !== "") // Remove empty strings
-        : undefined;
+      let profilePictureUrl = data.profilePicture;
+            
+            if (file) {
+                console.log("File Details:", {
+                    fieldname: file.fieldname,
+                    originalname: file.originalname,
+                    mimetype: file.mimetype,
+                    size: file.size
+                });
+                
+                const cloudinaryUrl = await uploadImageToCloudinary(file.buffer);
+                profilePictureUrl = cloudinaryUrl; 
+            }
+      
 
       const updateData = {
         qualification: data.qualification
@@ -81,7 +90,8 @@ class ProfileController {
         first_name: data.firstName ?? undefined,
         last_name: data.lastName ?? undefined,
         status: data.status ?? undefined,
-        skills: formattedSkills,
+        skills: data.skills ?? undefined,
+        profilePicture:profilePictureUrl,
       };
 
       Object.keys(updateData).forEach((key) => {
@@ -118,5 +128,5 @@ class ProfileController {
   }
   
 }
-
+ 
 export default ProfileController;
