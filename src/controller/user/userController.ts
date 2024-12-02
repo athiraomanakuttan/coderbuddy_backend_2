@@ -108,8 +108,8 @@ class UserController {
         res.status(401).json({ success:false, message: "Invalid email or password" , data: null });
         return;
       }
-      const accessToken = JwtUtility.generateAccessToken({ email: email});
-      const refreshToken = JwtUtility.generateRefreshToken({ email: email});
+      const accessToken = JwtUtility.generateAccessToken({ email: email,id:existUser._id});
+      const refreshToken = JwtUtility.generateRefreshToken({ email: email,id:existUser._id});
       res.cookie("userRefreshToken", refreshToken, {
         httpOnly: true,
         secure: false,

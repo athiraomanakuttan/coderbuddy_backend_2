@@ -16,12 +16,9 @@ class ExpertService {
             const expertData = await this.expertRepository.getExpertByEmail(email);
             return expertData
     }
-    async getExpertById(id:string):Promise<ExpertDocument | null>
-    {
-      
+    async getExpertById(id:string):Promise<ExpertDocument | null>{
             const expertData =  await this.expertRepository.getExpertById(id)
             return expertData
-        
     }
     async updateExpert(id:string , data : ExpertDocument):Promise<ExpertDocument | null>{
         return  await this.expertRepository.updateExpert(id,data)

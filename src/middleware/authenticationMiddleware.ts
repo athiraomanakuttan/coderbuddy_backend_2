@@ -4,10 +4,12 @@ import jwt from 'jsonwebtoken';
 export interface CustomRequest extends Request {
   user?: string;
   token?: string;
+  id?: String;
 }
 
 interface DecodedToken {
   email: string;
+  id:string;
 }
 
 const authenticationMiddleware = async (req: CustomRequest, res: Response, next: NextFunction) => {
@@ -21,7 +23,9 @@ const authenticationMiddleware = async (req: CustomRequest, res: Response, next:
       throw new Error('JWT secret key is not set in environment variables.');
     }
     const decoded = jwt.verify(token, accessSecret) as DecodedToken;
+    console.log(decoded)
     req.user = decoded.email;
+    req.id = decoded.id;
     next();
   } catch (error) {
     console.log("error in jwt", error)
