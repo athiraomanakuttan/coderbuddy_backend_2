@@ -34,5 +34,15 @@ class AdminController{
         res.status(200).json({status: true,message:"login successfull", accessToken})
     }
 
+    async getUserData(req: Request, res: Response):Promise<void>{
+        try {
+            const userData =  await this.adminService.getUserData()
+            res.status(200).json({ status : true, message:"data fetched successfully", data : userData})
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({status:false,message:"error while fetching data", data:null})
+        }
+    }
+
 }
 export default AdminController

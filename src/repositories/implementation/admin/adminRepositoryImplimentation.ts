@@ -1,13 +1,15 @@
-import { UserType } from "../../../model/user/userModel";
-import { ExpertDocument } from "../../../model/expert/expertModel";
+import { User, UserType } from "../../../model/user/userModel";
+import Expert, { ExpertDocument } from "../../../model/expert/expertModel";
 import AdminRepository from "../../admin/adminRepository";
 
 class AdminRepositoryImplimentation implements AdminRepository{
-async getUserDetails(): Promise<UserType[] | UserType | null> {
-    return null
+async getUserDetails(): Promise< UserType[] | UserType | null> {
+    const userData =  await User.find()
+    return userData
 }
 async getExpertDetails(): Promise<ExpertDocument[] | ExpertDocument | null> {
-    return null
+    const expertData = await Expert.find()
+    return expertData
     
 }
 }

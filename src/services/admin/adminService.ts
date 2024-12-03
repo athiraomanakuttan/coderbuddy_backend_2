@@ -1,3 +1,4 @@
+import { UserType } from "../../model/user/userModel";
 import AdminRepository from "../../repositories/admin/adminRepository";
 import { basicType } from "../../types/type";
 
@@ -15,6 +16,10 @@ class AdminService{
             return { status: false , message:"incorrect password"}
         else
         return {status: true,message:"login success"}
+    }
+    async getUserData(): Promise< UserType[] | UserType | null >{
+        const userData =  await this.adminRepository.getUserDetails()
+        return userData
     }
 }
 export default AdminService;
