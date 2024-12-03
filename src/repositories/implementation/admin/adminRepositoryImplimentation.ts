@@ -8,9 +8,13 @@ async getUserDetails(): Promise< UserType[] | UserType | null> {
     return userData
 }
 async getExpertDetails(): Promise<ExpertDocument[] | ExpertDocument | null> {
-    const expertData = await Expert.find()
+    const expertData = await Expert.find({status:{$in:[0,2]}})
     return expertData
     
+}
+async getExpertPendingDetails(): Promise<ExpertDocument[] | ExpertDocument | null> {
+    const expertData = await Expert.find({status:1})
+    return expertData
 }
 }
 

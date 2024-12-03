@@ -1,3 +1,4 @@
+import { ExpertDocument } from "../../model/expert/expertModel";
 import { UserType } from "../../model/user/userModel";
 import AdminRepository from "../../repositories/admin/adminRepository";
 import { basicType } from "../../types/type";
@@ -20,6 +21,11 @@ class AdminService{
     async getUserData(): Promise< UserType[] | UserType | null >{
         const userData =  await this.adminRepository.getUserDetails()
         return userData
+    }
+
+    async getExpertPendingList(): Promise< ExpertDocument[] | ExpertDocument | null >{
+        const expertData =  await this.adminRepository.getExpertPendingDetails()
+        return expertData
     }
 }
 export default AdminService;
