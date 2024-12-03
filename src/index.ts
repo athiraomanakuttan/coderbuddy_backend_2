@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import userRouter from './routes/users/userRoutes'
 import expertRouter from './routes/expert/expertRouter'
+import adminRouter from './routes/admin/adminRouter'
 import connectDb from './config/dbConfig';
 import session from 'express-session';
 import cookieParser from "cookie-parser"
@@ -36,5 +37,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/', userRouter);
 app.use('/api/expert/',expertRouter)
+app.use('/api/admin/', adminRouter)
 
 server.listen(process.env.PORT, () => console.log('server connected'));
