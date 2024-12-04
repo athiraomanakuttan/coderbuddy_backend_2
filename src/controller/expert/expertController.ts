@@ -51,6 +51,9 @@ class ExpertController{
         {
             res.status(400).json({status:false, message:"user not found. please signup",data:null});
             return;
+        }else if(!existExpert.status){
+          res.status(403).json({status:false, message:"user is blocked",data:null});
+          return;
         }
         const checkPassword = await PasswordUtils.comparePassword(password,existExpert.password)
         if(!checkPassword)

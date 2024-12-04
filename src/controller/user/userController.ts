@@ -99,6 +99,10 @@ class UserController {
         res.status(400).json({ success:false, message: "Password not set for this account", data : null  });
         return;
       }
+      else if(!existUser.status){
+        res.status(403).json({ success:false, message: "account is blocked", data : null  });
+        return;
+      }
       const comparePassword = await PasswordUtils.comparePassword(
         password,
         existUser.password

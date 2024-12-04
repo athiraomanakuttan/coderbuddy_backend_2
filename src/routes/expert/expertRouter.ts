@@ -5,6 +5,7 @@ import ExpertRepositoryImplementation from "../../repositories/implementation/ex
 import ExpertService from "../../services/expert/expertServices";
 import authenticationMiddleware from "../../middleware/authenticationMiddleware";
 import ProfileController from "../../controller/expert/profileController";
+import checkExpertBlocked from "../../middleware/expertBlocked";
 
 const router = Router();
 
@@ -18,9 +19,8 @@ router.post('/signup', (req, res) => expertController.signupPost(req, res));
 router.post('/login',(req,res)=> expertController.loginPost(req,res))
 router.post('/verify-otp',(req,res)=>expertController.verifyOtp(req,res))
 
-router.get('/get-expert-details',authenticationMiddleware,(req,res)=> profileController.getExpertDetails(req,res) )
-router.put('/update-profile',authenticationMiddleware,upload.single('profilePicture'),(req,res)=> profileController.updateProfile(req,res) )
-
+router.get('/get-expert-details',authenticationMiddleware,checkExpertBlocked,(req,res)=> profileController.getExpertDetails(req,res) )
+router.put('/update-profile',authenticationMiddleware,checkExpertBlocked,upload.single('profilePicture'),(req,res)=> profileController.updateProfile(req,res) )
 
 export default router;
  

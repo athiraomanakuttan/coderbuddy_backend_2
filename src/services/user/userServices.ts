@@ -31,6 +31,10 @@ class UserService{
         const updatedUser =  await this.userRepository.updateById(id,data)
         return updatedUser
     }
+    async getUserById(id :  string):Promise<UserType | null>{
+        const user =  await this.userRepository.findById(id)
+        return user
+    }
 
 }
 
