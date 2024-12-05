@@ -24,5 +24,8 @@ router.get('/get-profile',authenticationMiddleware as any,checkisUserBlocked,(re
 router.put('/update-profile', authenticationMiddleware as any,checkisUserBlocked,upload.single('profilePicture')  ,(req, res)=>profileController.updateProfile(req,res))
 
 
+router.post('/forgot-password',(req,res)=>userController.forgotPassword(req,res))
+router.put('/update-password',(req,res)=> userController.updatePassword(req,res))
+
 
 export default router;

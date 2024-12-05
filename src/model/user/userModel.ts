@@ -15,7 +15,7 @@ interface UserType extends Document {
   last_name?: string;
   status?: number;
   skills?: string[]; 
-  profilePicture: string;
+  profilePicture?: string;
 }
 
 const userSchema = new Schema<UserType>({
