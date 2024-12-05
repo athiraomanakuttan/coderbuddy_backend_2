@@ -6,7 +6,7 @@ import { ExpertDocument } from "../../model/expert/expertModel";
 import MailUtility from "../../utils/mailUtility";
 import OtpUtility from "../../utils/otpUtility";
 
-class ExpertController{
+class ExpertController{ 
      private expertServece : ExpertService
     constructor(expertServece:ExpertService){
         this.expertServece = expertServece
@@ -105,6 +105,64 @@ class ExpertController{
         } else {
           res.status(400).json({ message: "Incorrect OTP. Please try again" });
         }
+     }
+     async forgotPassword(req: Request, res: Response):Promise<void>{
+      const {email}= req.body;
+      if(!email){
+        res.status(400).json({status: false, message : 'email id is required'});
+        return
+      }
+      try {
+        const userExist = await this.expertServece.getExpertByEmail(email)
+      if(!userExist){
+        res.status(400).json({status: false, message : 'User notfound. try again'});
+        return
+      }
+      else if(userExist.status !== 1){
+        res.status(403).json({status: false, message : 'Your account is blocked'});
+        return
+      }
+      const otp = await OtpUtility.otpGenerator()
+      const emailSend =  await MailUtility.sendMail(email,otp,"Reset Password")
+      if(emailSend){
+        res.status(200).json({status: true, message : 'An OTP has send to you email',data:{email, otp}});
+        return
+      }
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({status: false, message : 'something went wrong'});
+      }
+     }
+     async updatePassword (req:Request , res : Response):Promise<void>{
+      const {email,password}= req.body;
+      if(!email || !password){
+        res.status(400).json({status: false, message : 'user is not autherized'});
+      }
+      try {
+        const existeUser =  await this.expertServece.getExpertByEmail(email)
+        if(!existeUser){
+          res.status(400).json({status: false, message : 'unbale to find the account please signup'});
+          return
+        }
+        else if(existeUser.status !== 1){
+          res.status(403).json({status: false, message : 'your account is blocked'});
+          return
+        }
+
+        const hashPassword = await PasswordUtils.passwordHash(password)
+        const data = {password : hashPassword} as ExpertDocument;
+        const updatePassword = await this.expertServece.updateExpert(existeUser._id, data)
+        if(updatePassword){
+        res.status(200).json({status: true, message : 'password updated successfully'});
+          return 
+        }
+        else
+        res.status(400).json({status: false, message : 'unable to update password. try again'});
+
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({status: false, message : 'something went wrong'});
+      }
      }
 }
 

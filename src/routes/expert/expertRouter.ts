@@ -22,5 +22,11 @@ router.post('/verify-otp',(req,res)=>expertController.verifyOtp(req,res))
 router.get('/get-expert-details',authenticationMiddleware,checkExpertBlocked,(req,res)=> profileController.getExpertDetails(req,res) )
 router.put('/update-profile',authenticationMiddleware,checkExpertBlocked,upload.single('profilePicture'),(req,res)=> profileController.updateProfile(req,res) )
 
+
+router.post('/forgot-password',(req,res)=> expertController.forgotPassword(req,res))
+router.put('/update-password',(req,res)=> expertController.updatePassword(req,res))
+
+
+
 export default router;
- 
+  
