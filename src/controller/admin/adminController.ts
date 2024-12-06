@@ -1,9 +1,10 @@
 import { Request,Response } from "express"
 import AdminService from "../../services/admin/adminService"
 import JwtUtility from "../../utils/jwtUtility"
+import { UserType } from "../../model/user/userModel"
 
 class AdminController{
-    private adminService: AdminService
+    private adminService: AdminService  
     constructor(adminService : AdminService)
     {
         this.adminService = adminService
@@ -51,6 +52,29 @@ class AdminController{
             console.log(error)
             res.status(500).json({status:false,message:"error while fetching data", data:null})
         }
+    }
+
+    async changeUserStatus(req:Request , res:Response):Promise<void>{
+        const {id, status} = req.body
+        if(!id || status===undefined){
+            res.status(400).json({status: false, message : "unable to update the user status"})
+            return;
+        }
+        const checkUser =  await this.adminService.getUserById(id)
+        if(!checkUser){
+            res.status(400).json({status:false, message:"user not found"})
+            return
+        }
+        try {
+            const data ={ status: status} as UserType
+            const updateUser =  await this.adminService.updateUserById(id,data)
+            console.log("updateUser",updateUser)
+            res.status(200).json({status:true, message:"user status updated successfully"})
+        } catch (error) {
+            console.log("error while updating user",error);
+            res.status(500).json({status: false, message : "unable to update the user status"})
+        }
+
     }
     
 

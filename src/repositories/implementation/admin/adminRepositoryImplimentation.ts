@@ -16,6 +16,19 @@ async getExpertPendingDetails(): Promise<ExpertDocument[] | ExpertDocument | nul
     const expertData = await Expert.find({status:1})
     return expertData
 }
+
+async getUserById(id: string): Promise<UserType | null> {
+    const userData =  await User.findOne({_id:id})
+    return userData
+}
+
+async updateUserById(id: string, data: UserType): Promise<UserType | null> {
+    const userData = await User.findOneAndUpdate({ _id: id }, data, { new: true });
+    return userData;
+}
+
+
+
 }
 
 export default AdminRepositoryImplimentation

@@ -1,5 +1,5 @@
 import { ExpertDocument } from "../../model/expert/expertModel";
-import { UserType } from "../../model/user/userModel";
+import { User, UserType } from "../../model/user/userModel";
 import AdminRepository from "../../repositories/admin/adminRepository";
 import { basicType } from "../../types/type";
 
@@ -26,6 +26,15 @@ class AdminService{
     async getExpertPendingList(): Promise< ExpertDocument[] | ExpertDocument | null >{
         const expertData =  await this.adminRepository.getExpertPendingDetails()
         return expertData
+    }
+    async getUserById(id:string):Promise<UserType | null>{
+        const userData =  await this.adminRepository.getUserById(id)
+        return userData
+    }
+
+    async updateUserById(id:string, data:UserType):Promise<UserType | null>{
+        const userData =  await this.adminRepository.updateUserById(id,data)
+        return userData;
     }
 }
 export default AdminService;
