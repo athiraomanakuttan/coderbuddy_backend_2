@@ -27,6 +27,14 @@ async updateUserById(id: string, data: UserType): Promise<UserType | null> {
     return userData;
 }
 
+async getExpertById(id: string): Promise<ExpertDocument | null> {
+    const expertData = await Expert.findOne({_id :  id})
+        return expertData;
+}
+async updateExpertById(id: string, data: ExpertDocument): Promise<ExpertDocument | null> {
+    const updateExpert = await Expert.findOneAndUpdate({_id : id},data,{new:true})
+    return updateExpert
+}
 
 
 }

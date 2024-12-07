@@ -2,6 +2,7 @@ import { Request,Response } from "express"
 import AdminService from "../../services/admin/adminService"
 import JwtUtility from "../../utils/jwtUtility"
 import { UserType } from "../../model/user/userModel"
+import { ExpertDocument } from "../../model/expert/expertModel"
 
 class AdminController{
     private adminService: AdminService  
@@ -75,6 +76,35 @@ class AdminController{
             res.status(500).json({status: false, message : "unable to update the user status"})
         }
 
+    }
+
+    async getExpertDetails(req:Request , res: Response):Promise<void>{
+        const { id } = req.params
+        try {
+            const expertData =  await this.adminService.getExpertById(id)
+            res.status(200).json({status: true, message:"data fetched successfully", data:expertData})
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({status: false, message:"error while fetching data"})
+
+        }
+    }
+
+    async changeExpertStatus(req:Request, res:Response):Promise<void>{
+        const {id} = req.body
+        if(!id ){
+            res.status(400).json({status: false, message : "unable to update the user status"})
+            return;
+        }
+        try {
+            const data = {status : 0 } as ExpertDocument 
+            const updateExpert = await this.adminService.updateExpertById(id,data) 
+            res.status(200).json({status:true, message:"expert rejected",data:updateExpert})
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({status: false, message : "unable to update the user status"})
+
+        }
     }
     
 

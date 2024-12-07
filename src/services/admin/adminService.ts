@@ -36,5 +36,15 @@ class AdminService{
         const userData =  await this.adminRepository.updateUserById(id,data)
         return userData;
     }
+
+    async getExpertById(id: string):Promise<ExpertDocument | null>{
+        const expertData = await this.adminRepository.getExpertById(id)
+        return expertData;
+    }
+
+    async updateExpertById(id:string, data:ExpertDocument):Promise<ExpertDocument | null>{
+        const updatedExpert = await this.adminRepository.updateExpertById(id,data)
+        return updatedExpert;
+    }
 }
 export default AdminService;

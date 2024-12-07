@@ -14,7 +14,7 @@ type experienceType = {
 };
 
 export interface ExpertDocument extends Document {
-  _id:string,
+  _id:string;
   first_name?: string;
   last_name?: string;
   email?: string;
@@ -25,10 +25,10 @@ export interface ExpertDocument extends Document {
   experience?: experienceType;
   current_domain?: string;
   total_experience?: number;
-  skills:string[];
+  skills ?:string[];
   address ?: string;
   profilePicture ?:string;
-  status?: Number;
+  status?: number;
 }
 
 const ExpertSchema = new Schema<ExpertDocument>(
