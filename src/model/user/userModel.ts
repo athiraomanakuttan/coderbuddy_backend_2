@@ -27,7 +27,6 @@ const userSchema = new Schema<UserType>({
   },
   password: {
     type: String,
-    required: true,
     message: "password is required",
   },
   qualification: [

@@ -26,6 +26,7 @@ router.put('/update-profile', authenticationMiddleware as any,checkisUserBlocked
 
 router.post('/forgot-password',(req,res)=>userController.forgotPassword(req,res))
 router.put('/update-password',(req,res)=> userController.updatePassword(req,res))
+router.post('/google-signin',(req,res)=>userController.googleSinup(req,res))
 
 
 export default router;

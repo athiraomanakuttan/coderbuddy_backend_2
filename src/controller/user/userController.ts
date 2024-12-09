@@ -1,5 +1,6 @@
 import UserService from "../../services/user/userServices";
 import { Request, Response } from "express";
+import { getServerSession } from "next-auth";
 import OtpUtility from "../../utils/otpUtility";
 import MailUtility from "../../utils/mailUtility";
 import { UserType } from "../../model/user/userModel";
@@ -8,29 +9,37 @@ import PasswordUtils from "../../utils/passwordUtils";
 class UserController {
   private userService: UserService;
   constructor(userService: UserService) {
-    this.userService = userService; 
+    this.userService = userService;
   }
 
   async signupPost(req: Request, res: Response): Promise<void> {
     try {
       const user = req.body;
-  
+
       if (!user.email || !user.password) {
         res.status(400).json({ message: "Email and password are required." });
         return;
       }
-  
+
       const existingUser = await this.userService.findByEmail(user.email);
-  
+
       if (existingUser) {
         if (existingUser.status === 0) {
           const otp = await OtpUtility.otpGenerator();
           try {
             await MailUtility.sendMail(user.email, otp, "Verification OTP");
-            res.status(200).json({ message: "OTP resent to the email.", email: user.email,otp });
+            res
+              .status(200)
+              .json({
+                message: "OTP resent to the email.",
+                email: user.email,
+                otp,
+              });
           } catch (mailError) {
             console.error("Failed to resend OTP:", mailError);
-            res.status(500).json({ message: "Failed to send verification email." });
+            res
+              .status(500)
+              .json({ message: "Failed to send verification email." });
           }
           return;
         } else {
@@ -39,18 +48,18 @@ class UserController {
           return;
         }
       }
-  
+
       // Create new user
       user.password = await PasswordUtils.passwordHash(user.password);
       const newUser = await this.userService.createUser(user);
-  
+
       const otp = await OtpUtility.otpGenerator();
       try {
         await MailUtility.sendMail(user.email, otp, "Verification OTP");
         res.status(200).json({
           message: "OTP sent to the email.",
           email: user.email,
-          otp
+          otp,
         });
       } catch (mailError) {
         console.error("Failed to send OTP:", mailError);
@@ -58,19 +67,19 @@ class UserController {
       }
     } catch (err: any) {
       console.error("Error during signup:", err);
-      res.status(500).json({ message: `Error while adding user: ${err.message}` });
+      res
+        .status(500)
+        .json({ message: `Error while adding user: ${err.message}` });
     }
   }
-  
 
   async verifyOtp(req: Request, res: Response): Promise<void> {
-    const {otp,storedOTP,storedEmail} = req.body;
+    const { otp, storedOTP, storedEmail } = req.body;
     if (!otp) {
       res.status(400).json({ message: "OTP is required" });
       return;
     }
 
-    
     if (!otp || !storedOTP || !storedEmail) {
       res.status(400).json({ message: "OTP Timeout. Try again" });
       return;
@@ -83,7 +92,10 @@ class UserController {
       }
 
       const userData: UserType = { ...currentUser.toObject(), status: 1 };
-      const updateUser = await this.userService.updateUser(storedEmail, userData);
+      const updateUser = await this.userService.updateUser(
+        storedEmail,
+        userData
+      );
 
       if (updateUser) {
         res
@@ -99,50 +111,85 @@ class UserController {
 
   async loginPost(req: Request, res: Response): Promise<void> {
     const { email, password } = req.body;
-  
+
     if (!email || !password) {
-      res.status(400).json({ success: false, message: "Email and password required", data: null });
+      res
+        .status(400)
+        .json({
+          success: false,
+          message: "Email and password required",
+          data: null,
+        });
       return;
     }
-  
+
     try {
       const existUser = await this.userService.getUserByEmail(email);
       if (!existUser) {
-        res.status(401).json({ success: false, message: "User not found. Please sign up.", data: null });
+        res
+          .status(401)
+          .json({
+            success: false,
+            message: "User not found. Please sign up.",
+            data: null,
+          });
         return;
       }
-  
+
       if (!existUser.password) {
-        res.status(403).json({ success: false, message: "Password not set for this account", data: null });
+        res
+          .status(403)
+          .json({
+            success: false,
+            message: "Password not set for this account",
+            data: null,
+          });
         return;
       }
-  
+
       if (!existUser.status) {
-        res.status(403).json({ success: false, message: "Account is blocked", data: null });
+        res
+          .status(403)
+          .json({ success: false, message: "Account is blocked", data: null });
         return;
       }
-  
-      const comparePassword = await PasswordUtils.comparePassword(password, existUser.password);
-  
+
+      const comparePassword = await PasswordUtils.comparePassword(
+        password,
+        existUser.password
+      );
+
       if (!comparePassword) {
-        res.status(401).json({ success: false, message: "Invalid email or password", data: null });
+        res
+          .status(401)
+          .json({
+            success: false,
+            message: "Invalid email or password",
+            data: null,
+          });
         return;
       }
-  
-      const accessToken = JwtUtility.generateAccessToken({ email: email, id: existUser._id });
-      const refreshToken = JwtUtility.generateRefreshToken({ email: email, id: existUser._id });
-  
+
+      const accessToken = JwtUtility.generateAccessToken({
+        email: email,
+        id: existUser._id,
+      });
+      const refreshToken = JwtUtility.generateRefreshToken({
+        email: email,
+        id: existUser._id,
+      });
+
       res.cookie("userRefreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 1 * 60 * 60 * 1000,
       });
-  
+
       const filteredData = {
         id: existUser._id,
         email: existUser.email,
       };
-  
+
       res.status(200).json({
         success: true,
         message: "Login successful",
@@ -158,60 +205,110 @@ class UserController {
     }
   }
 
-  async forgotPassword(req: Request,res: Response):Promise<void>{
-    const {email} = req.body;
-    if(!email){
-      res.status(400).json({status: false , messgae:"email is empty try again"})
+  async forgotPassword(req: Request, res: Response): Promise<void> {
+    const { email } = req.body;
+    if (!email) {
+      res
+        .status(400)
+        .json({ status: false, messgae: "email is empty try again" });
       return;
     }
-    const getUserData =  await this.userService.findByEmail(email)
-    if(!getUserData){
-      res.status(400).json({status: false , messgae:"user not found. please signup"})
+    const getUserData = await this.userService.findByEmail(email);
+    if (!getUserData) {
+      res
+        .status(400)
+        .json({ status: false, messgae: "user not found. please signup" });
+      return;
+    } else if (getUserData.status !== 1) {
+      res
+        .status(400)
+        .json({ status: false, messgae: "Your account is blocked." });
       return;
     }
-    else if(getUserData.status !== 1){
-      res.status(400).json({status: false , messgae:"Your account is blocked."})
+    const otp = await OtpUtility.otpGenerator();
+    const generateEmail = await MailUtility.sendMail(
+      email,
+      otp,
+      "Password Reset"
+    );
+    if (generateEmail) {
+      res
+        .status(200)
+        .json({
+          status: true,
+          message: "An OTP is send to your email",
+          data: { email, otp },
+        });
       return;
-    }
-    const otp = await OtpUtility.otpGenerator()
-    const generateEmail = await MailUtility.sendMail(email,otp,"Password Reset")
-    if(generateEmail)
-    {
-      res.status(200).json({status: true , message:"An OTP is send to your email", data:{email,otp}})
-      return;
-    }
-    else
-    res.status(400).json({status: false , messgae:"not able to generate OTP. Please try again"})
+    } else
+      res
+        .status(400)
+        .json({
+          status: false,
+          messgae: "not able to generate OTP. Please try again",
+        });
+  }
 
-   }
-  
-  async updatePassword(req:Request , res:Response):Promise<void>{
-    const {email , password}= req.body
-    if(!email || !password){
-      res.status(400).json({status:false, message : "invalid credentails"})
+  async updatePassword(req: Request, res: Response): Promise<void> {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      res.status(400).json({ status: false, message: "invalid credentails" });
       return;
     }
     try {
-      const existUser =  await this.userService.getUserByEmail(email)
-      if(!existUser){
-        res.status(400).json({status:false, message : "user not exist. please signup"})
+      const existUser = await this.userService.getUserByEmail(email);
+      if (!existUser) {
+        res
+          .status(400)
+          .json({ status: false, message: "user not exist. please signup" });
+        return;
+      } else if (existUser.status !== 1) {
+        res.status(403).json({ status: false, message: "user is blocked" });
         return;
       }
-      else if(existUser.status !==1 ){
-        res.status(403).json({status:false, message : "user is blocked"})
-        return;
-      }
-      const hashPassword =  await PasswordUtils.passwordHash(password) as string
+      const hashPassword = (await PasswordUtils.passwordHash(
+        password
+      )) as string;
       const data = { password: hashPassword } as UserType;
-      const updateUser = await this.userService.updateUserById(existUser._id as string, data);
-      if(updateUser)
-        res.status(200).json({status:true, message : "password updated sucessfully"})
-      else 
-      res.status(400).json({status:false, message : "unable to update password" })
+      const updateUser = await this.userService.updateUserById(
+        existUser._id as string,
+        data
+      );
+      if (updateUser)
+        res
+          .status(200)
+          .json({ status: true, message: "password updated sucessfully" });
+      else
+        res
+          .status(400)
+          .json({ status: false, message: "unable to update password" });
     } catch (error) {
-      console.log("error while updating password", error)
-      res.status(500).json({status:false, message : "error while updating password"})
-      
+      console.log("error while updating password", error);
+      res
+        .status(500)
+        .json({ status: false, message: "error while updating password" });
+    }
+  }
+  async googleSinup(req: Request, res: Response): Promise<void> {
+    const { name, email, image } = await req.body;
+    if (!email) {
+      res.status(400).json({ status: false, message: "invalid " });
+      return;
+    }
+    try {
+      const existingUser = await this.userService.findByEmail(email)
+    if(existingUser){
+      console.log("existingUser", existingUser)
+      res.status(400).json({status: false , message:"user already exist. Please login"})
+      return;
+    }
+    const data =  {email, first_name:name, profilePicture:image, status:1} as UserType
+    const createUser =  await this.userService.createUser(data)
+    console.log("createUser", createUser)
+    res.status(200).json({status:200, message:"signup successfull", data:{data:createUser}})
+    } catch (error) {
+      console.log("error occured during creating user", error)
+      res.status(500).json({status:false, message:"unable to signup. Try again"})
     }
   }
 }
