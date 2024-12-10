@@ -36,22 +36,69 @@ class AdminController{
         res.status(200).json({status: true,message:"login successfull", accessToken})
     }
 
-    async getUserData(req: Request, res: Response):Promise<void>{
+    async getUserData(req: Request, res: Response): Promise<void> {
         try {
-            const userData =  await this.adminService.getUserData()
-            res.status(200).json({ status : true, message:"data fetched successfully", data : userData})
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 10;
+            const skip = (page - 1) * limit;
+    
+            const totalUsers = await this.adminService.countTotalUsers(); 
+            const userData = await this.adminService.getUserData(skip, limit);
+
+            res.status(200).json({ 
+                status: true, 
+                message: "Data fetched successfully", 
+                data: userData,
+                pagination: {
+                    currentPage: page,
+                    totalPages: Math.ceil(totalUsers / limit),
+                    totalUsers: totalUsers,
+                    limit: limit,
+                    userData
+                }
+            });
         } catch (error) {
-            console.log(error)
-            res.status(500).json({status:false,message:"error while fetching data", data:null})
+            console.log(error);
+            res.status(500).json({
+                status: false,
+                message: "Error while fetching data", 
+                data: null
+            });
         }
     }
-    async getExpertData(req: Request, res: Response):Promise<void>{
+
+
+    async getExpertData(req: Request, res: Response): Promise<void> {
         try {
-            const userData =  await this.adminService.getExpertPendingList()
-            res.status(200).json({ status : true, message:"data fetched successfully", data : userData})
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 10;
+    
+            const skip = (page - 1) * limit;
+    
+            const { experts, total } = await this.adminService.getExpertPendingList(skip, limit);
+    
+            const totalPages = Math.ceil(total / limit);
+    
+            res.status(200).json({ 
+                status: true, 
+                message: "Data fetched successfully", 
+                data: {
+                    experts,
+                    pagination: {
+                        currentPage: page,
+                        totalPages,
+                        totalExperts: total,
+                        limit
+                    }
+                }
+            });
         } catch (error) {
-            console.log(error)
-            res.status(500).json({status:false,message:"error while fetching data", data:null})
+            console.error(error);
+            res.status(500).json({
+                status: false,
+                message: "Error while fetching data", 
+                data: null
+            });
         }
     }
 
