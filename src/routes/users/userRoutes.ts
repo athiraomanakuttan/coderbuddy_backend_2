@@ -20,8 +20,8 @@ router.post('/signup',(req,res) => userController.signupPost(req,res));
 router.post('/verify-otp',(req,res)=> userController.verifyOtp(req,res))
 router.post('/login',(req,res)=>userController.loginPost(req,res))
 
-router.get('/get-profile',authenticationMiddleware as any,checkisUserBlocked,(req,res)=>profileController.getProfile(req,res))
-router.put('/update-profile', authenticationMiddleware as any,checkisUserBlocked,upload.single('profilePicture')  ,(req, res)=>profileController.updateProfile(req,res))
+router.get('/get-profile',authenticationMiddleware as any,checkisUserBlocked  as any,(req,res)=>profileController.getProfile(req,res))
+router.put('/update-profile', authenticationMiddleware as any,checkisUserBlocked  as any,upload.single('profilePicture')  ,(req, res)=>profileController.updateProfile(req,res))
 
 
 router.post('/forgot-password',(req,res)=>userController.forgotPassword(req,res))

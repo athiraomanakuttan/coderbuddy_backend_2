@@ -291,21 +291,32 @@ class UserController {
   }
   async googleSinup(req: Request, res: Response): Promise<void> {
     const { name, email, image } = await req.body;
+    
     if (!email) {
-      res.status(400).json({ status: false, message: "invalid " });
+      res.status(400).json({ status: false, message: "invalid email id " });
       return;
-    }
+    } 
     try {
-      const existingUser = await this.userService.findByEmail(email)
-    if(existingUser){
-      console.log("existingUser", existingUser)
-      res.status(400).json({status: false , message:"user already exist. Please login"})
-      return;
-    }
+      let userData = await this.userService.findByEmail(email)
+    if(!userData){
     const data =  {email, first_name:name, profilePicture:image, status:1} as UserType
-    const createUser =  await this.userService.createUser(data)
-    console.log("createUser", createUser)
-    res.status(200).json({status:200, message:"signup successfull", data:{data:createUser}})
+     userData =  await this.userService.createUser(data)
+    }
+    const accessToken = JwtUtility.generateAccessToken({
+      email: email,
+      id: userData._id,
+    });
+    const refreshToken = JwtUtility.generateRefreshToken({
+      email: email,
+      id: userData._id,
+    });
+
+    res.cookie("userRefreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1 * 60 * 60 * 1000,
+    });
+    res.status(200).json({status:true, message:"signup successfull", data:{userData,token: accessToken}})
     } catch (error) {
       console.log("error occured during creating user", error)
       res.status(500).json({status:false, message:"unable to signup. Try again"})

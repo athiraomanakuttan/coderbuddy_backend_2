@@ -19,8 +19,8 @@ router.post('/signup', (req, res) => expertController.signupPost(req, res));
 router.post('/login',(req,res)=> expertController.loginPost(req,res))
 router.post('/verify-otp',(req,res)=>expertController.verifyOtp(req,res))
 
-router.get('/get-expert-details',authenticationMiddleware,checkExpertBlocked,(req,res)=> profileController.getExpertDetails(req,res) )
-router.put('/update-profile',authenticationMiddleware,checkExpertBlocked,upload.single('profilePicture'),(req,res)=> profileController.updateProfile(req,res) )
+router.get('/get-expert-details',authenticationMiddleware as any,checkExpertBlocked  as any,(req,res)=> profileController.getExpertDetails(req,res) )
+router.put('/update-profile',authenticationMiddleware as any,checkExpertBlocked  as any,upload.single('profilePicture'),(req,res)=> profileController.updateProfile(req,res) )
 
 
 router.post('/forgot-password',(req,res)=> expertController.forgotPassword(req,res))
