@@ -291,7 +291,6 @@ class UserController {
   }
   async googleSinup(req: Request, res: Response): Promise<void> {
     const { name, email, image } = await req.body;
-    
     if (!email) {
       res.status(400).json({ status: false, message: "invalid email id " });
       return;
@@ -301,6 +300,12 @@ class UserController {
     if(!userData){
     const data =  {email, first_name:name, profilePicture:image, status:1} as UserType
      userData =  await this.userService.createUser(data)
+    }
+    console.log("inside",userData)
+
+    if(!userData || userData.status!==1){
+      res.status(400).json({status:false, message:"account is blocked "})
+      return;
     }
     const accessToken = JwtUtility.generateAccessToken({
       email: email,

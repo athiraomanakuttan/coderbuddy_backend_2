@@ -25,7 +25,7 @@ router.put('/update-profile',authenticationMiddleware as any,checkExpertBlocked 
 
 router.post('/forgot-password',(req,res)=> expertController.forgotPassword(req,res))
 router.put('/update-password',(req,res)=> expertController.updatePassword(req,res))
-
+router.get('/google-signup',(req,res)=>expertController.googleSignup(req,res))
 
 
 export default router;

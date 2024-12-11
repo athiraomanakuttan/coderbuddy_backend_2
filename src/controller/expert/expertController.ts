@@ -164,6 +164,44 @@ class ExpertController{
         res.status(500).json({status: false, message : 'something went wrong'});
       }
      }
+
+     async googleSignup(req:Request, res:Response):Promise<void>{
+      const { name, email, image } = await req.body;
+    
+    if (!email) {
+      res.status(400).json({ status: false, message: "invalid email id " });
+      return;
+    } 
+    try {
+      let userData = await this.expertServece.getExpertByEmail(email)
+    if(!userData){
+    const data =  {email, first_name:name, profilePicture:image, status:1} as ExpertDocument
+     userData =  await this.expertServece.createExpert(data)
+    }
+    if(userData && userData.status===1){
+      const accessToken = JwtUtility.generateAccessToken({
+        email: email,
+        id: userData._id,
+      });
+      const refreshToken = JwtUtility.generateRefreshToken({
+        email: email,
+        id: userData._id,
+      });
+      res.cookie("userRefreshToken", refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 1 * 60 * 60 * 1000,
+      });
+      res.status(200).json({status:true, message:"signup successfull", data:{userData,token: accessToken}})
+      return;
+    }
+    res.status(500).json({status:false, message:"unable to signup. Try again"})
+    
+    } catch (error) {
+      console.log("error occured during creating user", error)
+      res.status(500).json({status:false, message:"unable to signup. Try again"})
+    }
+     }
 }
 
 export default ExpertController
