@@ -3,6 +3,6 @@ import "express-session";
 
 declare module "express-session" {
   interface SessionData {
-    OTP?: number;  // Add any custom properties to session here
+    OTP?: number;  
   }
 }

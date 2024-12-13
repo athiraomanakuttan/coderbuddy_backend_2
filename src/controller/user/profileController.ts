@@ -35,7 +35,6 @@ class ProfileController {
         });
       }
     } else {
-      // console.log("inside this",req.email)
       res.status(400).json({
         status: false,
         message: "User is not authorized",

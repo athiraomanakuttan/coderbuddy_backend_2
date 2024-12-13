@@ -43,13 +43,11 @@ class UserController {
           }
           return;
         } else {
-          // If status is not 0, user already exists
           res.status(409).json({ message: "User already exists." });
           return;
         }
       }
 
-      // Create new user
       user.password = await PasswordUtils.passwordHash(user.password);
       const newUser = await this.userService.createUser(user);
 

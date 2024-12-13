@@ -58,7 +58,6 @@ class ProfileController{
                 profilePictureUrl = cloudinaryUrl; 
             }
     
-            // Parse JSON strings
             const skills = JSON.parse(data.skills || '[]');
             const experience = JSON.parse(data.experience || '[]');
             const qualification = JSON.parse(data.qualification || '[]');

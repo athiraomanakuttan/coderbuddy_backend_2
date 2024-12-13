@@ -4,7 +4,6 @@ interface UserRepository {
     findById(id:String):Promise<UserType | null>;
     findByEmail(email:String):Promise<UserType | null>;
     updateById(id:string,user:UserType):Promise<UserType | string | null>
-    // disableUser(id : String):Promise<string | null>
     updateUserByEmail(email:string,data: UserType):Promise<UserType | null>
     getUserByEmail(email:string):Promise<UserType |null>
 }

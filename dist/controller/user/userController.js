@@ -32,7 +32,6 @@ class UserController {
                     return;
                 }
                 req.session.OTP = otp;
-                // req.session.email = user.email;
                 try {
                     console.log("before");
                     const mailSend = await mailUtility_1.default.sendMail(user.email, otp, "Verification OTP");

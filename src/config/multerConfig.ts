@@ -9,7 +9,6 @@ export const upload = multer({
     cb: FileFilterCallback
   ) => {
     if (file.fieldname === 'profilePicture') {
-      // Accept image files only
       if (file.mimetype.startsWith('image/')) {
         cb(null, true);
       } else {
