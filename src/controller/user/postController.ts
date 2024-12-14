@@ -13,6 +13,7 @@ class PostController{
     try {
         const data = req.body;
         const file = req.file;
+        console.log("data======", data)
         if (!data.userId) {
             res.status(401).json({ 
                 status: false, 
