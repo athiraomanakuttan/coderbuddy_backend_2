@@ -1,3 +1,4 @@
+import { PostType } from "../../model/user/postModel";
 import { UserType } from "../../model/user/userModel";
 interface UserRepository {
     createUser(user:UserType):Promise<UserType>;
@@ -6,6 +7,7 @@ interface UserRepository {
     updateById(id:string,user:UserType):Promise<UserType | string | null>
     updateUserByEmail(email:string,data: UserType):Promise<UserType | null>
     getUserByEmail(email:string):Promise<UserType |null>
+    uploadPost(data: PostType):Promise<PostType | null>
 }
 
 export default UserRepository;

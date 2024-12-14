@@ -1,5 +1,6 @@
 import UserRepository from "../../repositories/user/userRepository";
 import { UserType } from "../../model/user/userModel";
+import { PostType } from "../../model/user/postModel";
 
 class UserService{
     private userRepository:UserRepository;
@@ -34,6 +35,10 @@ class UserService{
     async getUserById(id :  string):Promise<UserType | null>{
         const user =  await this.userRepository.findById(id)
         return user
+    }
+    async uploadPost(data:PostType):Promise<PostType | null>{
+        const uploadPost =  await this.userRepository.uploadPost(data)
+        return uploadPost
     }
 
 }

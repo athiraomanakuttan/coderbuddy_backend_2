@@ -33,7 +33,7 @@ const userSchema = new Schema<UserType>({
     {
       qualification: {
         type: String,
-      },
+      }, 
       college: {
         type: String,
       },

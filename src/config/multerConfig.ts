@@ -8,13 +8,21 @@ export const upload = multer({
     file: Express.Multer.File, 
     cb: FileFilterCallback
   ) => {
-    if (file.fieldname === 'profilePicture') {
+    console.log("file")
+    console.log(file)
+    if (file.fieldname === 'profilePicture' || file.fieldname === 'uploads') {
+    console.log("inside")
+
       if (file.mimetype.startsWith('image/')) {
+        
         cb(null, true);
       } else {
         cb(null, false);
+      console.log("else first")
+
       }
     } else {
+      console.log("else last")
       cb(null, true);
     }
   },
