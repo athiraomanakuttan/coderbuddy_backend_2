@@ -40,6 +40,29 @@ class UserService{
         const uploadPost =  await this.userRepository.uploadPost(data)
         return uploadPost
     }
+    async getUserPost(id: string,status: string | null,  page: number = 1, limit: number = 5): Promise<{
+        posts: PostType[] | null;
+        totalPosts: number;
+        totalPages: number;
+    } | null> {
+        const skip = (page - 1) * limit;
+    
+        const postDetails = await this.userRepository.getPostDetails(
+            id, 
+            status, 
+            skip, 
+            limit
+        )
+        if (postDetails) {
+            return postDetails
+        }
+        return null;
+    }
+
+    async updatePostStatus(userId : string, postId:string,status:number):Promise<PostType | null>{
+        const updateStatus = await this.userRepository.updatePostStatus(userId , postId,status)
+        return updateStatus
+    }
 
 }
 

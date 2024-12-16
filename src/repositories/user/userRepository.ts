@@ -8,6 +8,15 @@ interface UserRepository {
     updateUserByEmail(email:string,data: UserType):Promise<UserType | null>
     getUserByEmail(email:string):Promise<UserType |null>
     uploadPost(data: PostType):Promise<PostType | null>
+    getPostDetails(id: string, status: string | null,  page?: number, 
+        limit?: number
+    ): Promise<{
+        posts: PostType[] | null;
+        totalPosts: number;
+        totalPages: number;
+    } | null>
+    countPosts(id:string,status:string  | null):Promise<number>
+    updatePostStatus(userId :  string, id:string, status:number):Promise<PostType | null>
 }
 
 export default UserRepository;

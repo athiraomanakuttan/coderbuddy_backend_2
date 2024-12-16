@@ -31,13 +31,9 @@ router.post('/forgot-password',(req,res)=>userController.forgotPassword(req,res)
 router.put('/update-password',(req,res)=> userController.updatePassword(req,res))
 router.post('/google-signin',(req,res)=>userController.googleSinup(req,res))
 
-router.post('/upload-post', 
-    authenticationMiddleware as any, 
-    checkisUserBlocked as any, 
-    upload.single('uploads'), 
-    (req, res) => postController.createPost(req, res)
-  )
-
+router.post('/upload-post',    authenticationMiddleware as any,     checkisUserBlocked as any,     upload.single('uploads'),  (req, res) => postController.createPost(req, res))
+router.post('/get-post-details',authenticationMiddleware as any,checkisUserBlocked as any,(req,res)=> postController.getPostDetails(req,res))
+// router.put('/update-post-status', authenticationMiddleware as any, checkisUserBlocked as any, (req,res)=>postController. )
   
 
 export default router;

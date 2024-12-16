@@ -1,7 +1,9 @@
 import UserService from "../../services/user/userServices";
 import { Request, Response } from "express";
 import { uploadImageToCloudinary } from "../../utils/uploadImageToCloudinary ";
-
+export interface CustomRequest extends Request {
+    id?: string; 
+  }
 
 class PostController{
     private postService : UserService;
@@ -13,7 +15,6 @@ class PostController{
     try {
         const data = req.body;
         const file = req.file;
-        console.log("data======", data)
         if (!data.userId) {
             res.status(401).json({ 
                 status: false, 
@@ -57,6 +58,52 @@ class PostController{
             status: false, 
             message: "Unable to upload the post. Try again" 
         });
+    }
+}
+
+async getPostDetails(req: CustomRequest, res: Response): Promise<void> {
+    const userId = req.id; 
+    let { status, page = 1, limit = 5 } = req.body
+    if (!userId) {
+        res.status(400).json({ status: false, message: "User not authorized" })
+        return;
+    }
+    
+    try {
+        const pageNumber = Number(page);
+        const pageSize = Number(limit);
+        const userDetails = await this.postService.getUserPost( userId, status, pageNumber,pageSize)
+        
+        if (userDetails) {
+            res.status(200).json({
+                status: true, 
+                message: "Data fetched successfully", 
+                data: userDetails.posts,
+                pagination: {
+                    currentPage: pageNumber,
+                    totalPages: userDetails.totalPages,
+                    totalPosts: userDetails.totalPosts
+                }
+            })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: false, message: "Unable to fetch the details" })
+    }
+}
+async updatePostStatus(req:CustomRequest, res: Response):Promise<void>{
+    const userId = req.id;
+    const {postId , status} = req.body
+    if(!userId || !postId || !status){
+        res.status(400).json({status: false , message:"unable to update the Post. Try again"})
+        return
+    }
+    try {
+        const postStatus = Number(status)
+        const updateStatus =  await this.postService.updatePostStatus(userId,postId, postStatus)
+    } catch (error) {
+        console.log("error while updating post status", error)
+        res.status(500).json({status:false, message:"error while updating post status"})
     }
 }
 }

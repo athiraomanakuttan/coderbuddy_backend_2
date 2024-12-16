@@ -28,7 +28,53 @@ class UserRepositoryImplementation implements UserRepository{
         const uploadPost = await Post.create(data)
         return uploadPost
     }
+    async getPostDetails(
+        id: string, 
+        status: string | null, 
+        skip: number = 0, 
+        limit: number = 5
+    ): Promise<{
+        posts: PostType[];
+        totalPosts: number;
+        totalPages: number;
+    } | null> {
+        const poststatus: (string | number)[] = status !== null 
+            ? [status] 
+            : [1, 2, 3];
+        
+        try {
+            const postDetails = await Post.find({
+                userId: id, 
+                status: { $in: poststatus } 
+            })
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
     
+            const totalPosts = await Post.countDocuments({
+                userId: id, 
+                status: { $in: poststatus }
+            });
+    
+            return {
+                posts: postDetails,
+                totalPosts: totalPosts,
+                totalPages: Math.ceil(totalPosts / limit)
+            };
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+            return null;
+        }
+    }
+    async countPosts(id: string, status: string | null): Promise<number> {
+        const poststatus: (string | number)[] =  status!== null ? [status] : [0,1,2]
+        const count  =  await Post.countDocuments({userId : id, status:{$in : poststatus}})
+        return count;
+    }
+    async updatePostStatus(userId : string , id: string, status: number): Promise<PostType | null> {
+        const updatePost = await Post.findOneAndUpdate({_id:id, userId:userId},{$set:{status}},{new: true})
+        return updatePost
+    }
 }
 
 export default UserRepositoryImplementation;
