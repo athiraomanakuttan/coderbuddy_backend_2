@@ -101,6 +101,9 @@ async updatePostStatus(req:CustomRequest, res: Response):Promise<void>{
     try {
         const postStatus = Number(status)
         const updateStatus =  await this.postService.updatePostStatus(userId,postId, postStatus)
+        if(updateStatus){
+            res.status(200).json({status: true, message:"post updated successfully"})
+        }
     } catch (error) {
         console.log("error while updating post status", error)
         res.status(500).json({status:false, message:"error while updating post status"})

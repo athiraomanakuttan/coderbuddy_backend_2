@@ -40,7 +40,7 @@ class UserRepositoryImplementation implements UserRepository{
     } | null> {
         const poststatus: (string | number)[] = status !== null 
             ? [status] 
-            : [1, 2, 3];
+            : [1, 2, 0];
         
         try {
             const postDetails = await Post.find({
