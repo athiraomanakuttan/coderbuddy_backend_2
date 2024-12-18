@@ -10,12 +10,13 @@ import connectDb from './config/dbConfig';
 import session from 'express-session';
 import cookieParser from "cookie-parser"
 import cors from 'cors'
+import configureSocket from './config/socketConfig';
 
 
 connectDb()
 const app = express();
 const server = http.createServer(app);
-
+const io = configureSocket(server)
 dotenv.config();
 app.use(cookieParser());
 app.use(express.json({ limit: '100mb' }));
