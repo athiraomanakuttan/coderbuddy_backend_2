@@ -17,7 +17,7 @@ async getExpertDetails(): Promise<ExpertDocument[] | ExpertDocument | null> {
 }
 async getExpertPendingDetails(skip: number = 0, limit: number = 10): Promise<ExpertDocument[]> {
     try {
-        return await Expert.find()
+        return await Expert.find({isMeetingScheduled : 0 , isVerified : 0})
             .skip(skip)
             .limit(limit)
             .sort({ createdAt: -1 }); 
