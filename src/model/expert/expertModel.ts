@@ -29,6 +29,8 @@ export interface ExpertDocument extends Document {
   address ?: string;
   profilePicture ?:string;
   status?: number;
+  isVerified ?: number;
+  isMeetingScheduled ?: number;
 }
 
 const ExpertSchema = new Schema<ExpertDocument>(
@@ -51,6 +53,8 @@ const ExpertSchema = new Schema<ExpertDocument>(
       start_date: { type: String },
       end_date: { type: String },
     },
+    isVerified : { type: Number, default:0, enum:[0,1]},
+    isMeetingScheduled : { type: Number, default:0, enum:[0,1]},
     current_domain: { type: String },
     total_experience: { type: Number },
     skills: { type: [String] },

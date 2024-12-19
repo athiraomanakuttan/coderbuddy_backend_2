@@ -1,5 +1,9 @@
 import Router from 'express'
 import authenticationMiddleware from '../../middleware/authenticationMiddleware';
+import MeetingService from "../../services/expert/meetingService";
+import MeetingRepositoryImplementation from "../../repositories/implementation/expert/meetingRepositoryImplimentation";
+import MeetingController from "../../controller/admin/meetingController"
+
 
 const router = Router();
 
@@ -9,8 +13,14 @@ import AdminController from '../../controller/admin/adminController';
 import AdminRepositoryImplimentation from '../../repositories/implementation/admin/adminRepositoryImplimentation';
 
 const adminRepositoryImplimentation = new AdminRepositoryImplimentation()
+
+const meetingRepositoryImplementation =  new MeetingRepositoryImplementation()
+
 const adminService  = new AdminService(adminRepositoryImplimentation);
+const meetingService = new MeetingService(meetingRepositoryImplementation)
+
 const adminController =  new AdminController(adminService)
+const meetingController =  new MeetingController(meetingService , adminService)
 
 router.post('/login',(req,res)=>adminController.signupPost(req,res)) 
 router.get('/user-details', authenticationMiddleware  as any, (req,res)=> adminController.getUserData(req,res) )
@@ -20,5 +30,6 @@ router.get('/expert-details', authenticationMiddleware  as any, (req,res)=> admi
 router.get('/get-expert/:id',authenticationMiddleware  as any, (req,res)=> adminController.getExpertDetails(req,res))
 router.put('/reject-expert',authenticationMiddleware  as any, (req,res)=> adminController.changeExpertStatus(req,res))
 
+router.post('/create-meeting-link',(req,res)=> meetingController.createMeeting(req,res))
 
 export default router;
