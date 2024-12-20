@@ -1,7 +1,7 @@
 import Router from 'express'
 import authenticationMiddleware from '../../middleware/authenticationMiddleware';
-import MeetingService from "../../services/expert/meetingService";
-import MeetingRepositoryImplementation from "../../repositories/implementation/expert/meetingRepositoryImplimentation";
+import MeetingService from "../../services/admin/meetingService";
+import MeetingRepositoryImplementation from "../../repositories/implementation/admin/meetingRepositoryImplimentation";
 import MeetingController from "../../controller/admin/meetingController"
 
 
@@ -30,6 +30,8 @@ router.get('/expert-details', authenticationMiddleware  as any, (req,res)=> admi
 router.get('/get-expert/:id',authenticationMiddleware  as any, (req,res)=> adminController.getExpertDetails(req,res))
 router.put('/reject-expert',authenticationMiddleware  as any, (req,res)=> adminController.changeExpertStatus(req,res))
 
-router.post('/create-meeting-link',(req,res)=> meetingController.createMeeting(req,res))
+router.post('/create-meeting-link',authenticationMiddleware  as any , (req,res)=> meetingController.createMeeting(req,res))
+router.post('/get-meeting-details', authenticationMiddleware  as any , (req,res)=> meetingController.getMeetingDetails(req,res))
+
 
 export default router;

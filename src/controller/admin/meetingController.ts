@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import MeetingService from "../../services/expert/meetingService";
+import MeetingService from "../../services/admin/meetingService";
 import { v4 as uuidv4 } from "uuid";
 import { MeetingType } from "../../model/admin/meetingModel";
 import AdminService from "../../services/admin/adminService";
@@ -34,6 +34,23 @@ class MeetingController{
         }
 
     }
+
+    async getMeetingDetails(req:Request, res: Response):Promise<void>{
+        let { page = 1 , status =0 } =  req.body;
+        try {
+            const meetingData =  await this.meetingService.getMeetingData(page, status)
+            if(meetingData){
+                const totalCount = await this.meetingService.getMeetingCount(status)
+                const pageCount = Math.ceil(totalCount/10)
+                res.status(200).json({status: true, message : "data Fetched sucessfully", data:meetingData, count:totalCount, totalPages: pageCount})
+                return
+            }
+           res.status(400).json({status : false , message : "unable to fetch data"}) 
+        } catch (error:any) {
+            console.log(error)
+           res.status(500).json({status : false , message : "unable to fetch data"}) 
+        }
+    }   
 }
 
 export default MeetingController

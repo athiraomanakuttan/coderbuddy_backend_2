@@ -10,6 +10,16 @@ class MeetingService{
         const createMeeting = await  this.meetingRepository.createMeeting(data)
         return createMeeting
     }
+    async getMeetingData(page:number = 1 , status : number = 0):Promise<MeetingType[] | null>{
+        let limit = 10;
+        let skip =  (page-1)*limit
+        const meetingData =  await this.meetingRepository.getMeetingdata(status,limit,skip)
+        return meetingData
+    }
+    async getMeetingCount(status: number):Promise<number>{
+        const count =  await this.meetingRepository.getMeetingCount(status)
+        return count
+    }
 }
 
 export default MeetingService;
