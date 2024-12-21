@@ -47,6 +47,7 @@ class ExpertController{
             return;
         }
         const existExpert =  await this.expertServece.getExpertByEmail(email)
+        console.log("existExpert",existExpert)
         if(!existExpert || !existExpert.password)
         {
             res.status(400).json({status:false, message:"user not found. please signup",data:null});
