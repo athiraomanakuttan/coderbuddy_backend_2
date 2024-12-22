@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import ExpertService from "../../services/expert/expertServices";
+import { CommentType } from "../../model/user/postModel";
 
 export interface CustomRequest extends Request {
     id ?: string;  
@@ -26,7 +27,6 @@ class PostController {
         res.status(400).json({ success: false, message: 'User is not autherized' });
         return
     }
-    console.log("expert details", expertDetails.skills)
       const posts = await this.postService.fetchPosts(Number(page), Number(limit) , expertDetails.skills ?expertDetails.skills : null );
       const totalPost = await this.postService.getPostCount({status:0,technologies: { $in: expertDetails.skills }})
       const pageCount = Math.ceil(totalPost / Number(limit))
@@ -36,6 +36,30 @@ class PostController {
         }
     } catch (error) {
       res.status(500).json({ success: false, message: 'Error fetching posts' });
+    }
+  }
+
+  async addComment(req: CustomRequest , res: Response):Promise<void>{
+    const data = req.body
+    const id = req.id;
+    if(!id || !data.postId){
+      res.status(400).json({status :  false, message : "user is not autherized."})
+      return
+    }
+    
+
+    const commentData = {comment: data.comment, expertId: id }  as CommentType
+    try {
+        const comment  =  await this.postService.addComment(data.postId , commentData)
+        if(comment){
+          res.status(200).json({status: true ,message:"Comment added" })
+          return;
+        }
+        res.status(400).json({status:false, message:"unable to add comment"})
+          
+    } catch (error) {
+      res.status(500).json({status :  false, message : "unable to add comment. Try again"})
+      
     }
   }
 }

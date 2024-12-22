@@ -1,5 +1,5 @@
 import Expert, { ExpertDocument } from "../../../model/expert/expertModel";
-import { Post, PostType } from "../../../model/user/postModel";
+import { CommentType, Post, PostType } from "../../../model/user/postModel";
 import ExpertRepository from "../../expert/expertRepository";
 
 class ExpertRepositoryImplementation implements ExpertRepository {
@@ -46,22 +46,59 @@ class ExpertRepositoryImplementation implements ExpertRepository {
             );
             return updatedExpert;
     }
-    async getPostData(skip: number, limit: number, skillSet: string[] | null): Promise<PostType[] | null> {
+    async getPostData(skip: number, limit: number, skillSet: string[] | null): Promise<any[] | null> {
         try {
           let postData;
       
-          if (!skillSet || skillSet.length === 0) {
-            postData = await Post.find({status: 0})
-              .skip(skip)
-              .limit(limit);
-          } else {
-            postData = await Post.find({
-              technologies: { $in: skillSet }, 
-              status: 0
-            })
-              .skip(skip)
-              .limit(limit);
-          }
+          const matchCondition = !skillSet || skillSet.length === 0
+            ? { status: 0 }
+            : { technologies: { $in: skillSet }, status: 0 };
+      
+          postData = await Post.aggregate([
+            { $match: matchCondition },
+            { $skip: skip },
+            { $limit: limit },
+            {
+              $unwind: {
+                path: "$comments",
+                preserveNullAndEmptyArrays: true
+              }
+            },
+            {
+              $lookup: {
+                from: "experts", // Replace "experts" with the actual collection name for expert data.
+                localField: "comments.expertId",
+                foreignField: "_id",
+                as: "expertDetails"
+              }
+            },
+            {
+              $unwind: {
+                path: "$expertDetails",
+                preserveNullAndEmptyArrays: true
+              }
+            },
+            {
+              $group: {
+                _id: "$_id",
+                title: { $first: "$title" },
+                description: { $first: "$description" },
+                userId: { $first: "$userId" },
+                technologies: { $first: "$technologies" },
+                uploads: { $first: "$uploads" },
+                status: { $first: "$status" },
+                comments: {
+                  $push: {
+                    comment: "$comments.comment",
+                    status: "$comments.status",
+                    date: "$comments.date",
+                    expertId: "$comments.expertId",
+                    expertName: "$expertDetails.name" // Include the expert name.
+                  }
+                }
+              }
+            }
+          ]);
       
           return postData;
         } catch (error) {
@@ -69,10 +106,15 @@ class ExpertRepositoryImplementation implements ExpertRepository {
           return null;
         }
       }
+      
       async getPostCount(condition: object): Promise<number> {
           const postCount = await Post.find(condition).countDocuments()
           return postCount
       }
       
+      async addComment(id: string, data: CommentType): Promise<PostType | null> {
+         const comment = await Post.findOneAndUpdate({_id: id},{$push :{comments:data} },{ new: true })
+         return comment
+      }
 }
 export default ExpertRepositoryImplementation;

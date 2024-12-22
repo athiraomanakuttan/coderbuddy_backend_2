@@ -1,5 +1,5 @@
 import { ExpertDocument } from "../../model/expert/expertModel";
-import { PostType } from "../../model/user/postModel";
+import { CommentType, PostType } from "../../model/user/postModel";
 import ExpertRepository from "../../repositories/expert/expertRepository";
 
 class ExpertService {
@@ -33,6 +33,11 @@ class ExpertService {
     async getPostCount(condition:object):Promise<number>{
         const count = await this.expertRepository.getPostCount(condition)
         return count
+    }
+
+    async addComment(id: string, data : CommentType):Promise<PostType | null >{
+        const newComment = await this.expertRepository.addComment(id,data)
+        return newComment
     }
 }
 

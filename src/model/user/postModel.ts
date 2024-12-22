@@ -1,10 +1,10 @@
 import { Schema, Document, model } from 'mongoose';
 
-interface CommentType {
+export interface CommentType {
     expertId: string;
     comment: string;
-    status: number;
-    date: Date;
+    status ?: number;
+    date ?: Date;
 }
 
 interface PostType extends Document {
@@ -50,7 +50,6 @@ const postSchema = new Schema<PostType>(
                 },
                 status: {
                     type: Number,
-                    required: true,
                     enum: [0, 1],
                     default: 1,
                 },
