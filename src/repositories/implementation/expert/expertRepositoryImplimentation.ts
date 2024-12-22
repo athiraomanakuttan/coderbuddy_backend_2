@@ -1,4 +1,5 @@
 import Expert, { ExpertDocument } from "../../../model/expert/expertModel";
+import { Post, PostType } from "../../../model/user/postModel";
 import ExpertRepository from "../../expert/expertRepository";
 
 class ExpertRepositoryImplementation implements ExpertRepository {
@@ -45,6 +46,33 @@ class ExpertRepositoryImplementation implements ExpertRepository {
             );
             return updatedExpert;
     }
-    
+    async getPostData(skip: number, limit: number, skillSet: string[] | null): Promise<PostType[] | null> {
+        try {
+          let postData;
+      
+          if (!skillSet || skillSet.length === 0) {
+            postData = await Post.find({status: 0})
+              .skip(skip)
+              .limit(limit);
+          } else {
+            postData = await Post.find({
+              technologies: { $in: skillSet }, 
+              status: 0
+            })
+              .skip(skip)
+              .limit(limit);
+          }
+      
+          return postData;
+        } catch (error) {
+          console.error("Error fetching post data:", error);
+          return null;
+        }
+      }
+      async getPostCount(condition: object): Promise<number> {
+          const postCount = await Post.find(condition).countDocuments()
+          return postCount
+      }
+      
 }
 export default ExpertRepositoryImplementation;

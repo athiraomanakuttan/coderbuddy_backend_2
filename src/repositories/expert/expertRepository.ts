@@ -1,4 +1,5 @@
 import { ExpertDocument } from "../../model/expert/expertModel";
+import { PostType } from "../../model/user/postModel";
 
 interface ExpertRepository{
     createExpert(data:ExpertDocument):Promise<ExpertDocument | null>;
@@ -6,5 +7,7 @@ interface ExpertRepository{
     getExpertById(id:string):Promise<ExpertDocument | null>
     updateExpertByEmail(email:string, data:ExpertDocument):Promise<ExpertDocument | null>
     updateExpert(id:string,data:ExpertDocument):Promise<ExpertDocument | null>
+    getPostData(page: number, limit: number, skillSet: string[] | null): Promise<PostType[] | null>
+    getPostCount(condition:object):Promise<number  >
 }
 export default ExpertRepository;

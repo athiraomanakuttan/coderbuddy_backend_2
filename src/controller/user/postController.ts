@@ -38,6 +38,7 @@ class PostController{
             ...data,
             uploads: uploadedFileUrl
         };
+        console.log("postdata",postData)
         const uploadPost = await this.postService.uploadPost(postData);
         if (uploadPost) {
             res.status(201).json({ 
