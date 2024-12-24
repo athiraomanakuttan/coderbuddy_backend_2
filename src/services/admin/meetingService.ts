@@ -1,5 +1,5 @@
 import { MeetingType } from "../../model/admin/meetingModel";
-import MeetingRepository from "../../repositories/expert/meetingRepository";
+import MeetingRepository from "../../repositories/admin/meetingRepository";
 
 class MeetingService{
     private meetingRepository : MeetingRepository

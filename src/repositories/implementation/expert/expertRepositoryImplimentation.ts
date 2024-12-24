@@ -6,7 +6,6 @@ class ExpertRepositoryImplementation implements ExpertRepository {
     async createExpert(data: Partial<ExpertDocument>): Promise<ExpertDocument | null> {
         return await Expert.create(data);
     }
-    
 
     async getExpertByEmail(email: string): Promise<ExpertDocument | null> {
         try {
