@@ -39,6 +39,11 @@ class ExpertService {
         const newComment = await this.expertRepository.addComment(id,data)
         return newComment
     }
+
+    async commentDelete(commentId: string, expertId: string, postId : string):Promise<PostType | null>{
+        const updatePost = await this.expertRepository.deleteComment(commentId,expertId,postId)
+        return updatePost
+    }
 }
 
 export default ExpertService;

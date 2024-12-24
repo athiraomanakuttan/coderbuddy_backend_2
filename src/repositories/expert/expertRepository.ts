@@ -10,5 +10,6 @@ interface ExpertRepository{
     getPostData(page: number, limit: number, skillSet: string[] | null): Promise<PostType[] | null>
     getPostCount(condition:object):Promise<number >
     addComment(id:string, data: CommentType):Promise<PostType | null>
+    deleteComment(commentId: string, expertId: string, postId : string):Promise<PostType | null>
 }
 export default ExpertRepository;

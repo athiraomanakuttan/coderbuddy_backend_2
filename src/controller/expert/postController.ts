@@ -62,6 +62,26 @@ class PostController {
       
     }
   }
+
+  async deleteComment(req: Request, res:Response):Promise<void>{
+    const {commentId , expertId ,  postId} = req.body
+    if(!commentId || !expertId || !postId){
+      res.status(400).json({status: false ,  message : "unable to delete comment"})
+      return
+    }
+    try {
+      const commentDelete = await this.postService.commentDelete(commentId,expertId,postId)
+      if(commentDelete){
+      res.status(200).json({status: true ,  message : "comment removed sucessfully"})
+        return
+      }
+      res.status(400).json({status: false ,  message : "unable to delete comment"})
+
+    } catch (error) {
+      res.status(500).json({status: false ,  message : "unable to delete comment"})
+      
+    }
+  }
 }
 
 export default PostController;

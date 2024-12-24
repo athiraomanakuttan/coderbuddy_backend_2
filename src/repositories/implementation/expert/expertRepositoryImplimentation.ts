@@ -66,9 +66,17 @@ class ExpertRepositoryImplementation implements ExpertRepository {
             },
             {
               $lookup: {
-                from: "experts", // Replace "experts" with the actual collection name for expert data.
-                localField: "comments.expertId",
-                foreignField: "_id",
+                from: "experts",
+                let: { expertId: { $toObjectId: "$comments.expertId" } },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $eq: ["$_id", "$$expertId"]
+                      }
+                    }
+                  }
+                ],
                 as: "expertDetails"
               }
             },
@@ -89,11 +97,36 @@ class ExpertRepositoryImplementation implements ExpertRepository {
                 status: { $first: "$status" },
                 comments: {
                   $push: {
-                    comment: "$comments.comment",
-                    status: "$comments.status",
-                    date: "$comments.date",
-                    expertId: "$comments.expertId",
-                    expertName: "$expertDetails.name" // Include the expert name.
+                    $cond: {
+                      if: { $ne: ["$comments", null] },
+                      then: {
+                        _id:"$comments._id",
+                        comment: "$comments.comment",
+                        status: "$comments.status",
+                        date: "$comments.date",
+                        expertId: "$comments.expertId",
+                        expertName: { $ifNull: ["$expertDetails.first_name", null] }
+                      },
+                      else: "$$REMOVE"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              $project: {
+                _id: 1,
+                title: 1,
+                description: 1,
+                userId: 1,
+                technologies: 1,
+                uploads: 1,
+                status: 1,
+                comments: {
+                  $cond: {
+                    if: { $gt: [{ $size: "$comments" }, 0] },
+                    then: "$comments",
+                    else: "$$REMOVE"
                   }
                 }
               }
@@ -106,7 +139,7 @@ class ExpertRepositoryImplementation implements ExpertRepository {
           return null;
         }
       }
-      
+
       async getPostCount(condition: object): Promise<number> {
           const postCount = await Post.find(condition).countDocuments()
           return postCount
@@ -115,6 +148,10 @@ class ExpertRepositoryImplementation implements ExpertRepository {
       async addComment(id: string, data: CommentType): Promise<PostType | null> {
          const comment = await Post.findOneAndUpdate({_id: id},{$push :{comments:data} },{ new: true })
          return comment
+      }
+      async deleteComment(commentId: string, expertId: string, postId: string): Promise<PostType | null> {
+        const updatePost =  await Post.findOneAndUpdate({ _id: postId },{$pull : { comments : {_id: commentId , expertId : expertId }}}, { new: true }) 
+        return updatePost
       }
 }
 export default ExpertRepositoryImplementation;

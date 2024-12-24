@@ -35,7 +35,7 @@ router.put('/update-profile',authenticationMiddleware as any,checkExpertBlocked 
 router.get('/get-post', authenticationMiddleware as any, (req, res) => postController.getPost(req, res));
 
 router.post('/add-comment', authenticationMiddleware as any , (req,res)=>postController.addComment(req,res) )
-
+router.put('/delete-comment', authenticationMiddleware as any , (req,res)=>postController.deleteComment(req,res))
 
 export default router;
-  
+    
