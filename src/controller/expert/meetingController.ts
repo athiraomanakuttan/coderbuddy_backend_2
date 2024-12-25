@@ -30,7 +30,7 @@ class MeetingController{
         const userId = req.id;
         if(!id || !meetingId || !userId){
             res.status(400).json({status: false, message:"Invalid user details"});
-            return;
+            return; 
         }
         try {
             const getMeeting = await this.meetngService.verifymeeting(id,meetingId,userId)

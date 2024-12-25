@@ -13,8 +13,10 @@ class PostController{
 
    async createPost(req: Request, res: Response): Promise<void> {
     try {
+        console.log("inside eeeeeeeeeeeeeee")
         const data = req.body;
         const file = req.file;
+        console.log(data)
         if (!data.userId) {
             res.status(401).json({ 
                 status: false, 
@@ -63,7 +65,8 @@ class PostController{
 }
 
 async getPostDetails(req: CustomRequest, res: Response): Promise<void> {
-    const userId = req.id; 
+    const userId = req.id ; 
+    console.log("user details",userId)
     let { status, page = 1, limit = 5 } = req.body
     if (!userId) {
         res.status(400).json({ status: false, message: "User not authorized" })
@@ -74,7 +77,7 @@ async getPostDetails(req: CustomRequest, res: Response): Promise<void> {
         const pageNumber = Number(page);
         const pageSize = Number(limit);
         const userDetails = await this.postService.getUserPost( userId, status, pageNumber,pageSize)
-        
+        console.log("userDetails",userDetails)
         if (userDetails) {
             res.status(200).json({
                 status: true, 
