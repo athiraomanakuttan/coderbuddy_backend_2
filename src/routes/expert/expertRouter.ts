@@ -44,5 +44,8 @@ router.post('/add-comment', authenticationMiddleware as any , (req,res)=>postCon
 router.put('/delete-comment', authenticationMiddleware as any , (req,res)=>postController.deleteComment(req,res))
 
 router.get('/admin-meeting', authenticationMiddleware as any, (req,res)=>meetingController.getAdminExpertMeeting(req,res) )
+router.post('/meetings/join', authenticationMiddleware as any, (req,res)=> meetingController.verifyMeeting(req,res))
+
+
 export default router;
     

@@ -24,5 +24,25 @@ class MeetingController{
             
         }
     }
+
+    async verifyMeeting(req:CustomType, res:Response):Promise<void>{
+        const {id,meetingId} = req.body;
+        const userId = req.id;
+        if(!id || !meetingId || !userId){
+            res.status(400).json({status: false, message:"Invalid user details"});
+            return;
+        }
+        try {
+            const getMeeting = await this.meetngService.verifymeeting(id,meetingId,userId)
+            if(getMeeting){
+                res.status(200).json({status: true, message:"data fetched sucessfully",data:getMeeting})
+                return
+            }
+            res.status(400).json({status: false, message:"Invalid meeting"})
+
+        } catch (error) {
+            res.status(500).json({status: false, message:"unable to access the meeting"})
+        }
+    }
 }
 export default MeetingController

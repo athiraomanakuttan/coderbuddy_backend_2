@@ -202,6 +202,8 @@ class ExpertController{
       res.status(500).json({status:false, message:"unable to signup. Try again"})
     }
      }
+
+    
 }
 
 export default ExpertController
