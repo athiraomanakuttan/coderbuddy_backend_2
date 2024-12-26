@@ -32,7 +32,7 @@ router.post('/verify-otp',(req,res)=>expertController.verifyOtp(req,res))
 
 router.post('/forgot-password',(req,res)=> expertController.forgotPassword(req,res))
 router.put('/update-password',(req,res)=> expertController.updatePassword(req,res))
-router.get('/google-signup',(req,res)=>expertController.googleSignup(req,res))
+router.post('/google-signup',(req,res)=>expertController.googleSignup(req,res))
 
 
 router.get('/get-expert-details',authenticationMiddleware as any,checkExpertBlocked  as any,(req,res)=> profileController.getExpertDetails(req,res) )

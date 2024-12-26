@@ -20,6 +20,10 @@ class MeetingService{
         const count =  await this.meetingRepository.getMeetingCount(status)
         return count
     }
+    async updateMeetingByExpertId(expertId:string):Promise<MeetingType | null>{
+        const updateMeeting =  await this.meetingRepository.updateMeetingByExpertId(expertId)
+        return updateMeeting
+    }
 }
 
 export default MeetingService;

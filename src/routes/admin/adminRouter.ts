@@ -19,7 +19,7 @@ const meetingRepositoryImplementation =  new MeetingRepositoryImplementation()
 const adminService  = new AdminService(adminRepositoryImplimentation);
 const meetingService = new MeetingService(meetingRepositoryImplementation)
 
-const adminController =  new AdminController(adminService)
+const adminController =  new AdminController(adminService )
 const meetingController =  new MeetingController(meetingService , adminService)
 
 router.post('/login',(req,res)=>adminController.signupPost(req,res)) 
@@ -32,6 +32,6 @@ router.put('/reject-expert',authenticationMiddleware  as any, (req,res)=> adminC
 
 router.post('/create-meeting-link',authenticationMiddleware  as any , (req,res)=> meetingController.createMeeting(req,res))
 router.post('/get-meeting-details', authenticationMiddleware  as any , (req,res)=> meetingController.getMeetingDetails(req,res))
-
+router.put('/approve-expert',authenticationMiddleware as any , (req,res)=>meetingController.approveExpert(req,res))
 
 export default router;
