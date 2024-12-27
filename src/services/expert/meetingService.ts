@@ -11,8 +11,8 @@ async getAdminExpertMeeting(id:string):Promise<MeetingType | null>
     const meetingDetails = await this.meetingRepository.getAdminExpertMeeting(id)
     return meetingDetails;
 }
-async verifymeeting(id: string, meetingId: string, userId: string): Promise<MeetingType | null> {
-    const meetingData =  await this.meetingRepository.verifymeeting(id,meetingId,userId)
+async verifymeeting(meetingId: string): Promise<MeetingType | null> {
+    const meetingData =  await this.meetingRepository.verifymeeting(meetingId)
     return meetingData;
 }
 }

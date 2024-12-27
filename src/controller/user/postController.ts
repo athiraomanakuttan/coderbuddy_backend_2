@@ -13,7 +13,6 @@ class PostController{
 
    async createPost(req: Request, res: Response): Promise<void> {
     try {
-        console.log("inside eeeeeeeeeeeeeee")
         const data = req.body;
         const file = req.file;
         console.log(data)
