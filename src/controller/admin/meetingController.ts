@@ -56,6 +56,7 @@ class MeetingController{
         try {
             const {expertId} =  req.body;
             const updateExpert = await this.adminService.updateExpertById(expertId,{status :1,isMeetingScheduled:0,isVerified:1} as ExpertDocument)
+            console.log("updateExpert",expertId)
             if(updateExpert){
                 const updateMeeting  =  await this.meetingService.updateMeetingByExpertId(expertId)
                 if(updateMeeting){
