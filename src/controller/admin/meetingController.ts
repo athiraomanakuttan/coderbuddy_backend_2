@@ -54,10 +54,10 @@ class MeetingController{
 
     async approveExpert(req:Request, res:Response):Promise<void>{
         try {
-            const {expertId} =  req.body;
-            const updateExpert = await this.adminService.updateExpertById(expertId,{status :1,isMeetingScheduled:0,isVerified:1} as ExpertDocument)
+            const {expertId,meetingId , status} =  req.body;
+            const updateExpert = await this.adminService.updateExpertById(expertId,{status,isMeetingScheduled:0,isVerified:1} as ExpertDocument)
             if(updateExpert){
-                const updateMeeting  =  await this.meetingService.updateMeetingByExpertId(expertId)
+                const updateMeeting  =  await this.meetingService.updateMeetingByExpertId(expertId,meetingId)
                 if(updateMeeting){
                     res.status(200).json({status: true, message : "Expert approved"})
                     return;

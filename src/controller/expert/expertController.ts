@@ -65,10 +65,12 @@ class ExpertController{
         {
             const accessToken = JwtUtility.generateAccessToken({email,id:existExpert._id})
             const refreshToken = JwtUtility.generateRefreshToken({email,id:existExpert._id})
-            res.cookie('refreshToken',refreshToken,{ 
-                httpOnly: true,
-                secure: false,
-                maxAge: 1 * 60 * 60 * 1000,})
+            res.cookie("refreshToken", refreshToken, {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "lax",
+              maxAge: 1 * 60 * 60 * 1000,
+            });
             res.status(200).json({status:true, message:"Login successfull",data:{accessToken,existExpert}});
         }
      }
@@ -187,9 +189,10 @@ class ExpertController{
         email: email,
         id: userData._id,
       });
-      res.cookie("userRefreshToken", refreshToken, {
+      res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
         maxAge: 1 * 60 * 60 * 1000,
       });
       res.status(200).json({status:true, message:"signup successfull", data:{userData,token: accessToken}})

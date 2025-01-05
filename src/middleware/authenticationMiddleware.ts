@@ -29,7 +29,6 @@ const authenticationMiddleware = async (req: CustomRequest, res: Response, next:
   } catch (error) {
     console.log("error in jwt", error)
     if (error instanceof jwt.TokenExpiredError) {
-
       res.status(401).send({ error: 'Token expired. Please refresh your token.' });
     } else if (error instanceof Error) {
       res.status(401).send({ error: 'Authentication failed.' });
