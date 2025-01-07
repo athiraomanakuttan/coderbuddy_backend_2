@@ -14,7 +14,7 @@ class MeetingRepositoryImplementation implements MeetingRepository{
         return count
     }
     async updateMeetingByExpertId(id: string, meetingId : string): Promise<MeetingType | null> {
-        const updateMeeting = await Meeting.findOneAndUpdate({_id : meetingId , userId: id, status: 0}, {$set : { status:1}}, {next : true})
+        const updateMeeting = await Meeting.findOneAndUpdate({meetingId : meetingId , userId: id, status: 0}, {$set : { status:1}}, {next : true})
         return updateMeeting;
     }
 }

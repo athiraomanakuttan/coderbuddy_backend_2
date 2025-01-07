@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 
 export interface MeetingType extends Document {
-    _id : string,
+    _id : string | String,
     meetingId :  string,
     title: string,
     userId :  string,
