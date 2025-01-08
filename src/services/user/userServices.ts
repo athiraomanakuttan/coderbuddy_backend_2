@@ -40,7 +40,7 @@ class UserService{
         const uploadPost =  await this.userRepository.uploadPost(data)
         return uploadPost
     }
-    async getUserPost(id: string,status: string | null,  page: number = 1, limit: number = 5): Promise<{
+    async getUserPost(id: string,status: string | null,  page: number = 1, limit: number = 5, search=""): Promise<{
         posts: PostType[] | null;
         totalPosts: number;
         totalPages: number;
@@ -51,7 +51,8 @@ class UserService{
             id, 
             status, 
             skip, 
-            limit
+            limit,
+            search
         )
         if (postDetails) {
             return postDetails

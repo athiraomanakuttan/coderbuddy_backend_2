@@ -112,5 +112,40 @@ async updatePostStatus(req:CustomRequest, res: Response):Promise<void>{
         res.status(500).json({status:false, message:"error while updating post status"})
     }
 }
+
+async searchPost(req:CustomRequest , res:Response):Promise<void>{
+    const userId = req.id ; 
+    let page = 1, limit = 5;
+    let { status, search } = req.params
+
+    if (!userId) {
+        res.status(400).json({ status: false, message: "User not authorized" })
+        return;
+    }
+    
+    try {
+        const pageNumber = Number(page);
+        const pageSize = Number(limit);
+        const userDetails = await this.postService.getUserPost( userId, status, pageNumber,pageSize ,search)
+        console.log("userDetails",userDetails)
+        if (userDetails) {
+            res.status(200).json({
+                status: true, 
+                message: "Data fetched successfully", 
+                data: userDetails.posts,
+                pagination: {
+                    currentPage: pageNumber,
+                    totalPages: userDetails.totalPages,
+                    totalPosts: userDetails.totalPosts
+                }
+            })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ status: false, message: "Unable to fetch the details" })
+    }
+}
+
+
 }
 export default  PostController

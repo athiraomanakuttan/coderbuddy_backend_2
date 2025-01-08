@@ -34,6 +34,6 @@ router.post('/google-signin',(req,res)=>userController.googleSinup(req,res))
 router.post('/upload-post',    authenticationMiddleware as any,     checkisUserBlocked as any,     upload.single('uploads'),  (req, res) => postController.createPost(req, res))
 router.post('/get-post-details',authenticationMiddleware as any,checkisUserBlocked as any,(req,res)=> postController.getPostDetails(req,res))
 router.put('/update-post-status', authenticationMiddleware as any, checkisUserBlocked as any, (req,res)=>postController.updatePostStatus(req,res) )
-  
+router.get('/search-post/:search/:status',authenticationMiddleware as any , (req,res)=> postController.searchPost(req,res))
 
 export default router;

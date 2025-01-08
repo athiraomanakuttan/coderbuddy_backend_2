@@ -9,7 +9,8 @@ interface UserRepository {
     getUserByEmail(email:string):Promise<UserType |null>
     uploadPost(data: PostType):Promise<PostType | null>
     getPostDetails(id: string, status: string | null,  page?: number, 
-        limit?: number
+        limit?: number,
+        searchQuery ?: string
     ): Promise<{
         posts: PostType[] | null;
         totalPosts: number;
