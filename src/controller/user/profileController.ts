@@ -125,6 +125,25 @@ class ProfileController {
         .json({ status: false, message: "Internal server error", data: null });
     }
   }
+
+  async getExpertProfile(req:Request , res:Response):Promise<void>{
+    const {id} = req.params
+    try {
+      if(!id){
+        res.status(400).json({status:false, message:"Expert id is empty"});
+        return
+      }
+      const expertData =  await this.profileService.getExpertById(id)
+      if(expertData){
+        res.status(200).json({status: true , message:"profile fetched successfully", data : expertData})
+        return
+      }
+      res.status(400).json({status: false , message:"User is not active with this id"})
+
+    } catch (error) {
+      res.status(500).json({status:false, message:"error fetching profiledata"});
+    }
+  }
   
 }
  

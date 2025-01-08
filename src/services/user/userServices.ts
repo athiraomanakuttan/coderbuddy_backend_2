@@ -1,6 +1,7 @@
 import UserRepository from "../../repositories/user/userRepository";
 import { UserType } from "../../model/user/userModel";
 import { PostType } from "../../model/user/postModel";
+import { ExpertDocument } from "../../model/expert/expertModel";
 
 class UserService{
     private userRepository:UserRepository;
@@ -63,6 +64,11 @@ class UserService{
     async updatePostStatus(userId : string, postId:string,status:number):Promise<PostType | null>{
         const updateStatus = await this.userRepository.updatePostStatus(userId , postId,status)
         return updateStatus
+    }
+
+    async getExpertById(id: string):Promise<ExpertDocument | null >{
+        const data = await this.userRepository.findExpertById(id)
+        return data;
     }
 
 }

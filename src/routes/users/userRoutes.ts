@@ -36,4 +36,6 @@ router.post('/get-post-details',authenticationMiddleware as any,checkisUserBlock
 router.put('/update-post-status', authenticationMiddleware as any, checkisUserBlocked as any, (req,res)=>postController.updatePostStatus(req,res) )
 router.get('/search-post/:search/:status',authenticationMiddleware as any , (req,res)=> postController.searchPost(req,res))
 
+
+router.get('/expert-profile/:id',authenticationMiddleware as any , (req,res)=>profileController.getExpertProfile(req,res))
 export default router;

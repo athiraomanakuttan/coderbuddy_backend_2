@@ -1,3 +1,4 @@
+import { ExpertDocument } from "../../model/expert/expertModel";
 import { PostType } from "../../model/user/postModel";
 import { UserType } from "../../model/user/userModel";
 interface UserRepository {
@@ -18,6 +19,8 @@ interface UserRepository {
     } | null>
     countPosts(id:string,status:string  | null):Promise<number>
     updatePostStatus(userId :  string, id:string, status:number):Promise<PostType | null>
+
+    findExpertById(id:string):Promise<ExpertDocument | null >
 }
 
 export default UserRepository;
