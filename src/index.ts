@@ -6,6 +6,7 @@ import path from 'path';
 import userRouter from './routes/users/userRoutes'
 import expertRouter from './routes/expert/expertRouter'
 import adminRouter from './routes/admin/adminRouter'
+import chatRouter from './routes/shared/chatRouter'
 import connectDb from './config/dbConfig';
 import session from 'express-session';
 import cookieParser from "cookie-parser"
@@ -39,5 +40,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/', userRouter);
 app.use('/api/expert/',expertRouter)
 app.use('/api/admin/', adminRouter)
+app.use('/api/chat/', chatRouter)
 
 server.listen(process.env.PORT, () => console.log('server connected'));
