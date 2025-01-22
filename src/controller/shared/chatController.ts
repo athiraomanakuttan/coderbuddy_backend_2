@@ -92,6 +92,56 @@ class ChatController {
         }
     }
 
+    async createNewChat(req:CustomRequest, res:Response):Promise<void>{
+        const senderId = req.id
+        if(!senderId){
+            res.status(400).json({status:false,message:"user data is empty, unable to create new chat"})
+            return
+        }
+         let { expertId } = req.body;
+         try {
+                const existChat =  await this.chatService.getChatById(expertId,senderId)
+                if(existChat && existChat.length){
+                    console.log("inside",existChat)
+                    res.status(200).json({status:true, message:"data fetched sucessfully", data:existChat})
+                    return;
+                }
+                const userDetails = await this.userService.getUserById(senderId)
+                const expertDetails = await this.expertService.getExpertById(expertId)
+                if(!userDetails){
+                    res.status(400).json({status:false,message:"user data is empty, unable to create new chat"})
+                    return
+                }
+                if(!expertDetails){
+                    res.status(400).json({status:false,message:"expert data is empty, unable to create new chat"})
+                    return
+                }
+                const participents= [
+                    {
+                        id: senderId,
+                        role: 'user',
+                        name: `${userDetails.first_name || ''} ${userDetails.last_name || ''}`.trim() || "User",
+                        profile_pic: userDetails.profilePicture || 'https://res.cloudinary.com/dicelwy0k/image/upload/v1734162966/k1hkdcipfx9ywadit4lr.png'
+                    },
+                    {
+                        id: expertId,
+                        role: 'expert',
+                        name: `${expertDetails.first_name || ''} ${expertDetails.last_name || ''}`.trim() || "Expert",
+                        profile_pic: expertDetails.profilePicture || 'https://res.cloudinary.com/dicelwy0k/image/upload/v1734162966/k1hkdcipfx9ywadit4lr.png'
+                    }
+                ] as ParticipentsType[]
+                const newChat = await this.chatService.createNewChat(participents)
+                res.status(200).json({status:true,message:"data fetched sucessfully",data:newChat});
+                if(!newChat){
+                    res.status(400).json({status:false,messsage:"unable to create chat"})
+                    return
+                }
+            }
+           catch(error){
+            res.status(500).json({status:false,messsage:"unable to create chat"})
+           }
+    }
+
     
 }
 

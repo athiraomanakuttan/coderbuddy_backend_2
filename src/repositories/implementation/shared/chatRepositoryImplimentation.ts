@@ -45,6 +45,17 @@ async getChatDetails(chatId: string): Promise<ChatType | null> {
     return chatDetails
 }
 
+async getChatDataById(expertId: string, userId: string): Promise<ChatType[] | null> {
+    const chatData = await Chat.find({
+        'participents.id': { 
+            $all: [expertId, userId] 
+        }}) 
+    .sort({ updatedAt: -1 })
+    .lean(); 
+    
+    return chatData;
+}
+
 
 }
 export default ChatRepositoryImplimenation

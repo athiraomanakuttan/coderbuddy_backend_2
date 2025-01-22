@@ -5,6 +5,7 @@ interface ChatRepository{
     createConversation( chatId:string, senderId:string, receiverId:string, message:string):Promise<ChatType |null>
     createChat(participents:ParticipentsType[]):Promise<ChatType | null>
     getChatDetails(chatId:string):Promise<ChatType | null>
+    getChatDataById(expertId:string,userId:string):Promise<ChatType[] | null>
 }
 
 export default ChatRepository

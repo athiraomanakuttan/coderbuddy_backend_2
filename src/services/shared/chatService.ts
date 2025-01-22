@@ -43,7 +43,10 @@ class ChatService{
         const chatDetails = await this.chatRepository.getChatDetails(chatId)
         return chatDetails;
     }
-
+    async getChatById(expertId:string,userId:string):Promise<ChatType[] | null>{
+        const chatData =  await this.chatRepository.getChatDataById(expertId,userId);
+        return chatData
+    }
     
 }
 
