@@ -22,7 +22,7 @@ const chatController =  new ChatController(chatService , userService , experServ
 const router = Router();
 
 router.get('/get-chat-list', authenticationMiddleware as any , (req,res)=>chatController.getChatList(req,res))
-router.post('/', authenticationMiddleware as any,(req,res)=> chatController.newMessage(req,res))
+router.post('/new-chat', authenticationMiddleware as any,(req,res)=> chatController.newMessage(req,res))
 router.get('/:chatId',authenticationMiddleware as any, (req,res)=>chatController.getChatMessage(req,res))
 
 export default router

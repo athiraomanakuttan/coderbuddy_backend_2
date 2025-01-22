@@ -30,7 +30,12 @@ class ChatController {
     }
 
     async newMessage(req:CustomRequest,res:Response):Promise<void>{
-         let {senderId, receiverId, message,chatId } = req.body;
+        const senderId = req.id
+        if(!senderId){
+            res.status(400).json({status:false,message:"user data is empty, unable to create new chat"})
+            return
+        }
+         let { receiverId, message,chatId } = req.body;
          try {
             if(!chatId){
                 const userDetails = await this.userService.getUserById(senderId)
