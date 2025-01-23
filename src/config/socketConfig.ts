@@ -5,12 +5,13 @@ const configureSocket = (server: HttpServer) => {
     const io = new Server(server, {
         cors: { origin: process.env.CLIENT_URL, methods: ['GET', 'POST'] },
     });
-    
+
     const rooms = new Map<string, Set<string>>();
 
     io.on('connection', (socket) => {
         console.log('New connection:', socket.id);
 
+        // ** Room Joining Logic **
         socket.on('join-room', ({ roomId }) => {
             if (!rooms.has(roomId)) {
                 rooms.set(roomId, new Set());
@@ -28,21 +29,27 @@ const configureSocket = (server: HttpServer) => {
             io.to(roomId).emit('participant-count', room.size);
         });
 
-        // Add chat message handler
+        // ** Chat Handlers **
         socket.on('chat-message', (data) => {
-            console.log('Received chat message:', {
-                from: socket.id,
-                room: data.roomId,
-                text: data.text
-            });
-            
-            // Broadcast the message to all clients in the room
-            io.to(data.roomId).emit('chat-message', {
-                ...data,
-                from: socket.id
-            });
+            console.log('Backend received chat message:', data);
+            io.to(data.chatId).emit('chat-message', data);
+          });
+
+          socket.on('join-chat', (chatId) => {
+            socket.join(chatId);
+          });
+
+          socket.on('leave-chat', (chatId) => {
+            socket.leave(chatId);
+          });
+
+        socket.on('typing', ({ roomId, isTyping }) => {
+            console.log("typing");
+            // Notify other participants in the room about typing status
+            socket.to(roomId).emit('typing', { from: socket.id, isTyping });
         });
 
+        // ** Video Call Handlers **
         socket.on('offer', (data) => {
             socket.to(data.roomId).emit('offer', data);
         });
@@ -55,6 +62,7 @@ const configureSocket = (server: HttpServer) => {
             socket.to(data.roomId).emit('ice-candidate', data);
         });
 
+        // ** Room Leaving Logic **
         socket.on('leave-room', ({ roomId }) => {
             handleLeaveRoom(socket, roomId);
         });
