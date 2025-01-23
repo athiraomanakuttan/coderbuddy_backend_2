@@ -10,21 +10,28 @@ import PostController from "../../controller/expert/postController";
 import MeetingService from "../../services/expert/meetingService";
 import MeetingRepositoryImplimentation from "../../repositories/implementation/expert/meetingRepositoryImplimentation";
 import MeetingController from "../../controller/expert/meetingController";
+import PaymentRepositoryImplimentation from "../../repositories/implementation/expert/paymentRepositoryImplimentation";
+import PaymentService from "../../services/expert/paymentService";
+import PaymentController from "../../controller/expert/paymentController";
 // import
 
 const router = Router();
 // repository
 const expertRepositoryImplementation = new ExpertRepositoryImplementation();
 const meetingRepositoryImplimentation = new MeetingRepositoryImplimentation();
+const paymentRepositoryImplimentation = new PaymentRepositoryImplimentation()
 
 // service
 const expertService = new ExpertService(expertRepositoryImplementation);
 const meetingService = new MeetingService(meetingRepositoryImplimentation)
+const paymentService =  new PaymentService(paymentRepositoryImplimentation)
+
 //constroller
 const expertController = new ExpertController(expertService);
 const profileController = new ProfileController(expertService)
 const postController = new PostController(expertService)
 const meetingController = new MeetingController(meetingService)
+const paymentController = new PaymentController(paymentService)
 
 router.post('/signup', (req, res) => expertController.signupPost(req, res));
 router.post('/login',(req,res)=> expertController.loginPost(req,res))
@@ -45,6 +52,9 @@ router.put('/delete-comment', authenticationMiddleware as any , (req,res)=>postC
 
 router.get('/admin-meeting', authenticationMiddleware as any, (req,res)=>meetingController.getAdminExpertMeeting(req,res) )
 router.post('/meetings/join',  (req,res)=> meetingController.verifyMeeting(req,res))
+
+router.post('/create-payment-link', authenticationMiddleware as any, (req,res)=>paymentController.createPayment(req,res))
+
 
 
 export default router;

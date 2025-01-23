@@ -1,0 +1,43 @@
+import mongoose,{Types} from 'mongoose';
+
+interface PaymentType {
+    _id: string;
+    title: string;
+    amount: number;
+    userId: mongoose.Types.ObjectId;
+    expertId: mongoose.Types.ObjectId;
+    status: 0 | 1;
+  }
+  
+  const paymentSchema = new mongoose.Schema<PaymentType>(
+    {
+      title: {
+        type: String,
+        required: true,
+      },
+      amount: {
+        type: Number,
+        required: true,
+      },
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true,
+      },
+      expertId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'expert',
+        required: true,
+      },
+      status: {
+        type: Number,
+        enum: [0, 1],
+        default: 0,
+      }
+    },
+    { timestamps: true }
+  );
+  
+  const Payment: mongoose.Model<PaymentType> = mongoose.model('payment', paymentSchema);
+  export { Payment, PaymentType };
+  

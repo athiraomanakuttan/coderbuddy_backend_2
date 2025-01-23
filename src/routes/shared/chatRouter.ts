@@ -25,5 +25,4 @@ router.get('/get-chat-list', authenticationMiddleware as any , (req,res)=>chatCo
 router.post('/new-chat', authenticationMiddleware as any,(req,res)=> chatController.newMessage(req,res))
 router.get('/:chatId',authenticationMiddleware as any, (req,res)=>chatController.getChatMessage(req,res))
 router.post('/expert-chat', authenticationMiddleware as any, (req,res)=>chatController.createNewChat(req,res))
-
 export default router
