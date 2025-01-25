@@ -19,8 +19,8 @@ interface UserRepository {
     } | null>
     countPosts(id:string,status:string  | null):Promise<number>
     updatePostStatus(userId :  string, id:string, status:number):Promise<PostType | null>
-
     findExpertById(id:string):Promise<ExpertDocument | null >
+
 }
 
 export default UserRepository;

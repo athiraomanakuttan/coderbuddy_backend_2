@@ -7,6 +7,11 @@ interface PaymentType {
     userId: mongoose.Types.ObjectId;
     expertId: mongoose.Types.ObjectId;
     status: 0 | 1;
+    paymentDetails?: {
+      razorpay_payment_id?: string | null;
+      razorpay_order_id?: string;
+      razorpay_signature?: string;
+  };
   }
   
   const paymentSchema = new mongoose.Schema<PaymentType>(
@@ -33,7 +38,12 @@ interface PaymentType {
         type: Number,
         enum: [0, 1],
         default: 0,
-      }
+      },
+      paymentDetails: {
+        razorpay_payment_id: { type: String },
+        razorpay_order_id: { type: String },
+        razorpay_signature: { type: String }
+    }
     },
     { timestamps: true }
   );

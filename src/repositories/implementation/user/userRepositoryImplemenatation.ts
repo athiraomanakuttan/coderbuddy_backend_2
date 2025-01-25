@@ -194,6 +194,8 @@ class UserRepositoryImplementation implements UserRepository{
         const data = await Expert.findOne({_id : id , status: 1 , isVerified  : 1})
         return data
     }
+
+    
 }
 
 export default UserRepositoryImplementation;
