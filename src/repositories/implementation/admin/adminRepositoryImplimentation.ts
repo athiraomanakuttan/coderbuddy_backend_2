@@ -1,7 +1,7 @@
 import { User, UserType } from "../../../model/user/userModel";
 import Expert, { ExpertDocument } from "../../../model/expert/expertModel";
 import AdminRepository from "../../admin/adminRepository";
-import AdminService from "../../../services/admin/adminService";
+import AdminService from "../../../services/admin/Implimentation/adminService";
 
 class AdminRepositoryImplimentation implements AdminRepository{
     async getUserDetails(skip: number = 0, limit: number = 10): Promise<UserType[]> {

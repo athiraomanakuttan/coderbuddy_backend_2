@@ -1,13 +1,14 @@
-import { ChatListResponse, ChatType, ParticipentsType } from "../../model/shared/chat.model"
-import { ConversationType } from "../../model/shared/message.model"
-import ChatRepository from "../../repositories/shared/chatRepositories"
+import { ChatListResponse, ChatType, ParticipentsType } from "../../../model/shared/chat.model"
+import { ConversationType } from "../../../model/shared/message.model"
+import ChatRepository from "../../../repositories/shared/chatRepositories"
+import IChatService from "../IChatService"
 
-class ChatService{
+class ChatService implements IChatService{
     private chatRepository: ChatRepository
     constructor(chatRepository:ChatRepository){
         this.chatRepository = chatRepository
     }
-
+ 
     async getUserChatList(id: string): Promise<ChatListResponse[] | null> {
         const chatList = await this.chatRepository.getChatList(id);
         if (!chatList) return null;

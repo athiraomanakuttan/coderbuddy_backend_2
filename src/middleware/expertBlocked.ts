@@ -1,6 +1,6 @@
 
 import { Request, Response, NextFunction } from 'express';
-import ExpertService from '../services/expert/expertServices';
+import ExpertService from '../services/expert/Implimentation/expertServices';
 import ExpertRepositoryImplementation from '../repositories/implementation/expert/expertRepositoryImplimentation';
 
 export interface CustomRequest extends Request {

@@ -1,7 +1,8 @@
-import { MeetingType } from "../../model/admin/meetingModel";
-import MeetingRepository from "../../repositories/admin/meetingRepository";
+import { MeetingType } from "../../../model/admin/meetingModel";
+import MeetingRepository from "../../../repositories/admin/meetingRepository";
+import IMeetingService from "../IMeetingService";
 
-class MeetingService{
+class MeetingService implements IMeetingService{
     private meetingRepository : MeetingRepository
     constructor(meetingRepository : MeetingRepository){
         this.meetingRepository = meetingRepository

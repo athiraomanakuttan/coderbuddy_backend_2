@@ -1,6 +1,6 @@
 import Router from 'express'
 import authenticationMiddleware from '../../middleware/authenticationMiddleware';
-import MeetingService from "../../services/admin/meetingService";
+import MeetingService from "../../services/admin/Implimentation/meetingService";
 import MeetingRepositoryImplementation from "../../repositories/implementation/admin/meetingRepositoryImplimentation";
 import MeetingController from "../../controller/admin/meetingController"
 
@@ -8,7 +8,7 @@ import MeetingController from "../../controller/admin/meetingController"
 const router = Router();
 
 
-import AdminService from '../../services/admin/adminService';
+import AdminService from '../../services/admin/Implimentation/adminService';
 import AdminController from '../../controller/admin/adminController';
 import AdminRepositoryImplimentation from '../../repositories/implementation/admin/adminRepositoryImplimentation';
 

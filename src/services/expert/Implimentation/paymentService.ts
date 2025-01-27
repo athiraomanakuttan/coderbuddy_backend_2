@@ -1,7 +1,8 @@
-import { PaymentType } from "../../model/expert/paymentModel";
-import PaymentRepository from "../../repositories/expert/paymentRepository"
+import { PaymentType } from "../../../model/expert/paymentModel";
+import PaymentRepository from "../../../repositories/expert/paymentRepository"
+import IPaymentService from "../IPaymentService";
 
-class PaymentService{
+class PaymentService implements IPaymentService{
     private paymentRepository : PaymentRepository;
     constructor(paymentRepository:PaymentRepository){
         this.paymentRepository = paymentRepository
@@ -9,7 +10,7 @@ class PaymentService{
     async createMeetingLink(title:string, amount:number, userId:string, expertId:string):Promise<PaymentType | null>{
         const response = await this.paymentRepository.createPayment(title,amount,userId,expertId)
         return response
-    }
+    } 
 
     async getPaymentList(userId:string):Promise<PaymentType[] | null>{
         const paymentDetails =  await this.paymentRepository.getPaymentList(userId)

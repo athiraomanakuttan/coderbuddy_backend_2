@@ -1,8 +1,9 @@
-import PaymentService from "../../services/expert/paymentService";
+import PaymentService from "../../services/expert/Implimentation/paymentService";
 import {Request,Response } from "express";
 import {CustomType} from '../../types/type'
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
+import IPaymentService from "../../services/expert/IPaymentService";
 
 
 const razorpay = new Razorpay({
@@ -12,8 +13,8 @@ const razorpay = new Razorpay({
 
 
 class PaymentController{
-    private paymentService:PaymentService;
-    constructor(paymentService:PaymentService){
+    private paymentService:IPaymentService;
+    constructor(paymentService:IPaymentService){
         this.paymentService = paymentService
     }
 

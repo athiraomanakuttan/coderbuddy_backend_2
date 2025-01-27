@@ -2,16 +2,16 @@ import { Router } from "express";
 import { upload } from "../../config/multerConfig";
 import ExpertController from "../../controller/expert/expertController";
 import ExpertRepositoryImplementation from "../../repositories/implementation/expert/expertRepositoryImplimentation";
-import ExpertService from "../../services/expert/expertServices";
+import ExpertService from "../../services/expert/Implimentation/expertServices";
 import authenticationMiddleware from "../../middleware/authenticationMiddleware";
 import ProfileController from "../../controller/expert/profileController";
 import checkExpertBlocked from "../../middleware/expertBlocked";
 import PostController from "../../controller/expert/postController";
-import MeetingService from "../../services/expert/meetingService";
+import MeetingService from "../../services/expert/Implimentation/meetingService";
 import MeetingRepositoryImplimentation from "../../repositories/implementation/expert/meetingRepositoryImplimentation";
 import MeetingController from "../../controller/expert/meetingController";
 import PaymentRepositoryImplimentation from "../../repositories/implementation/expert/paymentRepositoryImplimentation";
-import PaymentService from "../../services/expert/paymentService";
+import PaymentService from "../../services/expert/Implimentation/paymentService";
 import PaymentController from "../../controller/expert/paymentController";
 // import
 

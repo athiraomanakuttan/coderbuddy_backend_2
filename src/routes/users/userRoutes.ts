@@ -2,7 +2,7 @@ import  {Router,Request,Response}  from 'express'
 import { upload } from '../../config/multerConfig';
 
 import UserController from "../../controller/user/userController";
-import UserService from '../../services/user/userServices';
+import UserService from '../../services/user/Implimentation/userServices';
 import UserRepositoryImplementation from '../../repositories/implementation/user/userRepositoryImplemenatation';
 import ProfileController from '../../controller/user/profileController';
 import PostController from '../../controller/user/postController';

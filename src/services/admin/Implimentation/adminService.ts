@@ -1,9 +1,10 @@
-import { ExpertDocument } from "../../model/expert/expertModel";
-import { User, UserType } from "../../model/user/userModel";
-import AdminRepository from "../../repositories/admin/adminRepository";
-import { basicType } from "../../types/type";
+import { ExpertDocument } from "../../../model/expert/expertModel";
+import { User, UserType } from "../../../model/user/userModel";
+import AdminRepository from "../../../repositories/admin/adminRepository";
+import { basicType } from "../../../types/type";
+import IAdminService from "../IAdminService";
 
-class AdminService {
+class AdminService implements IAdminService {
     private adminRepository: AdminRepository;
     constructor(adminRepository: AdminRepository) {
         this.adminRepository = adminRepository;

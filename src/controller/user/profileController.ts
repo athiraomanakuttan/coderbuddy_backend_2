@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import UserService from "../../services/user/userServices";
+import UserService from "../../services/user/Implimentation/userServices";
 import { UserType } from "../../model/user/userModel";
 import { uploadImageToCloudinary } from "../../utils/uploadImageToCloudinary ";
 

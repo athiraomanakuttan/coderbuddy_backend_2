@@ -1,11 +1,10 @@
 import { Request , Response } from "express";
-import ExpertService from "../../services/expert/expertServices";
-import { ExpertDocument } from "../../model/expert/expertModel";
 import { uploadImageToCloudinary } from "../../utils/uploadImageToCloudinary ";
+import IExpertService from "../../services/expert/IExpertService";
 
 class ProfileController{
-    private profileService:ExpertService;
-    constructor(profileService: ExpertService)
+    private profileService:IExpertService;
+    constructor(profileService: IExpertService)
     {
         this.profileService = profileService
     }

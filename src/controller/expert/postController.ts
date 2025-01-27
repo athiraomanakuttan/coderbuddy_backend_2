@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
-import ExpertService from "../../services/expert/expertServices";
+import ExpertService from "../../services/expert/Implimentation/expertServices";
 import { CommentType } from "../../model/user/postModel";
+import IExpertService from "../../services/expert/IExpertService";
 
 export interface CustomRequest extends Request {
     id ?: string;  
@@ -8,9 +9,9 @@ export interface CustomRequest extends Request {
 
 
 class PostController {
-  private postService: ExpertService;
+  private postService: IExpertService;
 
-  constructor(postService: ExpertService) {
+  constructor(postService: IExpertService) {
     this.postService = postService;
   }
 

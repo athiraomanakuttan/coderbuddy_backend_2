@@ -1,11 +1,11 @@
 import { Router } from "express";
 import ChatRepositoryImplimenation from "../../repositories/implementation/shared/chatRepositoryImplimentation";
-import ChatService from "../../services/shared/chatService";
+import ChatService from "../../services/shared/Implementation/chatService";
 import ChatController from "../../controller/shared/chatController";
 import authenticationMiddleware from '../../middleware/authenticationMiddleware'
-import UserService from "../../services/user/userServices";
+import UserService from "../../services/user/Implimentation/userServices";
 import UserRepositoryImplementation from "../../repositories/implementation/user/userRepositoryImplemenatation";
-import ExpertService from "../../services/expert/expertServices";
+import ExpertService from "../../services/expert/Implimentation/expertServices";
 import ExpertRepositoryImplementation from "../../repositories/implementation/expert/expertRepositoryImplimentation";
 
 const chatRepositoryImplimentation = new ChatRepositoryImplimenation()

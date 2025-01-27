@@ -1,4 +1,4 @@
-import UserService from "../../services/user/userServices";
+import UserService from "../../services/user/Implimentation/userServices";
 import { Request, Response } from "express";
 import { uploadImageToCloudinary } from "../../utils/uploadImageToCloudinary ";
 export interface CustomRequest extends Request {

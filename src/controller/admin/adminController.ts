@@ -1,12 +1,13 @@
 import { Request,Response } from "express"
-import AdminService from "../../services/admin/adminService"
+import AdminService from "../../services/admin/Implimentation/adminService"
 import JwtUtility from "../../utils/jwtUtility"
 import { UserType } from "../../model/user/userModel"
 import { ExpertDocument } from "../../model/expert/expertModel"
+import IAdminService from "../../services/admin/IAdminService"
 
 class AdminController{
-    private adminService: AdminService  
-    constructor(adminService : AdminService)
+    private adminService: IAdminService  
+    constructor(adminService : IAdminService)
     {
         this.adminService = adminService
     }

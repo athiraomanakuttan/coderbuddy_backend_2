@@ -1,8 +1,9 @@
-import { ExpertDocument } from "../../model/expert/expertModel";
-import { CommentType, PostType } from "../../model/user/postModel";
-import ExpertRepository from "../../repositories/expert/expertRepository";
+import { ExpertDocument } from "../../../model/expert/expertModel";
+import { CommentType, PostType } from "../../../model/user/postModel";
+import ExpertRepository from "../../../repositories/expert/expertRepository";
+import IExpertService from "../IExpertService";
 
-class ExpertService {
+class ExpertService implements IExpertService {
     private expertRepository: ExpertRepository;
 
     constructor(expertRepository: ExpertRepository) {

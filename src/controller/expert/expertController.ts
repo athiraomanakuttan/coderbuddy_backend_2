@@ -1,14 +1,15 @@
 import { Request,Response } from "express"
-import ExpertService from "../../services/expert/expertServices"
+import ExpertService from "../../services/expert/Implimentation/expertServices"
 import PasswordUtils from "../../utils/passwordUtils";
 import JwtUtility from "../../utils/jwtUtility";
 import { ExpertDocument } from "../../model/expert/expertModel";
 import MailUtility from "../../utils/mailUtility";
 import OtpUtility from "../../utils/otpUtility";
+import IExpertService from "../../services/expert/IExpertService";
 
 class ExpertController{ 
-     private expertServece : ExpertService
-    constructor(expertServece:ExpertService){
+     private expertServece : IExpertService
+    constructor(expertServece:IExpertService){
         this.expertServece = expertServece
      }
 

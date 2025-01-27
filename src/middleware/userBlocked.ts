@@ -1,6 +1,6 @@
 
 import { Request, Response, NextFunction } from 'express';
-import UserService from '../services/user/userServices';
+import UserService from '../services/user/Implimentation/userServices';
 import UserRepositoryImplementation from '../repositories/implementation/user/userRepositoryImplemenatation';
 export interface CustomRequest extends Request {
     user?: string;

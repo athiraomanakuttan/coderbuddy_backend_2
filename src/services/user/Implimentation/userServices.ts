@@ -1,9 +1,10 @@
-import UserRepository from "../../repositories/user/userRepository";
-import { UserType } from "../../model/user/userModel";
-import { PostType } from "../../model/user/postModel";
-import { ExpertDocument } from "../../model/expert/expertModel";
+import UserRepository from "../../../repositories/user/userRepository";
+import { UserType } from "../../../model/user/userModel";
+import { PostType } from "../../../model/user/postModel";
+import { ExpertDocument } from "../../../model/expert/expertModel";
+import IUserService from "../IUserService";
 
-class UserService{
+class UserService implements IUserService{
     private userRepository:UserRepository;
     constructor(userRepository:UserRepository)
     {

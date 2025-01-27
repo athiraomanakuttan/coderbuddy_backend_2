@@ -1,13 +1,15 @@
 import { Request , Response } from "express";
-import MeetingService from "../../services/admin/meetingService";
+import MeetingService from "../../services/admin/Implimentation/meetingService";
 import { v4 as uuidv4 } from "uuid";
 import { MeetingType } from "../../model/admin/meetingModel";
-import AdminService from "../../services/admin/adminService";
+import AdminService from "../../services/admin/Implimentation/adminService";
 import { ExpertDocument } from "../../model/expert/expertModel";
+import IMeetingService from "../../services/admin/IMeetingService";
+import IAdminService from "../../services/admin/IAdminService";
 class MeetingController{
-    private meetingService : MeetingService;
-    private adminService : AdminService;
-    constructor(meetingService: MeetingService, adminService : AdminService){
+    private meetingService : IMeetingService;
+    private adminService : IAdminService;
+    constructor(meetingService: IMeetingService, adminService : IAdminService){
         this.meetingService = meetingService
         this.adminService =  adminService
     }

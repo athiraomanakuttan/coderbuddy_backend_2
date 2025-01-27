@@ -1,4 +1,4 @@
-import UserService from "../../services/user/userServices";
+import UserService from "../../services/user/Implimentation/userServices";
 import { Request, Response } from "express";
 import { getServerSession } from "next-auth";
 import OtpUtility from "../../utils/otpUtility";
@@ -6,9 +6,10 @@ import MailUtility from "../../utils/mailUtility";
 import { UserType } from "../../model/user/userModel";
 import JwtUtility from "../../utils/jwtUtility";
 import PasswordUtils from "../../utils/passwordUtils";
+import IUserService from "../../services/user/IUserService";
 class UserController {
-  private userService: UserService;
-  constructor(userService: UserService) {
+  private userService: IUserService;
+  constructor(userService: IUserService) {
     this.userService = userService;
   }
 

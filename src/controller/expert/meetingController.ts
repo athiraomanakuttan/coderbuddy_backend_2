@@ -1,12 +1,13 @@
 import { Request,Response } from "express"
-import MeetingService from "../../services/expert/meetingService"
+import MeetingService from "../../services/expert/Implimentation/meetingService"
+import IMeetingService from "../../services/expert/IMeetingService"
 interface CustomType extends Request{
     id?:string
 }
 
 class MeetingController{
-    private meetngService :MeetingService
-    constructor(meetngService : MeetingService){
+    private meetngService :IMeetingService
+    constructor(meetngService : IMeetingService){
         this.meetngService = meetngService
     }
     async getAdminExpertMeeting(req:CustomType , res:Response):Promise<void>{

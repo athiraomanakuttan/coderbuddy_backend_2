@@ -1,16 +1,16 @@
-import ChatService from "../../services/shared/chatService"
 import {Request, Response } from "express"
-import UserService from "../../services/user/userServices";
-import ExpertService from "../../services/expert/expertServices";
 import { ParticipentsType } from "../../model/shared/chat.model";
+import IChatService from "../../services/shared/IChatService";
+import IUserService from "../../services/user/IUserService";
+import IExpertService from "../../services/expert/IExpertService";
 export interface CustomRequest extends Request {
     id?: string; 
   }
 class ChatController {
-    private chatService  : ChatService
-    private userService : UserService
-    private expertService : ExpertService
-    constructor(chatService : ChatService, userService: UserService, expertService : ExpertService){
+    private chatService  : IChatService
+    private userService : IUserService
+    private expertService : IExpertService
+    constructor(chatService : IChatService, userService: IUserService, expertService : IExpertService){
         this.chatService = chatService;
         this.userService = userService
         this.expertService = expertService
