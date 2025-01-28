@@ -1,6 +1,6 @@
 import { Router } from "express";
 import MeetingRepositoryImplementation from "../../repositories/implementation/shared/meetingRepositoryImplimentation";
-import MeetingService from "../../services/shared/meetingService";
+import MeetingService from "../../services/shared/Implementation/meetingService";
 import MeetingController from "../../controller/shared/meetingController";
 import authenticationMiddleware from "../../middleware/authenticationMiddleware";
 const router = Router()
@@ -10,5 +10,7 @@ const meetingService = new MeetingService(meetingRepositoryImplementation)
 const meetingController =  new MeetingController(meetingService)
 
 router.post('/create-meeting', authenticationMiddleware as any , (req,res)=>meetingController.createMeetingLink(req,res))
+router.get('/get-meeting-data', authenticationMiddleware as any, (req,res)=>meetingController.getMeetingDetails(req,res))
+
 
 export default router;

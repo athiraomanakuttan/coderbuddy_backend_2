@@ -9,7 +9,6 @@ const configureSocket = (server: HttpServer) => {
     const rooms = new Map<string, Set<string>>();
 
     io.on('connection', (socket) => {
-        console.log('New connection:', socket.id);
 
         // ** Room Joining Logic **
         socket.on('join-room', ({ roomId }) => {
@@ -68,7 +67,7 @@ const configureSocket = (server: HttpServer) => {
         });
 
         socket.on('disconnect', () => {
-            console.log('Client disconnected:', socket.id);
+            // console.log('Client disconnected:', socket.id);
             for (const [roomId, participants] of rooms.entries()) {
                 if (participants.has(socket.id)) {
                     handleLeaveRoom(socket, roomId);
