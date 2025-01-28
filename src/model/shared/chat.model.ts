@@ -11,6 +11,7 @@ export type ParticipentsType = {
 export type ChatType = {
     _id?:mongoose.Types.ObjectId,
     participents: ParticipentsType[],
+    postId:mongoose.Types.ObjectId | string,
     messages: mongoose.Types.ObjectId[] | string[],
     createdAt?: Date,
     updatedAt?: Date
@@ -18,6 +19,7 @@ export type ChatType = {
 export type ChatListResponse = {
     chatId: string;
     participant: ParticipentsType;
+    postId:  string;
     lastMessageAt: Date;
 }
 
@@ -40,6 +42,11 @@ const chatSchema = new mongoose.Schema({
             required: true
         }
     }],
+    postId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'post',
+        required: true
+    },
     messages: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'message',

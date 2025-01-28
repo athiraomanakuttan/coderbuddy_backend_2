@@ -6,6 +6,7 @@ interface PaymentType {
     amount: number;
     userId: mongoose.Types.ObjectId;
     expertId: mongoose.Types.ObjectId;
+    postId: mongoose.Types.ObjectId;
     status: 0 | 1;
     paymentDetails?: {
       razorpay_payment_id?: string | null;
@@ -33,6 +34,11 @@ interface PaymentType {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'expert',
         required: true,
+      },
+      postId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"post",
+        required: true
       },
       status: {
         type: Number,

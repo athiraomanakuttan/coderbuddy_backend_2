@@ -35,7 +35,7 @@ class ChatController {
             res.status(400).json({status:false,message:"user data is empty, unable to create new chat"})
             return
         }
-         let { receiverId, message,chatId } = req.body;
+         let { receiverId, message,chatId , postId } = req.body;
          try {
             if(!chatId){
                 const userDetails = await this.userService.getUserById(senderId)
@@ -62,7 +62,7 @@ class ChatController {
                         profile_pic: expertDetails.profilePicture || 'https://res.cloudinary.com/dicelwy0k/image/upload/v1734162966/k1hkdcipfx9ywadit4lr.png'
                     }
                 ] as ParticipentsType[]
-                const newChat = await this.chatService.createNewChat(participents)
+                const newChat = await this.chatService.createNewChat(participents, postId)
                 if(!newChat){
                     res.status(400).json({status:false,messsage:"unable to create chat"})
                     return
@@ -98,11 +98,10 @@ class ChatController {
             res.status(400).json({status:false,message:"user data is empty, unable to create new chat"})
             return
         }
-         let { expertId } = req.body;
+         let { expertId, postId } = req.body;
          try {
-                const existChat =  await this.chatService.getChatById(expertId,senderId)
+                const existChat =  await this.chatService.getChatById(expertId,senderId,postId)
                 if(existChat && existChat.length){
-                    console.log("inside",existChat)
                     res.status(200).json({status:true, message:"data fetched sucessfully", data:existChat})
                     return;
                 }
@@ -130,7 +129,7 @@ class ChatController {
                         profile_pic: expertDetails.profilePicture || 'https://res.cloudinary.com/dicelwy0k/image/upload/v1734162966/k1hkdcipfx9ywadit4lr.png'
                     }
                 ] as ParticipentsType[]
-                const newChat = await this.chatService.createNewChat(participents)
+                const newChat = await this.chatService.createNewChat(participents, postId)
                 res.status(200).json({status:true,message:"data fetched sucessfully",data:newChat});
                 if(!newChat){
                     res.status(400).json({status:false,messsage:"unable to create chat"})

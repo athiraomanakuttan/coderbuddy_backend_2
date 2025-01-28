@@ -1,8 +1,8 @@
 import { Payment, PaymentType } from "../../../model/expert/paymentModel"
 import PaymentRepository from "../../expert/paymentRepository"
 class PaymentRepositoryImplimentation implements PaymentRepository{
-    async createPayment(title: string, amount: number, userId: string, expertId: string): Promise<PaymentType | null> {
-        const response =  await Payment.create({title,amount,userId,expertId})
+    async createPayment(title: string, amount: number, userId: string, expertId: string, postId: string): Promise<PaymentType | null> {
+        const response =  await Payment.create({title,amount,userId,expertId, postId})
         return response;
     }
 
@@ -22,7 +22,7 @@ class PaymentRepositoryImplimentation implements PaymentRepository{
 
     async updatePaymentById(id: string, status: number, razorpayId:string | null): Promise<PaymentType | null> {
 
-        console.log("===============", id,status,razorpayId)
+        
         const data = await Payment.findOneAndUpdate(
             { _id: id },
             { 

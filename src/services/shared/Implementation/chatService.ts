@@ -22,6 +22,7 @@ class ChatService implements IChatService{
     
             return {
                 chatId: chat._id?.toString() || '',
+                postId : chat.postId?.toString() || '',
                 participant: otherParticipant,
                 lastMessageAt: chat.updatedAt || new Date()
             };
@@ -30,8 +31,8 @@ class ChatService implements IChatService{
         return formattedChatList;
     }
 
-    async createNewChat(participents:ParticipentsType[]):Promise<ChatType | null>{
-       const newChat =  await this.chatRepository.createChat(participents)
+    async createNewChat(participents:ParticipentsType[], postId:string):Promise<ChatType | null>{
+       const newChat =  await this.chatRepository.createChat(participents, postId)
        return newChat
     }
 
@@ -44,8 +45,8 @@ class ChatService implements IChatService{
         const chatDetails = await this.chatRepository.getChatDetails(chatId)
         return chatDetails;
     }
-    async getChatById(expertId:string,userId:string):Promise<ChatType[] | null>{
-        const chatData =  await this.chatRepository.getChatDataById(expertId,userId);
+    async getChatById(expertId:string,userId:string,postId: string):Promise<ChatType[] | null>{
+        const chatData =  await this.chatRepository.getChatDataById(expertId,userId,postId);
         return chatData
     }
     

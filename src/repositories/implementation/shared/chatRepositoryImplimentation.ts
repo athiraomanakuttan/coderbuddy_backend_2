@@ -8,7 +8,7 @@ class ChatRepositoryImplimenation implements ChatRepository{
     async getChatList(id: string): Promise<ChatType[] | null> {
         const chatData = await Chat.find({'participents.id': id})
             .sort({ updatedAt: -1 })
-            .lean(); // Using lean() for better performance since we don't need the full mongoose document
+            .lean();
         return chatData;
     }
 async createConversation(chatId: string, senderId: string, receiverId: string, message: string): Promise<ChatType | null> {
@@ -29,9 +29,10 @@ async createConversation(chatId: string, senderId: string, receiverId: string, m
       return chat;
 }
 
-async createChat(participents: ParticipentsType[]): Promise<ChatType | null> {
+async createChat(participents: ParticipentsType[], postId: string): Promise<ChatType | null> {
     const newChat = new Chat({
         participents: participents,
+        postId: postId,
         messages: [] 
     });
 
@@ -45,11 +46,11 @@ async getChatDetails(chatId: string): Promise<ChatType | null> {
     return chatDetails
 }
 
-async getChatDataById(expertId: string, userId: string): Promise<ChatType[] | null> {
+async getChatDataById(expertId: string, userId: string, postId: string): Promise<ChatType[] | null> {
     const chatData = await Chat.find({
         'participents.id': { 
             $all: [expertId, userId] 
-        }}) 
+        }, postId: postId}) 
     .sort({ updatedAt: -1 })
     .lean(); 
     

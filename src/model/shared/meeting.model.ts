@@ -1,4 +1,4 @@
-import mongoose, {  Document } from 'mongoose'
+import mongoose from 'mongoose'
 
 interface MeetingUserType {
     _id: string;
@@ -6,6 +6,7 @@ interface MeetingUserType {
     meetingDate: Date;
     expertId: string;
     userId: string;
+    postId: mongoose.Types.ObjectId;
     status: number;
     createdAt: Date;
     updatedAt: Date;
@@ -29,6 +30,11 @@ const meetingSchema = new mongoose.Schema<MeetingUserType>({
         type: String,
         required: true,
         ref: 'user'
+    },
+    postId:{
+        type : mongoose.Schema.Types.ObjectId,
+        ref:"post",
+        required:true
     },
     status: {
         type: Number,

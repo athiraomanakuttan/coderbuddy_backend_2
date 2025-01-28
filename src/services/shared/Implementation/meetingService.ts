@@ -7,8 +7,8 @@ class MeetingService implements IMeetingService{
         this.meetingRepositories = meetingRepositories;
     }
 
-    async createMeetingLink(title: string, meetingDate: string, expertId: string, userId: string): Promise<MeetingUserType | null> {
-        const data = await this.meetingRepositories.createMeeting(title,meetingDate,expertId,userId)
+    async createMeetingLink(title: string, meetingDate: string, expertId: string, userId: string,postId: string): Promise<MeetingUserType | null> {
+        const data = await this.meetingRepositories.createMeeting(title,meetingDate,expertId,userId, postId)
         return data
     }
 

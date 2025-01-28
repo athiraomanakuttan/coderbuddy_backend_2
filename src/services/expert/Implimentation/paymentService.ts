@@ -7,8 +7,8 @@ class PaymentService implements IPaymentService{
     constructor(paymentRepository:PaymentRepository){
         this.paymentRepository = paymentRepository
     }
-    async createMeetingLink(title:string, amount:number, userId:string, expertId:string):Promise<PaymentType | null>{
-        const response = await this.paymentRepository.createPayment(title,amount,userId,expertId)
+    async createMeetingLink(title:string, amount:number, userId:string, expertId:string, postId : string):Promise<PaymentType | null>{
+        const response = await this.paymentRepository.createPayment(title,amount,userId,expertId,postId)
         return response
     } 
 

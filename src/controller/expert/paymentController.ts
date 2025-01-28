@@ -20,7 +20,7 @@ class PaymentController{
 
     async createPayment(req:CustomType,res:Response):Promise<void>{
         const expertId = req.id
-        const {title , amount , userId} = req.body
+        const {title , amount , userId, postId} = req.body
         if(!title || !userId || !expertId){
              res.status(400).json({status:false,message:"unable to create meeting link"})
              return 
@@ -30,7 +30,7 @@ class PaymentController{
             return
         }
         try {
-            const response =  await this.paymentService.createMeetingLink(title,Number(amount),userId,expertId)
+            const response =  await this.paymentService.createMeetingLink(title,Number(amount),userId,expertId, postId)
             if(!response){
                 res.status(400).json({status:false,message:"unable to create meeting link"})
                 return
