@@ -10,6 +10,11 @@ class MeetingRepositoryImplimentation  implements MeetingRepositories{
         const meetinngData =  await MeetingUser.find({$or:[{userId : userId},{expertId: userId}], status:status})
         return meetinngData;
     }
+
+    async getMeetingDetailById(meetingId: string, userId: string): Promise<MeetingUserType | null> {
+        const meetingData =  await MeetingUser.findOne({_id: meetingId, $or:[{userId : userId},{expertId: userId}]})
+        return meetingData
+    }
 }
 
 export default MeetingRepositoryImplimentation

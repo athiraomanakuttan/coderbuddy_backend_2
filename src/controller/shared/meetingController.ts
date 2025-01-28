@@ -54,6 +54,23 @@ class MeetingController {
     }
 
   }
+
+  async getMeetingById(req:CustomType , res: Response):Promise<void>{
+      const userId = req.id
+      const {meetingId} = req.params
+      try {
+          const meetingData =  await this._meetingService.getMeetingDataById(meetingId, userId as string)
+          console.log("meetingData", meetingData)
+          if(meetingData){
+            res.status(200).json({status: true ,  message:"meeting data fetched sucessfully", data:meetingData})
+          }
+          else
+          res.status(200).json({status: true ,  message:"meeting data fetched sucessfully", data:null})
+
+      } catch (error) {
+        res.status(500).json({ status : false , message:"error while fetching data"})
+      }
+  }
 }
 
 export default MeetingController;
