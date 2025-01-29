@@ -61,7 +61,7 @@ class UserRepositoryImplementation implements UserRepository{
         try {
             const postDetails = await Post.aggregate([
                 { $match: searchConditions },
-                { $sort: { createdAt: -1 } },
+                { $sort: { updatedAt: -1 } },
                 { $skip: skip },
                 { $limit: limit },
                 {
@@ -193,6 +193,11 @@ class UserRepositoryImplementation implements UserRepository{
     async findExpertById(id: string): Promise<ExpertDocument | null> {
         const data = await Expert.findOne({_id : id , status: 1 , isVerified  : 1})
         return data
+    }
+    async updatePostData(postId: string, postData: PostType): Promise<PostType | null> {
+        
+        const updatedData = await Post.findOneAndUpdate({_id: postId},{$set:postData},{new: true})
+        return updatedData
     }
 
     

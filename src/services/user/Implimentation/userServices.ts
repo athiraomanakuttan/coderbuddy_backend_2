@@ -72,6 +72,11 @@ class UserService implements IUserService{
         return data;
     }
 
+    async updatePostDetails(postId: string, postData: PostType): Promise<PostType | null> {
+        const data =  await this.userRepository.updatePostData(postId, postData)
+        return data;
+    }
+
 }
 
 export default UserService;

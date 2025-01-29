@@ -147,7 +147,42 @@ async searchPost(req:CustomRequest , res:Response):Promise<void>{
 }
 
 
+async updatePost(req: CustomRequest, res:Response):Promise<void>{
+    const {comments,...data}  = req.body
+    const file = req.file;
+        if (!data._id) {
+            res.status(403).json({ 
+                status: false, 
+                message: "post Id is empty" 
+            });
+            return;
+        }
+        let uploadedFileUrl = data.uploads;
+        if (file) {
+            try {
+                uploadedFileUrl = await uploadImageToCloudinary(file.buffer);
+            } catch (uploadError) {
+                res.status(500).json({ 
+                    status: false, 
+                    message: "Failed to upload image" 
+                });
+                return;
+            }
+        }
+        const postData = {
+            ...data,
+            uploads: uploadedFileUrl
+        };
 
+       try {
+        const updatedData =  await this.postService.updatePostDetails(data._id, postData)
+        if(updatedData)
+         res.status(200).json({status: true, message:"post updated"})
+       } catch (error) {
+        res.status(500).json({status: false, message:"unable to update post"})
+        
+       }
+}
 
 
 }

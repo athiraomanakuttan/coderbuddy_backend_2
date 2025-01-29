@@ -17,6 +17,7 @@ interface IUserService{
     } | null> 
     updatePostStatus(userId : string, postId:string,status:number):Promise<PostType | null>
     getExpertById(id: string):Promise<ExpertDocument | null >
+    updatePostDetails(postId: string, postdata:PostType):Promise<PostType | null>
 }
 
 export default IUserService

@@ -20,6 +20,7 @@ interface UserRepository {
     countPosts(id:string,status:string  | null):Promise<number>
     updatePostStatus(userId :  string, id:string, status:number):Promise<PostType | null>
     findExpertById(id:string):Promise<ExpertDocument | null >
+    updatePostData(postId: string, postData:PostType):Promise<PostType | null>
 
 }
 
