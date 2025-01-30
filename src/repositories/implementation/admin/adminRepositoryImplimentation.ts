@@ -15,9 +15,9 @@ async getExpertDetails(): Promise<ExpertDocument[] | ExpertDocument | null> {
     return expertData
     
 }
-async getExpertPendingDetails(skip: number = 0, limit: number = 10): Promise<ExpertDocument[]> {
+async getExpertPendingDetails(status:number = 0 ,skip: number = 0, limit: number = 10): Promise<ExpertDocument[]> {
     try {
-        return await Expert.find({isMeetingScheduled : 0 , isVerified : 0})
+        return await Expert.find({isMeetingScheduled : 0 , isVerified : status})
             .skip(skip)
             .limit(limit)
             .sort({ createdAt: -1 }); 
@@ -27,8 +27,8 @@ async getExpertPendingDetails(skip: number = 0, limit: number = 10): Promise<Exp
     }
 }
 
-async countExpertPendingDetails(): Promise<number> {
-    const count = await Expert.find({status:0}).countDocuments();
+async countExpertPendingDetails(status: number = 0): Promise<number> {
+    const count = await Expert.find({status:status}).countDocuments();
     return count;
 }
 
@@ -56,6 +56,10 @@ async getUserCount(): Promise<number> {
     return count;
 }
 
+async updateExpertStatus(expertId: string, status: number): Promise<ExpertDocument | null> {
+    const response = await Expert.findOneAndUpdate({_id: expertId}, {$set: { status: status}})
+    return response;
+}
 
 }
 

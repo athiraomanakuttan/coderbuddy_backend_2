@@ -29,6 +29,7 @@ router.put('/changeUserStatus',authenticationMiddleware  as any,(req,res)=> admi
 router.get('/expert-details', authenticationMiddleware  as any, (req,res)=> adminController.getExpertData(req,res) )
 router.get('/get-expert/:id',authenticationMiddleware  as any, (req,res)=> adminController.getExpertDetails(req,res))
 router.put('/reject-expert',authenticationMiddleware  as any, (req,res)=> adminController.changeExpertStatus(req,res))
+router.put('/change-expert-status', authenticationMiddleware as any, (req,res)=> adminController.enableDisableStatus(req,res))
 
 router.post('/create-meeting-link',authenticationMiddleware  as any , (req,res)=> meetingController.createMeeting(req,res))
 router.post('/get-meeting-details', authenticationMiddleware  as any , (req,res)=> meetingController.getMeetingDetails(req,res))

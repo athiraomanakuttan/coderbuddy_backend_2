@@ -1,5 +1,4 @@
 import { Request,Response } from "express"
-import AdminService from "../../services/admin/Implimentation/adminService"
 import JwtUtility from "../../utils/jwtUtility"
 import { UserType } from "../../model/user/userModel"
 import { ExpertDocument } from "../../model/expert/expertModel"
@@ -73,10 +72,11 @@ class AdminController{
         try {
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 10;
+            const status = parseInt(req.query.status as string) || 0
     
             const skip = (page - 1) * limit;
     
-            const { experts, total } = await this.adminService.getExpertPendingList(skip, limit);
+            const { experts, total } = await this.adminService.getExpertPendingList(status,skip, limit);
     
             const totalPages = Math.ceil(total / limit);
     
@@ -155,6 +155,23 @@ class AdminController{
         }
     }
 
+    //enable and disable expert
+    async enableDisableStatus(req: Request,res: Response):Promise<void>{
+        const {expertId, status}= req.body
+        if(!expertId || Number(status)>1 || Number(status)<0){
+            res.status(400).json({ status: false, message:"expert id is empty or invalid status" })
+            return
+        }
+
+        try {
+            const changedStatus =  await this.adminService.updateExpertStatus(expertId, Number(status))
+            if(changedStatus)
+                res.status(200).json({status: true, message:"status updated", data:changedStatus})
+        } catch (error) {
+            res.status(500).json({ status: false, message:"unable to change status" })
+            
+        }
+    }
     
     
 

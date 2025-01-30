@@ -1,19 +1,32 @@
 import { Payment, PaymentType } from "../../../model/expert/paymentModel"
 import PaymentRepository from "../../expert/paymentRepository"
+export interface PaymentListResponseType{
+    paymentDetails: PaymentType[],
+    totalRecord: number
+}
 class PaymentRepositoryImplimentation implements PaymentRepository{
     async createPayment(title: string, amount: number, userId: string, expertId: string, postId: string): Promise<PaymentType | null> {
         const response =  await Payment.create({title,amount,userId,expertId, postId})
         return response;
     }
 
-    async getPaymentList(userId: string): Promise<PaymentType[] | null> {
+    async getPaymentList(userId: string, page: number = 1, count :number = 5): Promise<PaymentListResponseType | null> {
+        const skip = (page - 1) * count
         const paymentDetails = await Payment.find({
             $or: [
                 { userId: userId },
                 { expertId: userId }
             ]
-        }).sort({createdAt:-1});
-        return paymentDetails;
+        }).sort({createdAt:-1}).skip(skip).limit(count);
+
+        const totalRecord = await Payment.countDocuments({
+            $or: [
+                { userId: userId },
+                { expertId: userId }
+            ]
+        })
+
+        return {paymentDetails, totalRecord};
     }
 
     async getPaymentById(id: string): Promise<PaymentType | null> {

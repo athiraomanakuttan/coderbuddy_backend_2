@@ -39,6 +39,7 @@ class AdminService implements IAdminService {
     }
 
     async getExpertPendingList(
+        status : number,
         skip: number = 0,
         limit: number = 10
     ): Promise<{
@@ -47,9 +48,10 @@ class AdminService implements IAdminService {
     }> {
         try {
             const totalExperts =
-                await this.adminRepository.countExpertPendingDetails();
+                await this.adminRepository.countExpertPendingDetails(status);
 
             const expertData = await this.adminRepository.getExpertPendingDetails(
+                status,
                 skip,
                 limit
             );
@@ -85,6 +87,11 @@ class AdminService implements IAdminService {
     async countTotalUsers(): Promise<number> {
         const count = await this.adminRepository.getUserCount();
         return count;
+    }
+
+    async updateExpertStatus(expertId: string, status: number): Promise<ExpertDocument | null> {
+        const response = await this.adminRepository.updateExpertStatus(expertId, status)
+        return response;
     }
 }
 export default AdminService;

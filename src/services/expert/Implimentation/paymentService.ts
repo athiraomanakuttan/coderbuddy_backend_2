@@ -1,5 +1,6 @@
 import { PaymentType } from "../../../model/expert/paymentModel";
 import PaymentRepository from "../../../repositories/expert/paymentRepository"
+import { PaymentListResponseType } from "../../../repositories/implementation/expert/paymentRepositoryImplimentation";
 import IPaymentService from "../IPaymentService";
 
 class PaymentService implements IPaymentService{
@@ -12,8 +13,9 @@ class PaymentService implements IPaymentService{
         return response
     } 
 
-    async getPaymentList(userId:string):Promise<PaymentType[] | null>{
-        const paymentDetails =  await this.paymentRepository.getPaymentList(userId)
+    async getPaymentList(userId:string, page : number = 1 , count: number = 5 ):Promise<PaymentListResponseType | null>{
+        
+        const paymentDetails =  await this.paymentRepository.getPaymentList(userId, page, count)
         return paymentDetails
     }
 
