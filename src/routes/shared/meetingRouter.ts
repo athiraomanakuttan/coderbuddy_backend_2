@@ -12,5 +12,6 @@ const meetingController =  new MeetingController(meetingService)
 router.post('/create-meeting', authenticationMiddleware as any , (req,res)=>meetingController.createMeetingLink(req,res))
 router.get('/get-meeting-data', authenticationMiddleware as any, (req,res)=>meetingController.getMeetingDetails(req,res))
 router.get('/get-meeting/:meetingId', authenticationMiddleware as any, (req,res)=> meetingController.getMeetingById(req,res))
+router.get('/get-user-meetings', authenticationMiddleware as any , (req,res)=> meetingController.getUserMeetings(req,res))
 
 export default router;

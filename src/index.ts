@@ -9,6 +9,7 @@ import adminRouter from './routes/admin/adminRouter'
 import chatRouter from './routes/shared/chatRouter'
 import paymentRouter from './routes/shared/paymentRouter'
 import meetingRouter from './routes/shared/meetingRouter'
+import concernRouter from './routes/shared/concernRouter'
 import connectDb from './config/dbConfig';
 import session from 'express-session';
 import cookieParser from "cookie-parser"
@@ -45,5 +46,6 @@ app.use('/api/admin/', adminRouter)
 app.use('/api/chat/', chatRouter)
 app.use('/api/payment/', paymentRouter)
 app.use('/api/meeting/', meetingRouter)
+app.use('/api/concern',concernRouter)
 
 server.listen(process.env.PORT, () => console.log('server connected'));

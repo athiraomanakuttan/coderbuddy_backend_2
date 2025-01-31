@@ -1,4 +1,5 @@
 import { MeetingUserType, MeetingUser } from "../../../model/shared/meeting.model";
+import { CustomMeetingDataType } from "../../../types/type";
 import MeetingRepositories from "../../shared/meetingRepositories";
 
 class MeetingRepositoryImplimentation  implements MeetingRepositories{
@@ -15,6 +16,16 @@ class MeetingRepositoryImplimentation  implements MeetingRepositories{
         const meetingData =  await MeetingUser.findOne({_id: meetingId, $or:[{userId : userId},{expertId: userId}]})
         return meetingData
     }
+
+    async getUserMeetings(userId: string, participantId: string): Promise<CustomMeetingDataType[] | null> {
+        const meetings = await MeetingUser.find({
+            $or: [
+                { expertId: userId, userId: participantId },
+                { expertId: participantId, userId: userId }
+            ]
+        }).select('title _id');
+        return meetings;
+    }    
 }
 
 export default MeetingRepositoryImplimentation

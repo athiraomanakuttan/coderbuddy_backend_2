@@ -7,3 +7,8 @@ export type basicType={
 export interface CustomType extends Request{
     id?:string
 }
+
+export interface CustomMeetingDataType{
+    title: string,
+    _id: string
+}

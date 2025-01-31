@@ -71,6 +71,27 @@ class MeetingController {
         res.status(500).json({ status : false , message:"error while fetching data"})
       }
   }
+
+  async getUserMeetings(req: CustomType, res: Response):Promise<void>{
+    const userId = req.id
+    const {participentId}= req.query
+    if(!userId || !participentId){
+      res.status(400).json({status: false, message:"participents id is missing"})
+      return
+    }
+try {
+  const meetingData = await this._meetingService.getUserMeetings(userId,participentId as string)
+  if(meetingData){
+    res.status(200).json({status: true, message:"data fetched sucessfull", data: meetingData})
+  }
+  
+} catch (error) {
+  console.log("error", error)
+  res.status(500).json({status: false, message:"unable to fetch the meeting details"})
+  
+}  
+}
+
 }
 
 export default MeetingController;
