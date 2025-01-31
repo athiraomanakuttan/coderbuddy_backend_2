@@ -37,7 +37,6 @@ class ConcernController{
             }
         } catch (error) {
             res.status(500).json({status: false, message:"error while creating concern"})
-            
         }
     }
     
