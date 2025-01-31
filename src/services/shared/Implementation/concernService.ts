@@ -12,6 +12,11 @@ class ConcernService implements IConcernService{
         const concernData = await this._concernRepositoty.createConcern(data)
         return concernData
     }
+    
+    async getUserConcers(userId: string, status: number): Promise<ConcernDataType[] | null> {
+        const concernData = await this._concernRepositoty.getUserConcern(userId, status)
+        return concernData
+    }
 }
 
 export default ConcernService

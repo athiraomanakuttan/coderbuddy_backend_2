@@ -39,6 +39,27 @@ class ConcernController{
             res.status(500).json({status: false, message:"error while creating concern"})
         }
     }
+
+    //get concern data of each user 
+
+    async getConcernData(req: CustomType, res: Response):Promise<void>{
+        const userId = req.id
+        const {status}= req.query
+
+        if(!userId || Number(status)<0 || Number(status)>2){
+            res.status(400).json({status: false, message:"userId or status is empty"})
+            return;
+        }
+        try {
+            const concernData = await this._concernService.getUserConcers(userId,Number(status))
+            if(concernData){
+                res.status(200).json({status: true, message:"data fetched suceesfully", data:concernData})
+            }
+        } catch (error) {
+            res.status(500).json({status: false, message:"unable to get the concern data"})
+            
+        }
+    }
     
 }
 

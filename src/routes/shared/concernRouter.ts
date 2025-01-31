@@ -11,6 +11,6 @@ const concernController = new ConcernController(concernService)
 
 
 router.post('/create-concern', authenticationMiddleware as any, (req,res)=>concernController.createConcern(req,res))
-
+router.get('/get-user-concern', authenticationMiddleware as any, (req,res)=>concernController.getConcernData(req,res))
 
 export default router;
