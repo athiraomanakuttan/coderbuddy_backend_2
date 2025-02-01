@@ -1,5 +1,6 @@
 import { ChatListResponse, ChatType, ParticipentsType } from "../../../model/shared/chat.model"
 import { ConversationType } from "../../../model/shared/message.model"
+import { PostType } from "../../../model/user/postModel"
 import ChatRepository from "../../../repositories/shared/chatRepositories"
 import IChatService from "../IChatService"
 
@@ -9,28 +10,11 @@ class ChatService implements IChatService{
         this.chatRepository = chatRepository
     }
  
-    async getUserChatList(id: string): Promise<ChatListResponse[] | null> {
+    async getUserChatList(id: string): Promise<ChatType[] | null> {
         const chatList = await this.chatRepository.getChatList(id);
-        if (!chatList) return null;
-    
-        const formattedChatList = chatList.map(chat => {
-            const otherParticipant = chat.participents.find(
-                participant => participant.id.toString() !== id
-            );
-    
-            if (!otherParticipant) return null;
-    
-            return {
-                chatId: chat._id?.toString() || '',
-                postId : chat.postId?.toString() || '',
-                participant: otherParticipant,
-                lastMessageAt: chat.updatedAt || new Date()
-            };
-        }).filter((chat): chat is ChatListResponse => chat !== null);
-    
-        return formattedChatList;
+        return chatList;
     }
-
+    
     async createNewChat(participents:ParticipentsType[], postId:string):Promise<ChatType | null>{
        const newChat =  await this.chatRepository.createChat(participents, postId)
        return newChat

@@ -6,9 +6,11 @@ class ChatRepositoryImplimenation implements ChatRepository{
 
     
     async getChatList(id: string): Promise<ChatType[] | null> {
-        const chatData = await Chat.find({'participents.id': id})
-            .sort({ updatedAt: -1 })
-            .lean();
+        const chatData = await Chat.find({ 'participents.id': id })
+        .populate("postId")
+        .sort({ updatedAt: -1 })
+        .lean();
+
         return chatData;
     }
 async createConversation(chatId: string, senderId: string, receiverId: string, message: string): Promise<ChatType | null> {

@@ -1,5 +1,6 @@
 // chat.model.ts
 import mongoose from "mongoose";
+import { PostType } from "../user/postModel";
 
 export type ParticipentsType = {
     id: string,
@@ -19,7 +20,7 @@ export type ChatType = {
 export type ChatListResponse = {
     chatId: string;
     participant: ParticipentsType;
-    postId:  string;
+    postData ?:  PostType | null
     lastMessageAt: Date;
 }
 
@@ -44,7 +45,7 @@ const chatSchema = new mongoose.Schema({
     }],
     postId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'post',
+        ref:'Post',
         required: true
     },
     messages: [{
