@@ -13,6 +13,7 @@ class ConcernController{
     async createConcern(req: CustomType,res: Response):Promise<void>{
         const userId= req.id
         const {data}= req.body
+        console.log("data", data)
         try {
             if(!userId){
                 res.status(400).json({status: false, message:"userId is empty"})
@@ -36,6 +37,7 @@ class ConcernController{
                 res.status(200).json({status: false, message:"concer created sucessfully"})
             }
         } catch (error) {
+            console.log("error", error)
             res.status(500).json({status: false, message:"error while creating concern"})
         }
     }

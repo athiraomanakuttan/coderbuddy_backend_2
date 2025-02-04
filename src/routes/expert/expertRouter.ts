@@ -11,8 +11,10 @@ import MeetingService from "../../services/expert/Implimentation/meetingService"
 import MeetingRepositoryImplimentation from "../../repositories/implementation/expert/meetingRepositoryImplimentation";
 import MeetingController from "../../controller/expert/meetingController";
 import PaymentRepositoryImplimentation from "../../repositories/implementation/expert/paymentRepositoryImplimentation";
+import UserRepositoryImplimentation from "../../repositories/implementation/user/userRepositoryImplemenatation";
 import PaymentService from "../../services/expert/Implimentation/paymentService";
 import PaymentController from "../../controller/expert/paymentController";
+import UserService from "../../services/user/Implimentation/userServices";
 // import
 
 const router = Router();
@@ -20,14 +22,16 @@ const router = Router();
 const expertRepositoryImplementation = new ExpertRepositoryImplementation();
 const meetingRepositoryImplimentation = new MeetingRepositoryImplimentation();
 const paymentRepositoryImplimentation = new PaymentRepositoryImplimentation()
+const userRepositoryImplimentation = new UserRepositoryImplimentation()
 
 // service
 const expertService = new ExpertService(expertRepositoryImplementation);
 const meetingService = new MeetingService(meetingRepositoryImplimentation)
 const paymentService =  new PaymentService(paymentRepositoryImplimentation)
+const userService =  new UserService(userRepositoryImplimentation)
 
 //constroller
-const expertController = new ExpertController(expertService);
+const expertController = new ExpertController(expertService,userService);
 const profileController = new ProfileController(expertService)
 const postController = new PostController(expertService)
 const meetingController = new MeetingController(meetingService)
@@ -55,7 +59,7 @@ router.post('/meetings/join',  (req,res)=> meetingController.verifyMeeting(req,r
 
 router.post('/create-payment-link', authenticationMiddleware as any, (req,res)=>paymentController.createPayment(req,res))
 
-
+router.get('/get-user-profile/:id', authenticationMiddleware as any, (req,res)=> expertController.getUserProfileById(req,res))
 
 export default router;
     

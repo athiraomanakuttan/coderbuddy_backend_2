@@ -37,8 +37,9 @@ class PaymentController{
             }
             res.status(200).json({status:true,message:"meeting link created sucessfully", data:response})
         } catch (error) {
+            console.log("error", error)
             res.status(500).json({status:false,message:"unable to create meeting link"})
-        }
+        }   
     }
 
     async getPaymentsList(req:CustomType, res:Response):Promise<void>{

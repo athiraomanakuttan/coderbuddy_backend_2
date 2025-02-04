@@ -16,8 +16,8 @@ const concernSchema = new mongoose.Schema<ConcernDataType>({
     title: { type: String, required: true },
     description: { type: String, required: true },
     userId: { type: String, required: true },
-    concernMeetingId: { type: mongoose.Schema.Types.ObjectId, ref: "meeting" },
-    concernUserId: { type: String },
+    concernMeetingId: { type: mongoose.Schema.Types.ObjectId, ref: "meeting" , default:null},
+    concernUserId: { type: String, default:null },
     status: { type: Number, enum: [0, 1, 2], default: 0 }
 },{timestamps: true});
 

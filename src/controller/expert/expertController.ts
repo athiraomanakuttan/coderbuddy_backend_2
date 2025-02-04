@@ -6,11 +6,14 @@ import { ExpertDocument } from "../../model/expert/expertModel";
 import MailUtility from "../../utils/mailUtility";
 import OtpUtility from "../../utils/otpUtility";
 import IExpertService from "../../services/expert/IExpertService";
+import IUserService from "../../services/user/IUserService";
 
 class ExpertController{ 
      private expertServece : IExpertService
-    constructor(expertServece:IExpertService){
+     private _userService  : IUserService
+    constructor(expertServece:IExpertService, userService : IUserService){
         this.expertServece = expertServece
+        this._userService = userService
      }
 
     async signupPost(req: Request, res: Response):Promise<void>{
@@ -185,7 +188,7 @@ class ExpertController{
       const accessToken = JwtUtility.generateAccessToken({
         email: email,
         id: userData._id,
-      });
+      }); 
       const refreshToken = JwtUtility.generateRefreshToken({
         email: email,
         id: userData._id,
@@ -205,6 +208,22 @@ class ExpertController{
       console.log("error occured during creating user", error)
       res.status(500).json({status:false, message:"unable to signup. Try again"})
     }
+     }
+
+     async getUserProfileById(req:Request, res: Response):Promise<void>{
+      const userId = req.params.id
+      try {
+        if(!userId){
+        res.status(400).json({ status: false, message:"user Id is empty"})
+        return
+        }
+
+        const userData  =  await this._userService.getUserById(userId)
+        if(userData)
+          res.status(200).json({status: true, message:"data fetched sucessfull", data: userData})
+      } catch (error) {
+        res.status(500).json({ status: false, message:"unable to fetch user Data"})
+      }
      }
 
     
