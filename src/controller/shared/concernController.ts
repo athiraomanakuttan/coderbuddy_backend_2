@@ -3,6 +3,7 @@ import { Response, Request } from "express";
 import IConcernService from "../../services/shared/IConcernService"
 import { CustomType } from "../../types/type";
 import { ConcernDataType } from "../../model/shared/concern.model";
+import { uploadImageToCloudinary, uploadVideoToCloudinary } from "../../utils/uploadImageToCloudinary ";
 
 class ConcernController{
     private _concernService: IConcernService
@@ -12,8 +13,8 @@ class ConcernController{
 
     async createConcern(req: CustomType,res: Response):Promise<void>{
         const userId= req.id
-        const {data}= req.body
-        console.log("data", data)
+        const data = req.body;
+        const file = req.file
         try {
             if(!userId){
                 res.status(400).json({status: false, message:"userId is empty"})
@@ -23,13 +24,27 @@ class ConcernController{
                 res.status(400).json({status: false, message:"Title or description is empty"})
                 return
             }
+            if (file) {
+                            console.log("File Details:", {
+                                fieldname: file.fieldname,
+                                originalname: file.originalname,
+                                mimetype: file.mimetype,
+                                size: file.size
+                            });
+                            
+                            const cloudinaryUrl = await uploadVideoToCloudinary(file.buffer);
+                            data.video = cloudinaryUrl; 
+                            
+                        }
+
 
             const concernData = {
                 "title" : data.title,
                 "description":data.description,
                 "userId":userId,
                 "concernUserId":data.userId,
-                "concernMeetingId": data.meetingId
+                "concernMeetingId": data.meetingId,
+                "video": data.video
             } as ConcernDataType
 
             const newConcern =  await this._concernService.createConcern(concernData)

@@ -46,8 +46,6 @@ class ProfileController {
   async updateProfile(req: Request | any, res: Response): Promise<void> {
     const { _id, ...data } = req.body;
     const file  = req.file
-    console.log("row data", data)
-    console.log("file", file)
     if (!_id) {
       res
         .status(400)
