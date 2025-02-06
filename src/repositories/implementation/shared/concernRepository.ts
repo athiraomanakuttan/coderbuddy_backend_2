@@ -8,7 +8,7 @@ class ConcernRepository implements IConcernRepository{
     }
 
     async getUserConcern(userId: string, status: number): Promise<ConcernDataType[] | null> {
-        const concernData =  await Concern.find({userId: userId, status: status})
+        const concernData =  await Concern.find({userId: userId, status: status}).sort({createdAt: -1})
         return concernData;
     }
 }

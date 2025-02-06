@@ -44,6 +44,7 @@ class ConcernController{
                 "userId":userId,
                 "concernUserId":data.userId,
                 "concernMeetingId": data.meetingId,
+                "role": data.role,
                 "video": data.video
             } as ConcernDataType
 
