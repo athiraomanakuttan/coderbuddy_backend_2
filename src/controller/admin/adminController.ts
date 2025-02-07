@@ -172,7 +172,19 @@ class AdminController{
             
         }
     }
-    
+
+    //get user profile details by userId
+    async getUserDataById(req:Request, res:Response):Promise<void>{
+        const userId = req.params.id
+        try {
+            const userData =  await this.adminService.getUserById(userId)
+            if(userData)
+                res.status(200).json({status:true, message:"user data fetched sucessfully", data:userData})
+        } catch (error) {
+            console.log("error while fetcing user profile")
+            res.status(500).json({status: false, message:"unable to fetch user data"})
+        }
+    }    
     
 
 }
