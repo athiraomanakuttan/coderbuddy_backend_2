@@ -1,4 +1,5 @@
 import { Payment, PaymentType } from "../../../model/expert/paymentModel"
+import { Wallet, WalletDataType } from "../../../model/expert/wallet.model";
 import PaymentRepository from "../../expert/paymentRepository"
 export interface PaymentListResponseType{
     paymentDetails: PaymentType[],
@@ -46,6 +47,24 @@ class PaymentRepositoryImplimentation implements PaymentRepository{
         );
         return data;
     }
+    async getWalletByExpertId(expertId: string): Promise<WalletDataType | null> {
+        const walletDetails =  await Wallet.findOne({expertId : expertId})
+        return walletDetails
+    }
+
+    async createExpertWallet(data: WalletDataType): Promise<WalletDataType | null> {
+        const updatedWallet = await Wallet.findOneAndUpdate(
+            { expertId: data.expertId },  
+            { 
+                $inc: { amount: data.amount },  
+                $push: { transaction: { paymentId: data.transaction[0].paymentId, dateTime: new Date() } }  
+            },
+            { upsert: true, new: true } 
+        );
+        return updatedWallet;
+    }
+
+    
 }
 
 export default PaymentRepositoryImplimentation

@@ -1,4 +1,5 @@
 import { PaymentType } from "../../model/expert/paymentModel"
+import { WalletDataType } from "../../model/expert/wallet.model"
 import { PaymentListResponseType } from "../../repositories/implementation/expert/paymentRepositoryImplimentation"
 
 interface IPaymentService {
@@ -6,6 +7,8 @@ interface IPaymentService {
     getPaymentList(userId:string, page: number, count: number):Promise<PaymentListResponseType | null>
     getPaymentById(id:string):Promise<PaymentType | null>
     updatePaymentById(id: string, status: number, razorpayId:string | null): Promise<PaymentType | null>
+    getWalletByExpertId(expertId: string):Promise<WalletDataType | null>
+    createWallet(data:WalletDataType):Promise<WalletDataType | null>
 }
 
 export default IPaymentService

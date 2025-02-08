@@ -97,39 +97,60 @@ class PaymentController{
         }
     }
     
-    async verifyPayment(req:Request, res:Response):Promise<void>{
-
-        
-        const { 
-            razorpay_payment_id, 
-            razorpay_order_id, 
-            razorpay_signature,
-            paymentId
-        } = req.body;
-        console.log("razorpay_payment_id",razorpay_signature)
+    async verifyPayment(req: Request, res: Response): Promise<void> {
+        const { razorpay_payment_id, razorpay_order_id, razorpay_signature, paymentId } = req.body;
+    
+        console.log("razorpay_payment_id", razorpay_signature);
+    
         const generated_signature = crypto
-        .createHmac('sha256', process.env.RAZORPAY_SECRET_KEY!)
-        .update(razorpay_order_id + '|' + razorpay_payment_id)
-        .digest('hex');
-
-        console.log("generated_signature",generated_signature)
+            .createHmac('sha256', process.env.RAZORPAY_SECRET_KEY!)
+            .update(razorpay_order_id + '|' + razorpay_payment_id)
+            .digest('hex');
+    
+        console.log("generated_signature", generated_signature);
     
         if (generated_signature === razorpay_signature) {
-            await this.paymentService.updatePaymentById(paymentId,1,razorpay_payment_id)
-            
-            res.status(200).json({ 
+            // Update payment status to success
+            await this.paymentService.updatePaymentById(paymentId, 1, razorpay_payment_id);
+    
+            const paymentDetails = await this.paymentService.getPaymentById(paymentId);
+            if (paymentDetails) {
+                const expertId = paymentDetails.expertId;
+                const amountToAdd = paymentDetails.amount * 0.7;  
+    
+                let walletDetails = await this.paymentService.getWalletByExpertId(expertId.toString());
+    
+                if (!walletDetails) {
+                    walletDetails = await this.paymentService.createWallet({
+                        expertId: expertId.toString(),
+                        amount: amountToAdd,
+                        transaction: [{
+                            paymentId: paymentId,
+                            dateTime: new Date()
+                        }]
+                    });
+                } else {
+                    walletDetails.amount += amountToAdd;
+                    walletDetails.transaction.push({
+                        paymentId:paymentId,
+                        dateTime: new Date()
+                    });
+                }
+            }
+    
+            res.status(200).json({
                 status: 'success',
-                message: 'Payment verified successfully' 
+                message: 'Payment verified successfully'
             });
         } else {
-            await this.paymentService.updatePaymentById(paymentId,0,null)
-            res.status(400).json({ 
+            await this.paymentService.updatePaymentById(paymentId, 0, null);
+            res.status(400).json({
                 status: 'failed',
-                message: 'Payment verification failed' 
+                message: 'Payment verification failed'
             });
         }
     };
-
+    
 }
 
 export default PaymentController

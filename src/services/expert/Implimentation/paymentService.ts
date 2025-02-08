@@ -1,4 +1,5 @@
 import { PaymentType } from "../../../model/expert/paymentModel";
+import { WalletDataType } from "../../../model/expert/wallet.model";
 import PaymentRepository from "../../../repositories/expert/paymentRepository"
 import { PaymentListResponseType } from "../../../repositories/implementation/expert/paymentRepositoryImplimentation";
 import IPaymentService from "../IPaymentService";
@@ -25,6 +26,13 @@ class PaymentService implements IPaymentService{
 
     async updatePaymentById(id: string, status: number, razorpayId:string | null): Promise<PaymentType | null>{
         return await this.paymentRepository.updatePaymentById(id,status,razorpayId)
+    }
+
+    async getWalletByExpertId(expertId: string): Promise<WalletDataType | null> {
+        return await this.paymentRepository.getWalletByExpertId(expertId)
+    }
+    async createWallet(data:WalletDataType): Promise<WalletDataType | null> {
+        return await this.paymentRepository.createExpertWallet(data)
     }
 }
 export default PaymentService
