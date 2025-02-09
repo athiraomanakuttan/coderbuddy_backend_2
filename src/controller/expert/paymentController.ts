@@ -118,24 +118,16 @@ class PaymentController{
                 const expertId = paymentDetails.expertId;
                 const amountToAdd = paymentDetails.amount * 0.7;  
     
-                let walletDetails = await this.paymentService.getWalletByExpertId(expertId.toString());
-    
-                if (!walletDetails) {
-                    walletDetails = await this.paymentService.createWallet({
+                   const  walletDetails = await this.paymentService.createWallet({
                         expertId: expertId.toString(),
                         amount: amountToAdd,
                         transaction: [{
                             paymentId: paymentId,
+                            amount: amountToAdd,
                             dateTime: new Date()
                         }]
                     });
-                } else {
-                    walletDetails.amount += amountToAdd;
-                    walletDetails.transaction.push({
-                        paymentId:paymentId,
-                        dateTime: new Date()
-                    });
-                }
+               
             }
     
             res.status(200).json({
@@ -150,6 +142,25 @@ class PaymentController{
             });
         }
     };
+
+
+    //======================== walllet related  functions =================================
+    async getExpertWallet(req:CustomType, res:Response):Promise<void>{
+        const expertId   =  req.id
+        try {
+            if(!expertId){
+                res.status(401).json({status: false, message: "expert id is empty"})
+                return;
+            }
+
+            const walletData = await this.paymentService.getWalletByExpertId(expertId)
+            if(walletData){
+                res.status(200).json({status: true, message:"data fetched sucessfull", data:walletData})
+            }
+        } catch (error) {
+            
+        }
+    }
     
 }
 

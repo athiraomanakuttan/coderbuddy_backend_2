@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 interface TransactionType {
     paymentId: string,
+    amount: number,
     dateTime : string | Date
 }
 interface WalletDataType {
@@ -24,6 +25,10 @@ const walletSchema = new mongoose.Schema<WalletDataType>({
         paymentId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "payment",
+            required: true
+        },
+        amount:{
+            type: Number,
             required: true
         },
         dateTime: {

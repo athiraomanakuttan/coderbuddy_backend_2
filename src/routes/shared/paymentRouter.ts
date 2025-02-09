@@ -20,4 +20,6 @@ router.post('/create-order', authenticationMiddleware as any, )
 router.post('/create-order', authenticationMiddleware as any , (req,res)=>{ paymentController.createRazorpayOrder(req,res)})
 router.post('/verify', authenticationMiddleware as any, (req,res)=>paymentController.verifyPayment(req,res))
 
+
+
 export default router; 

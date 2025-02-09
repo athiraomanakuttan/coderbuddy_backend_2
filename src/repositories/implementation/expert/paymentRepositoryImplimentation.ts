@@ -57,7 +57,7 @@ class PaymentRepositoryImplimentation implements PaymentRepository{
             { expertId: data.expertId },  
             { 
                 $inc: { amount: data.amount },  
-                $push: { transaction: { paymentId: data.transaction[0].paymentId, dateTime: new Date() } }  
+                $push: { transaction: { paymentId: data.transaction[0].paymentId,amount: data.amount , dateTime: new Date() } }  
             },
             { upsert: true, new: true } 
         );
