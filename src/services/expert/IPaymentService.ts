@@ -4,7 +4,7 @@ import { PaymentListResponseType } from "../../repositories/implementation/exper
 
 interface IPaymentService {
     createMeetingLink(title:string, amount:number, userId:string, expertId:string,postId: string):Promise<PaymentType | null>
-    getPaymentList(userId:string, page: number, count: number):Promise<PaymentListResponseType | null>
+    getPaymentList(userId:string,status: number, page: number, count: number):Promise<PaymentListResponseType | null>
     getPaymentById(id:string):Promise<PaymentType | null>
     updatePaymentById(id: string, status: number, razorpayId:string | null): Promise<PaymentType | null>
     getWalletByExpertId(expertId: string):Promise<WalletDataType | null>

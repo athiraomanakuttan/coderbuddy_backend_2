@@ -30,7 +30,7 @@ class MeetingController {
 
   async getMeetingDetails(req: CustomType, res:Response):Promise<void>{
     const userId =  req.id;
-    const { status } = req.query;
+    const {page, limit, status } = req.query;
     if(!userId){
       res.status(400).json({status: false, message: "user id  is empty"});
       return
@@ -42,10 +42,9 @@ class MeetingController {
       }
     }
     try {
-      const meetingData =  await this._meetingService.getMeetingsById(userId,Number(status))
-      console.log("meetingData", meetingData)
+      const meetingData =  await this._meetingService.getMeetingsById(userId,Number(status),Number(page),Number(limit))
       if(meetingData){
-        res.status(200).json({ status : false, message:"Sucessfully fetched data", data:meetingData }) 
+        res.status(200).json({ status : false, message:"Sucessfully fetched data", data : {...meetingData} }) 
       }
     } catch (error) {
       console.log("error", error)

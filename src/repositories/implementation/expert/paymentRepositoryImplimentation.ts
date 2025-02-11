@@ -11,12 +11,14 @@ class PaymentRepositoryImplimentation implements PaymentRepository{
         return response;
     }
 
-    async getPaymentList(userId: string, page: number = 1, count :number = 5): Promise<PaymentListResponseType | null> {
+    async getPaymentList(userId: string, status: number = 0, page: number = 1, count :number = 5): Promise<PaymentListResponseType | null> {
         const skip = (page - 1) * count
+        console.log("status",status)
         const paymentDetails = await Payment.find({
+            status: status,
             $or: [
                 { userId: userId },
-                { expertId: userId }
+                { expertId: userId },
             ]
         }).sort({createdAt:-1}).skip(skip).limit(count);
 

@@ -44,14 +44,14 @@ class PaymentController{
 
     async getPaymentsList(req:CustomType, res:Response):Promise<void>{
         const userId = req.id
-        const {page, count}= req.query
+        const {status ,page, count}= req.query
         
         if(!userId){
             res.status(400).json({status:false, message:"user id is empty try again"})
             return
         }
         try {
-            const paymentDetails =  await this.paymentService.getPaymentList(userId, Number(page), Number(count))
+            const paymentDetails =  await this.paymentService.getPaymentList(userId, Number(status), Number(page), Number(count))
             if(paymentDetails)
             res.status(200).json({status:true, message:"data fetched sucessfully", data:paymentDetails})
                 

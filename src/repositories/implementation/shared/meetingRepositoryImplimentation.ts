@@ -1,5 +1,5 @@
 import { MeetingUserType, MeetingUser } from "../../../model/shared/meeting.model";
-import { CustomMeetingDataType } from "../../../types/type";
+import { CustomMeetingDataType, MeetingDataResponseType } from "../../../types/type";
 import MeetingRepositories from "../../shared/meetingRepositories";
 
 class MeetingRepositoryImplimentation  implements MeetingRepositories{
@@ -7,9 +7,11 @@ class MeetingRepositoryImplimentation  implements MeetingRepositories{
         return await MeetingUser.create({title, meetingDate, expertId, userId, postId});
     }
 
-    async getMeetingsById(userId: string, status: number): Promise<MeetingUserType[] | null> {
-        const meetinngData =  await MeetingUser.find({$or:[{userId : userId},{expertId: userId}], status:status})
-        return meetinngData;
+    async getMeetingsById(userId: string, status: number,page:number = 1, limit:number = 10): Promise<MeetingDataResponseType | null> {
+       const skip = (page -1 )* limit
+        const meetingData =  await MeetingUser.find({$or:[{userId : userId},{expertId: userId}], status:status}).sort({createdAt:-1}).skip(skip).limit(limit)
+        const dataCount = await MeetingUser.countDocuments({$or:[{userId : userId},{expertId: userId}], status:status})
+        return {meetingData,dataCount};
     }
 
     async getMeetingDetailById(meetingId: string, userId: string): Promise<MeetingUserType | null> {

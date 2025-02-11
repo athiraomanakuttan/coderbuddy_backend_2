@@ -14,9 +14,9 @@ class PaymentService implements IPaymentService{
         return response
     } 
 
-    async getPaymentList(userId:string, page : number = 1 , count: number = 5 ):Promise<PaymentListResponseType | null>{
+    async getPaymentList(userId:string, status:number = 0, page : number = 1 , count: number = 5 ):Promise<PaymentListResponseType | null>{
         
-        const paymentDetails =  await this.paymentRepository.getPaymentList(userId, page, count)
+        const paymentDetails =  await this.paymentRepository.getPaymentList(userId, status, page, count)
         return paymentDetails
     }
 

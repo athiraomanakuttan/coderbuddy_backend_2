@@ -61,7 +61,7 @@ class UserRepositoryImplementation implements UserRepository{
         try {
             const postDetails = await Post.aggregate([
                 { $match: searchConditions },
-                { $sort: { updatedAt: -1 } },
+                { $sort: { updatedAt: -1, _id: -1 } },
                 { $skip: skip },
                 { $limit: limit },
                 {
