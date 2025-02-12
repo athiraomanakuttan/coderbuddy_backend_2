@@ -1,5 +1,5 @@
 import { MeetingUserType, MeetingUser } from "../../../model/shared/meeting.model";
-import { CustomMeetingDataType, MeetingDataResponseType } from "../../../types/type";
+import { CustomMeetingDataType, MeetingDataResponseType, MonthlyReport } from "../../../types/type";
 import MeetingRepositories from "../../shared/meetingRepositories";
 
 class MeetingRepositoryImplimentation  implements MeetingRepositories{
@@ -28,6 +28,36 @@ class MeetingRepositoryImplimentation  implements MeetingRepositories{
         }).select('title _id');
         return meetings;
     }    
+    async getMeetingReport(userId: string, year: number): Promise<MonthlyReport[] | null> {
+        const report = await MeetingUser.aggregate([ {
+                $match: {
+                    $or: [{ userId: userId }, { expertId: userId }],
+                    meetingDate: {
+                        $gte: new Date(`${year}-01-01`), // Start of the year
+                        $lt: new Date(`${year + 1}-01-01`) // Start of the next year
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: { month: { $month: "$meetingDate" } },
+                    totalMeetings: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { "_id.month": 1 }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    month: "$_id.month",
+                    totalMeetings: 1
+                }
+            }
+        ]);
+        console.log("report", report)
+        return report;
+    }
 }
 
 export default MeetingRepositoryImplimentation

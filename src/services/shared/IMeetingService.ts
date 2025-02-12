@@ -1,5 +1,5 @@
 import { MeetingUserType } from "../../model/shared/meeting.model";
-import { CustomMeetingDataType, MeetingDataResponseType } from "../../types/type";
+import { CustomMeetingDataType, MeetingDataResponseType, MonthlyReport } from "../../types/type";
 
 interface IMeetingService
 {
@@ -7,6 +7,7 @@ interface IMeetingService
     getMeetingsById(userId:string, status: number,page: number,limit:number):Promise<MeetingDataResponseType | null>
     getMeetingDataById(meetingId: string, userId:string):Promise<MeetingUserType |  null>
     getUserMeetings(userId: string, participantId: string): Promise<CustomMeetingDataType[] | null>
+    getMeetingReport(userId: string, year: number):Promise<MonthlyReport[] | null>
 }
 
 export default IMeetingService

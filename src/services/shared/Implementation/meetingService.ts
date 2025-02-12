@@ -1,7 +1,7 @@
 import MeetingRepositories from "../../../repositories/shared/meetingRepositories"
 import { MeetingUserType } from "../../../model/shared/meeting.model";
 import IMeetingService from "../IMeetingService";
-import { CustomMeetingDataType, MeetingDataResponseType } from "../../../types/type";
+import { CustomMeetingDataType, MeetingDataResponseType, MonthlyReport } from "../../../types/type";
 class MeetingService implements IMeetingService{
     private meetingRepositories : MeetingRepositories
     constructor(meetingRepositories:MeetingRepositories){
@@ -25,6 +25,11 @@ class MeetingService implements IMeetingService{
 
     async getUserMeetings(userId: string, participantId: string): Promise<CustomMeetingDataType[] | null> {
         const meetingData =  await this.meetingRepositories.getUserMeetings(userId, participantId)
+        return meetingData
+    }
+
+    async getMeetingReport(userId: string, year: number): Promise<MonthlyReport[] | null> {
+        const meetingData =  await this.meetingRepositories.getMeetingReport(userId, year)
         return meetingData
     }
 }

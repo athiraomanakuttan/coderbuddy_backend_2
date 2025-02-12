@@ -37,3 +37,8 @@ export interface MonthlyUserPostReportType {
     };
     statuses: StatusCount[];
 }
+
+export interface MonthlyReport {
+    month: number;        
+    totalMeetings: number;  
+}

@@ -91,6 +91,22 @@ try {
 }  
 }
 
+async getMeetingReport(req:CustomType, res:Response):Promise<void>{
+  const userId  = req.id
+  const {year} = req.query
+  if(!userId){
+    res.status(400).json({status: false, message:"unautherozed user. Try again"})
+    return
+  }
+  try {
+    const meetingReport  = await this._meetingService.getMeetingReport(userId,Number(year) ?? new Date().getFullYear())
+   res.status(200).json({status: true, data:meetingReport})
+  } catch (error) {
+    res.status(500).json({status: false, message:"unable to get the user meeting report "})
+    
+  }
+}
+
 }
 
 export default MeetingController;
