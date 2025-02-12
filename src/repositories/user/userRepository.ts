@@ -1,6 +1,7 @@
 import { ExpertDocument } from "../../model/expert/expertModel";
 import { PostType } from "../../model/user/postModel";
 import { UserType } from "../../model/user/userModel";
+import { MonthlyUserPostReportType } from "../../types/type";
 interface UserRepository {
     createUser(user:UserType):Promise<UserType>;
     findById(id:String):Promise<UserType | null>;
@@ -21,6 +22,7 @@ interface UserRepository {
     updatePostStatus(userId :  string, id:string, status:number):Promise<PostType | null>
     findExpertById(id:string):Promise<ExpertDocument | null >
     updatePostData(postId: string, postData:PostType):Promise<PostType | null>
+    getPostReport(userId: string):Promise<MonthlyUserPostReportType[] | null>
 
 }
 

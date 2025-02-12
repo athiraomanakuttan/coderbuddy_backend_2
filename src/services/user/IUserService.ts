@@ -1,6 +1,7 @@
 import { ExpertDocument } from "../../model/expert/expertModel"
 import { PostType } from "../../model/user/postModel"
 import { UserType } from "../../model/user/userModel"
+import { MonthlyUserPostReportType } from "../../types/type"
 
 interface IUserService{
     createUser(user: UserType):Promise<UserType>
@@ -18,6 +19,7 @@ interface IUserService{
     updatePostStatus(userId : string, postId:string,status:number):Promise<PostType | null>
     getExpertById(id: string):Promise<ExpertDocument | null >
     updatePostDetails(postId: string, postdata:PostType):Promise<PostType | null>
+    getUserPostReport(userId: string):Promise<MonthlyUserPostReportType[] | null>
 }
 
 export default IUserService

@@ -3,6 +3,7 @@ import { UserType } from "../../../model/user/userModel";
 import { PostType } from "../../../model/user/postModel";
 import { ExpertDocument } from "../../../model/expert/expertModel";
 import IUserService from "../IUserService";
+import { MonthlyUserPostReportType } from "../../../types/type";
 
 class UserService implements IUserService{
     private userRepository:UserRepository;
@@ -75,6 +76,11 @@ class UserService implements IUserService{
     async updatePostDetails(postId: string, postData: PostType): Promise<PostType | null> {
         const data =  await this.userRepository.updatePostData(postId, postData)
         return data;
+    }
+
+    async getUserPostReport(userId: string): Promise<MonthlyUserPostReportType[] | null> {
+        const data = await this.userRepository.getPostReport(userId)
+        return data
     }
 
 }

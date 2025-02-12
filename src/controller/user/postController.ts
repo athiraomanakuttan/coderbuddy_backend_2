@@ -184,6 +184,24 @@ async updatePost(req: CustomRequest, res:Response):Promise<void>{
        }
 }
 
+async getPostReport(req:CustomRequest,res: Response):Promise<void>{
+    const userId  = req.id
+    if(!userId){
+      res.status(401).json({status:false, message:"unautherized user"})
+      return
+    }
+    try {
+      const postReport  = await this.postService.getUserPostReport(userId)
+      if(postReport){
+        res.status(200).json({status: true, message:"fetched data sucessfully", data:postReport})
+      }
+    } catch (error) {
+      console.log("error while ftching report", error)
+      res.status(500).json({status:false, message:"error while fetching data"})
+    }
+  }
+
+
 
 }
 export default  PostController

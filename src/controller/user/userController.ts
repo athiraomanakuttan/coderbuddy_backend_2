@@ -7,6 +7,7 @@ import { UserType } from "../../model/user/userModel";
 import JwtUtility from "../../utils/jwtUtility";
 import PasswordUtils from "../../utils/passwordUtils";
 import IUserService from "../../services/user/IUserService";
+import { CustomRequest } from "./postController";
 class UserController {
   private userService: IUserService;
   constructor(userService: IUserService) {
@@ -326,6 +327,8 @@ class UserController {
       res.status(500).json({status:false, message:"unable to signup. Try again"})
     }
   }
+
+  
 }
 
 export default UserController;

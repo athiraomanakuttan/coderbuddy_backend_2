@@ -162,6 +162,26 @@ class PaymentController{
         }
     }
     
+    async expertPayout(req:CustomType, res:Response):Promise<void>{
+        const expertId = req.id
+        const {amount, UPIid} = req.body
+
+        if(!expertId){
+            res.status(400).json({status: false, message:"Invalid user id"})
+            return
+        }
+        const walletData = await this.paymentService.getWalletByExpertId(expertId)
+        if(!walletData){
+            res.status(400).json({status: false, message:"your wallet is empty"})
+            return
+        }
+        if(amount<=0 || amount > walletData.amount){
+            res.status(400).json({status: false, message:"Invalid amount"})
+            return
+        }
+        
+
+    }
 }
 
 export default PaymentController

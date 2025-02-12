@@ -24,3 +24,16 @@ export interface MeetingDataResponseType {
     meetingData : MeetingUserType[],
     dataCount : number
 }
+
+export interface StatusCount {
+    status: number;
+    count: number;
+}
+
+export interface MonthlyUserPostReportType {
+    _id: {
+        year: number;
+        month: number;
+    };
+    statuses: StatusCount[];
+}

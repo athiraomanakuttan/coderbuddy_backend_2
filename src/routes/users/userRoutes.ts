@@ -38,4 +38,6 @@ router.get('/search-post/:search/:status',authenticationMiddleware as any , (req
 router.put('/update-post', authenticationMiddleware as any, upload.single('uploads'), (req,res)=>postController.updatePost(req,res))
 
 router.get('/expert-profile/:id',authenticationMiddleware as any , (req,res)=>profileController.getExpertProfile(req,res))
+
+router.get('/get-post-report', authenticationMiddleware as any, (req,res)=> postController.getPostReport(req,res))
 export default router;

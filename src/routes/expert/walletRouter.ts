@@ -15,5 +15,5 @@ const paymentService =  new PaymentService(paymentRepositoryImplimentation)
 const walletController =  new PaymentController(paymentService)
 
 router.get('/get-wallet', authenticationMiddleware as any , (req,res)=> walletController.getExpertWallet(req,res))
-
+router.post('/expert-payout', authenticationMiddleware as any, (req,res)=>walletController.expertPayout(req,res))
 export default router

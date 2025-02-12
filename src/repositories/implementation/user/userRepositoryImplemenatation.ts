@@ -2,6 +2,7 @@ import UserRepository from "../../user/userRepository";
 import { User,UserType } from "../../../model/user/userModel";
 import { Post, PostType } from "../../../model/user/postModel";
 import Expert , { ExpertDocument } from "../../../model/expert/expertModel";
+import { MonthlyUserPostReportType } from "../../../types/type";
 
 class UserRepositoryImplementation implements UserRepository{
     async createUser(user: UserType): Promise<UserType> {
@@ -200,6 +201,44 @@ class UserRepositoryImplementation implements UserRepository{
         return updatedData
     }
 
+    async getPostReport(userId: string): Promise<MonthlyUserPostReportType[] | null> {
+        try {
+            const report = await Post.aggregate([
+                {
+                    $match: { userId } // Filter posts by userId
+                },
+                {
+                    $group: {
+                        _id: {
+                            year: { $year: "$createdAt" },
+                            month: { $month: "$createdAt" },
+                            status: "$status"
+                        },
+                        count: { $sum: 1 }
+                    }
+                },
+                {
+                    $group: {
+                        _id: { year: "$_id.year", month: "$_id.month" },
+                        statuses: {
+                            $push: {
+                                status: "$_id.status",
+                                count: "$count"
+                            }
+                        }
+                    }
+                },
+                {
+                    $sort: { "_id.year": 1, "_id.month": 1 }
+                }
+            ]);
+    
+            return report;
+        } catch (error) {
+            console.error("Error fetching user post report:", error);
+            return null;
+        }  
+    }
     
 }
 
