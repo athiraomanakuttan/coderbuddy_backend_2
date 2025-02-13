@@ -58,6 +58,11 @@ class MeetingRepositoryImplimentation  implements MeetingRepositories{
         console.log("report", report)
         return report;
     }
+
+    async updateMeetingStatus(meetingId: string, status: number): Promise<MeetingUserType | null> {
+        const updatedData = await MeetingUser.findOneAndUpdate({_id:meetingId},{$set:{status}})
+        return updatedData;
+    }
 }
 
 export default MeetingRepositoryImplimentation

@@ -32,6 +32,11 @@ class MeetingService implements IMeetingService{
         const meetingData =  await this.meetingRepositories.getMeetingReport(userId, year)
         return meetingData
     }
+
+    async updateMeetingStatus(meetingId: string, status: number): Promise<MeetingUserType | null> {
+        const updatedData = await this.meetingRepositories.updateMeetingStatus(meetingId,status)
+        return updatedData
+    }
 }
 
 export default MeetingService

@@ -107,6 +107,18 @@ async getMeetingReport(req:CustomType, res:Response):Promise<void>{
   }
 }
 
+async updateMeetingStatus(req:Request, res:Response):Promise<void>{
+  const {status} = req.params
+  const {meetingId} = req.body
+  try {
+    await this._meetingService.updateMeetingStatus(meetingId,Number(status))
+    res.status(200).json({status: true, message:"status updated sucessfully"})
+
+  } catch (error) {
+    res.status(500).json({status: false, message:"unable to update the meeting status"})
+  }
+}
+
 }
 
 export default MeetingController;
