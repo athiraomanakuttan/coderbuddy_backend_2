@@ -1,5 +1,5 @@
 import { MeetingUserType } from "../../model/shared/meeting.model";
-import { CustomMeetingDataType, MeetingDataResponseType, MonthlyReport } from "../../types/type";
+import { CustomMeetingDataType, MeetingDataResponseType, MonthlyReport, RatingData } from "../../types/type";
 
 interface IMeetingService
 {
@@ -9,6 +9,7 @@ interface IMeetingService
     getUserMeetings(userId: string, participantId: string): Promise<CustomMeetingDataType[] | null>
     getMeetingReport(userId: string, year: number):Promise<MonthlyReport[] | null>
     updateMeetingStatus(meetingId: string, status:number):Promise<MeetingUserType | null>
+    createMeetingRating(meetingId:string, data:RatingData):Promise<MeetingUserType | null>
 }
 
 export default IMeetingService

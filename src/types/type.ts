@@ -52,3 +52,10 @@ export interface MonthlyProfitResult {
     _id: { month: number };
     totalProfit: number;
 }
+
+ export interface RatingData {
+    userId: string;
+    meetingRating ?: number;
+    participantBehavior ?: number;
+    feedback ?: string;
+  }

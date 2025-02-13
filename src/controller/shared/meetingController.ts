@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { CustomType } from "../../types/type";
+import { CustomType, RatingData } from "../../types/type";
 import IMeetingService from "../../services/shared/IMeetingService";
 import { console } from "inspector";
 class MeetingController {
@@ -105,7 +105,7 @@ async getMeetingReport(req:CustomType, res:Response):Promise<void>{
     res.status(500).json({status: false, message:"unable to get the user meeting report "})
     
   }
-}
+} 
 
 async updateMeetingStatus(req:Request, res:Response):Promise<void>{
   const {status} = req.params
@@ -117,6 +117,17 @@ async updateMeetingStatus(req:Request, res:Response):Promise<void>{
   } catch (error) {
     res.status(500).json({status: false, message:"unable to update the meeting status"})
   }
+}
+
+async updateMeetingRating(req:CustomType,res:Response):Promise<void>{
+   const userId = req.id
+   const { id, meetingRating, participantBehavior, feedback } = req.body
+   try {
+    const response = await this._meetingService.createMeetingRating(id,{userId,meetingRating,participantBehavior} as RatingData)
+    res.status(200).json({status:true, message : "Rating added sucessfully"})
+  } catch (error) {
+    res.status(500).json({status:false, message:"unable to add the rating"})
+   }
 }
 
 }

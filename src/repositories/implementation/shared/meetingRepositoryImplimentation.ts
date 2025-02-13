@@ -1,5 +1,5 @@
 import { MeetingUserType, MeetingUser } from "../../../model/shared/meeting.model";
-import { CustomMeetingDataType, MeetingDataResponseType, MonthlyReport } from "../../../types/type";
+import { CustomMeetingDataType, MeetingDataResponseType, MonthlyReport, RatingData } from "../../../types/type";
 import MeetingRepositories from "../../shared/meetingRepositories";
 
 class MeetingRepositoryImplimentation  implements MeetingRepositories{
@@ -62,6 +62,11 @@ class MeetingRepositoryImplimentation  implements MeetingRepositories{
     async updateMeetingStatus(meetingId: string, status: number): Promise<MeetingUserType | null> {
         const updatedData = await MeetingUser.findOneAndUpdate({_id:meetingId},{$set:{status}})
         return updatedData;
+    }
+
+    async createMeetingRate(meetingId: string, data: RatingData): Promise<MeetingUserType | null> {
+        const updateMeeting = await MeetingUser.findOneAndUpdate({_id:meetingId},{$push : {rating : data}},{ new: true })
+        return updateMeeting;
     }
 }
 

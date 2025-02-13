@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { RatingData } from '../../types/type';
 
 interface MeetingUserType {
     _id: string;
@@ -8,6 +9,7 @@ interface MeetingUserType {
     userId: string;
     postId: mongoose.Types.ObjectId;
     status: number;
+    rating ?:RatingData[],
     createdAt: Date;
     updatedAt: Date;
 }
@@ -36,6 +38,12 @@ const meetingSchema = new mongoose.Schema<MeetingUserType>({
         ref:"post",
         required:true
     },
+    rating:[{
+        userId:{ type: String, required: true},
+        meetingRating:{ type: Number},
+        participantBehavior:{type: Number  },
+        feedback : {type: String }
+    }],
     status: {
         type: Number,
         default: 0,

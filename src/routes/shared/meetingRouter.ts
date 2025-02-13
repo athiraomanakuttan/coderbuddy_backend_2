@@ -16,5 +16,5 @@ router.get('/get-user-meetings', authenticationMiddleware as any , (req,res)=> m
 
 router.get('/get-meeting-report', authenticationMiddleware as any , (req,res)=> meetingController.getMeetingReport(req,res))
 router.post('/update-meeting/:status', authenticationMiddleware as any, (req,res)=> meetingController.updateMeetingStatus(req,res))
-
+router.post('/update-rating', authenticationMiddleware as any, (req,res)=> meetingController.updateMeetingRating(req,res))
 export default router;
