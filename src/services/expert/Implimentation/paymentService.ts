@@ -34,5 +34,9 @@ class PaymentService implements IPaymentService{
     async createWallet(data:WalletDataType): Promise<WalletDataType | null> {
         return await this.paymentRepository.createExpertWallet(data)
     }
+    async addAdminProfit(data: WalletDataType): Promise<WalletDataType | null> {
+        const adminProfit  = await this.paymentRepository.addAdminProfit(data)
+        return adminProfit
+    }
 }
 export default PaymentService

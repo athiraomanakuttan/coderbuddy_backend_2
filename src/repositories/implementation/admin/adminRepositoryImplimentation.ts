@@ -2,6 +2,8 @@ import { User, UserType } from "../../../model/user/userModel";
 import Expert, { ExpertDocument } from "../../../model/expert/expertModel";
 import AdminRepository from "../../admin/adminRepository";
 import AdminService from "../../../services/admin/Implimentation/adminService";
+import { MonthlyAdminProfitReport, MonthlyProfitResult } from "../../../types/type";
+import { AdminWallet } from "../../../model/admin/adminWallet";
 
 class AdminRepositoryImplimentation implements AdminRepository{
     async getUserDetails(skip: number = 0, limit: number = 10): Promise<UserType[]> {
@@ -60,6 +62,39 @@ async updateExpertStatus(expertId: string, status: number): Promise<ExpertDocume
     const response = await Expert.findOneAndUpdate({_id: expertId}, {$set: { status: status}})
     return response;
 }
+
+async  getMonthlyProfitReport(year: number): Promise<MonthlyAdminProfitReport[] | null>{
+    try {
+        const result = await AdminWallet.aggregate([
+            {
+                $match: {
+                    createdAt: {
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                        $lt: new Date(`${year + 1}-01-01T00:00:00.000Z`)
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: { month: { $month: "$createdAt" } },
+                    totalProfit: { $sum: "$amount" }
+                }
+            },
+            {
+                $sort: { "_id.month": 1 }
+            }
+        ]) as MonthlyProfitResult[]; 
+
+        return result.map((item) => ({
+            month: item._id.month,
+            profit: item.totalProfit
+        }));
+
+    } catch (error) {
+        console.error("Error fetching monthly profit report:", error);
+        return [];
+    }
+};
 
 }
 

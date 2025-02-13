@@ -42,3 +42,13 @@ export interface MonthlyReport {
     month: number;        
     totalMeetings: number;  
 }
+
+export interface MonthlyAdminProfitReport {
+    month: number;  
+    profit: number;
+}
+
+export interface MonthlyProfitResult {
+    _id: { month: number };
+    totalProfit: number;
+}

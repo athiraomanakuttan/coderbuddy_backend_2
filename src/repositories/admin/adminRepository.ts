@@ -1,5 +1,6 @@
 import { ExpertDocument } from "../../model/expert/expertModel";
 import { UserType } from "../../model/user/userModel"
+import { MonthlyAdminProfitReport } from "../../types/type";
 
 interface IAdminRepository{
 getUserDetails(skip: number, limit: number):Promise<UserType[] | UserType | null>;
@@ -12,6 +13,7 @@ updateExpertById(id: string,data:ExpertDocument):Promise<ExpertDocument | null>
 getUserCount():Promise<number>
 countExpertPendingDetails(status: number):Promise<number>
 updateExpertStatus(expertId: string, status: number): Promise<ExpertDocument | null>
+getMonthlyProfitReport(year: number):Promise<MonthlyAdminProfitReport[] | null>
 }
 
 export default IAdminRepository

@@ -1,6 +1,7 @@
 import { ExpertDocument } from "../../../model/expert/expertModel";
 import { CommentType, PostType } from "../../../model/user/postModel";
 import ExpertRepository from "../../../repositories/expert/expertRepository";
+import { MonthlyAdminProfitReport } from "../../../types/type";
 import IExpertService from "../IExpertService";
 
 class ExpertService implements IExpertService {
@@ -45,6 +46,7 @@ class ExpertService implements IExpertService {
         const updatePost = await this.expertRepository.deleteComment(commentId,expertId,postId)
         return updatePost
     }
+    
 }
 
 export default ExpertService;

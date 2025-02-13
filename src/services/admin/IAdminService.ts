@@ -1,6 +1,6 @@
 import { ExpertDocument } from "../../model/expert/expertModel";
 import { UserType } from "../../model/user/userModel";
-import { basicType } from "../../types/type";
+import { basicType, MonthlyAdminProfitReport } from "../../types/type";
 
 interface IAdminService {
 adminSignup(userData: basicType,adminData: basicType):{ status: boolean; message: string }
@@ -12,6 +12,7 @@ getExpertById(id: string): Promise<ExpertDocument | null>
 updateExpertById(id: string, data: ExpertDocument): Promise<ExpertDocument | null>
 countTotalUsers(): Promise<number>
 updateExpertStatus(expertId: string, status: number): Promise<ExpertDocument | null>
+getMonthlyProfitReport(year:number):Promise<MonthlyAdminProfitReport[] | null>
 
 }
 

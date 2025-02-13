@@ -8,6 +8,8 @@ interface PaymentRepository{
     updatePaymentById(id:string, status:number, razorpayId:string | null):Promise<PaymentType | null>
     getWalletByExpertId(expertId: string):Promise<WalletDataType | null >
     createExpertWallet(data:WalletDataType):Promise<WalletDataType | null>
+    addAdminProfit(data: WalletDataType):Promise<WalletDataType | null>
+    
 }
 
 export default PaymentRepository

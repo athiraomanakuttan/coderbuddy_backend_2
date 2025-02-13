@@ -45,7 +45,7 @@ router.post('/create-meeting-link',authenticationMiddleware  as any , (req,res)=
 router.post('/get-meeting-details', authenticationMiddleware  as any , (req,res)=> meetingController.getMeetingDetails(req,res))
 router.put('/approve-expert',authenticationMiddleware as any , (req,res)=>meetingController.approveExpert(req,res))
 
-
 router.get('/get-concern-data', authenticationMiddleware as any, (req,res)=> concernController.getConcernDataByStatus(req,res))
+router.get('/get-profit-report', authenticationMiddleware as any, (req,res)=> adminController.getAdminProfitReport(req,res))
 
 export default router;

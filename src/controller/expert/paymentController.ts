@@ -117,7 +117,7 @@ class PaymentController{
             if (paymentDetails) {
                 const expertId = paymentDetails.expertId;
                 const amountToAdd = paymentDetails.amount * 0.7;  
-    
+                const adminAmount = paymentDetails.amount - amountToAdd
                    const  walletDetails = await this.paymentService.createWallet({
                         expertId: expertId.toString(),
                         amount: amountToAdd,
@@ -127,6 +127,15 @@ class PaymentController{
                             dateTime: new Date()
                         }]
                     });
+                    const adminProfitData =  await this.paymentService.addAdminProfit({
+                        expertId: expertId.toString(),
+                        amount: adminAmount,
+                        transaction: [{
+                            paymentId: paymentId,
+                            amount: amountToAdd,
+                            dateTime: new Date()
+                        }]
+                    })
                
             }
     

@@ -9,6 +9,7 @@ interface IPaymentService {
     updatePaymentById(id: string, status: number, razorpayId:string | null): Promise<PaymentType | null>
     getWalletByExpertId(expertId: string):Promise<WalletDataType | null>
     createWallet(data:WalletDataType):Promise<WalletDataType | null>
+    addAdminProfit(data:WalletDataType): Promise<WalletDataType | null>
 }
 
 export default IPaymentService

@@ -186,6 +186,15 @@ class AdminController{
         }
     }    
     
+    async getAdminProfitReport(req:Request,res:Response):Promise<void>{
+        const {year} =  req.query
+        try {
+            const profitReport = await this.adminService.getMonthlyProfitReport(Number(year) ?? new Date().getFullYear())
+            res.status(200).json({status: true, data: profitReport})
+        } catch (error) {
+            res.status(500).json({status: false, message:"unable to fetch the data"})
+        }
+    }
 
 }
 export default AdminController

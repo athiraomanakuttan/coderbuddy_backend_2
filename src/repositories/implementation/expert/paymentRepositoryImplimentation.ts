@@ -1,3 +1,4 @@
+import { AdminWallet } from "../../../model/admin/adminWallet";
 import { Payment, PaymentType } from "../../../model/expert/paymentModel"
 import { Wallet, WalletDataType } from "../../../model/expert/wallet.model";
 import PaymentRepository from "../../expert/paymentRepository"
@@ -66,7 +67,10 @@ class PaymentRepositoryImplimentation implements PaymentRepository{
         return updatedWallet;
     }
 
-    
+    async addAdminProfit(data: WalletDataType): Promise<WalletDataType | null> {
+        const adminWallet = await AdminWallet.create(data)
+        return adminWallet
+    }
 }
 
 export default PaymentRepositoryImplimentation

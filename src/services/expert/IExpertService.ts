@@ -1,5 +1,6 @@
 import { ExpertDocument } from "../../model/expert/expertModel"
 import { CommentType, PostType } from "../../model/user/postModel"
+import { MonthlyAdminProfitReport } from "../../types/type"
 
 interface IExpertService {
 createExpert(data: ExpertDocument): Promise<ExpertDocument | null>
