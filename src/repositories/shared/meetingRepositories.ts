@@ -9,5 +9,6 @@ interface MeetingRepositories{
     getMeetingReport(userId: string, year: number):Promise<MonthlyReport[] | null>
     updateMeetingStatus(meetingId: string, status:number):Promise<MeetingUserType | null>
     createMeetingRate(meetingId: string, data:RatingData):Promise<MeetingUserType | null>
+    getMeetingFeedback(userId: string, meetingId: string):Promise<RatingData | null>
 }
 export default MeetingRepositories

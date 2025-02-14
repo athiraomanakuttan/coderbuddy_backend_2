@@ -10,6 +10,7 @@ interface IMeetingService
     getMeetingReport(userId: string, year: number):Promise<MonthlyReport[] | null>
     updateMeetingStatus(meetingId: string, status:number):Promise<MeetingUserType | null>
     createMeetingRating(meetingId:string, data:RatingData):Promise<MeetingUserType | null>
+    getMeetingFeedback(meetingId:string,userId:string):Promise<RatingData | null>
 }
 
 export default IMeetingService

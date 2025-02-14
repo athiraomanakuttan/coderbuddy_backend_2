@@ -68,6 +68,20 @@ class MeetingRepositoryImplimentation  implements MeetingRepositories{
         const updateMeeting = await MeetingUser.findOneAndUpdate({_id:meetingId},{$push : {rating : data}},{ new: true })
         return updateMeeting;
     }
+
+    async getMeetingFeedback(userId: string, meetingId: string): Promise<RatingData | null> {
+        const meeting = await MeetingUser.findOne(
+            { _id: meetingId },
+            { rating: 1 } 
+        );
+    
+        if (!meeting || !meeting.rating) return null;  
+    
+        const otherRating = meeting.rating.find(r => r.userId !== userId);
+    
+        return otherRating || null;
+    }
+    
 }
 
 export default MeetingRepositoryImplimentation

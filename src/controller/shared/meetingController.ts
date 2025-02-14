@@ -130,6 +130,23 @@ async updateMeetingRating(req:CustomType,res:Response):Promise<void>{
    }
 }
 
+async getMeetingFeedback(req:CustomType,res:Response):Promise<void>{
+  const {meetingId} = req.query
+  const userId = req.id
+  if(!meetingId || !userId){
+    res.status(400).json({status:false, message:"user id or meeting id is empty"})
+    return
+  }
+  try {
+    const feedbackData = await this._meetingService.getMeetingFeedback(meetingId as string,userId)
+    console.log("feedbackData",feedbackData)
+    res.status(200).json({status: true, data:feedbackData})
+  } catch (error) {
+    res.status(500).json({status: false,message:"unable to get the feedback"})
+  }
+}
+
+
 }
 
 export default MeetingController;

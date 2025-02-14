@@ -42,6 +42,11 @@ class MeetingService implements IMeetingService{
         const response = await this.meetingRepositories.createMeetingRate(meetingId, data)
         return response;
     }
+
+    async getMeetingFeedback(meetingId: string, userId: string): Promise<RatingData | null> {
+        const response = await this.meetingRepositories.getMeetingFeedback(userId,meetingId)
+        return response
+    }
 }
 
 export default MeetingService
